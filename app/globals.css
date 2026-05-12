@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme inline {
+  --grid-template-columns-18: repeat(18, minmax(0, 1fr));
+}
+
+body {
+  background-color: #adecf5; /* Màu xanh nước biển đặc trưng của web game */
+  margin: 0;
+}
