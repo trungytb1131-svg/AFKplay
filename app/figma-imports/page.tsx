@@ -1,32 +1,34 @@
 import { builder } from "@builder.io/sdk";
 import { RenderBuilderContent } from "../../components/builder";
 
-// Builder Public API Key set in .env file
+// Khởi tạo Builder với API Key từ file .env
 builder.init(process.env.NEXT_PUBLIC_BUILDER_API_KEY!);
 
+// CHỈNH SỬA: params phải được khai báo là một Promise để phù hợp với Next.js 16
 interface PageProps {
-  params: {
+  params: Promise<{
     page: string[];
-  };
+  }>;
 }
 
 export default async function Page(props: PageProps) {
+  // CHỈNH SỬA: Phải dùng 'await' để lấy dữ liệu từ params trước khi sử dụng
+  const { page } = await props.params;
+  
   const builderModelName = "figma-imports";
 
   const content = await builder
-    // Get the page content from Builder with the specified options
     .get(builderModelName, {
       userAttributes: {
-        // Use the page path specified in the URL to fetch the content
-        urlPath: "/" + (props?.params?.page?.join("/") || ""),
+        // Sử dụng mảng 'page' đã được giải nén từ await ở trên
+        urlPath: "/" + (page?.join("/") || ""),
       },
     })
-    // Convert the result to a promise
     .toPromise();
 
   return (
     <>
-      {/* Render the Builder page */}
+      {/* Render nội dung từ Builder */}
       <RenderBuilderContent content={content} model={builderModelName} />
     </>
   );

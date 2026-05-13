@@ -7,13 +7,7 @@ builder.init("036b47464eae4b0db4017daca87b8339");
 
 const MODEL = "figma-imports";
 
-// Định nghĩa kiểu dữ liệu chuẩn để thỏa mãn trình biên dịch Next.js 16
-interface PageProps {
-  params: Promise<{ page: string[] }>;
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
-}
-
-export default function Home(props: PageProps) {
+export default function Home() {
   const isPreviewing = useIsPreviewing();
   const [content, setContent] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
