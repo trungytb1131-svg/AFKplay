@@ -42,7 +42,7 @@ export default function GameCard({ game, isExpanded, onLongPress }: GameCardProp
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* CHỈNH SỬA CHÍNH: Thay đổi đường dẫn Link sang /play/ để khớp với Route động */}
+      {/* ĐƯỜNG DẪN CHUẨN: Luôn trỏ về /play/ để khớp với app/play/[slug] */}
       <Link href={`/play/${game.slug || game.id}`} className="block w-full h-full">
         <div className="w-full h-full relative">
           {((isHovered && !isExpanded) || isExpanded) ? (
@@ -58,7 +58,7 @@ export default function GameCard({ game, isExpanded, onLongPress }: GameCardProp
             <img 
               src={game.image || `https://picsum.photos/400/400?random=${game.id}`} 
               className="w-full h-full object-cover" 
-              alt={game.slug || "game"}
+              alt={game.slug || "game preview"}
             />
           )}
         </div>
