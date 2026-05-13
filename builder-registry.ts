@@ -1,39 +1,40 @@
 "use client";
-import { Builder, withChildren } from "@builder.io/react";
+import { Builder, withChildren } from "@builder.io/react"; // Phải có dòng này
+
+// Import tất cả các file component
+import AdaptiveHeader from "./components/AdaptiveHeader";
+import CategoryCardHorizontal from "./components/CategoryCardHorizontal";
+import CategoryTiles from "./components/CategoryTiles";
+import FixedHeader from "./components/FixedHeader";
+import Footer from "./components/Footer";
 import GameCard from "./components/GameCard";
 import GameGridContainer from "./components/GameGridContainer";
-import LogoBrickSquare from "./components/LogoBrickSquare";
+import AboutSection from "./components/AboutSection";
 
-// 1. Đăng ký GameGridContainer (Thùng chứa)
-Builder.registerComponent(withChildren(GameGridContainer), {
-  name: "GameGridContainer",
+// Đăng ký các linh kiện bình thường
+Builder.registerComponent(AdaptiveHeader, { name: "AdaptiveHeader" });
+Builder.registerComponent(CategoryCardHorizontal, { name: "CategoryCardHorizontal" });
+Builder.registerComponent(CategoryTiles, { name: "CategoryTiles" });
+Builder.registerComponent(FixedHeader, { name: "FixedHeader" });
+Builder.registerComponent(Footer, { name: "Footer" });
+Builder.registerComponent(GameCard, { name: "GameCard" });
+Builder.registerComponent(AboutSection, { name: "AboutSection" });
+
+// Đăng ký GameGridContainer với cấu hình nhập liệu
+Builder.registerComponent(withChildren(GameGridContainer), { 
+  name: "GameGridContainer", 
   canHaveChildren: true,
   inputs: [
     {
-      name: "className",
-      type: "string",
-      defaultValue: "grid grid-cols-3 md:grid-cols-6 gap-3 p-3",
+      name: "gamesList",
+      type: "list",
+      subFields: [
+        { name: "title", type: "string", defaultValue: "New Game" },
+        { name: "image", type: "file", allowedFileTypes: ["jpeg", "png", "webp"] },
+        { name: "videoUrl", type: "file", allowedFileTypes: ["mp4"] },
+        { name: "gameUrl", type: "url" },
+        { name: "size", type: "string", enum: ["1x1", "2x2", "3x3"], defaultValue: "1x1" },
+      ],
     },
   ],
-});
-
-// 2. Đăng ký GameCard (Ô game lẻ)
-Builder.registerComponent(GameCard, {
-  name: "GameCard",
-  inputs: [
-    { name: "title", type: "string", defaultValue: "Tên Game" },
-    { name: "image", type: "file", allowedFileTypes: ["jpeg", "jpg", "png", "webp"] },
-    { name: "link", type: "url", defaultValue: "#" },
-    { 
-      name: "className", 
-      type: "string", 
-      defaultValue: "col-span-1 row-span-1",
-      helperText: "Dùng col-span-2 cho ô to" 
-    },
-  ],
-});
-
-// 3. Đăng ký Logo (Nếu cần)
-Builder.registerComponent(LogoBrickSquare, {
-  name: "LogoBrickSquare",
 });

@@ -9,14 +9,13 @@ const config: Config = {
   theme: {
     extend: {
       gridTemplateColumns: {
-        // Cấu hình hệ lưới 18 cột giống Poki
-        '18': 'repeat(18, minmax(0, 1fr))',
+        // Chuyển sang 17 cột chuẩn cho afkplay
+        '17': 'repeat(17, minmax(0, 1fr))',
       },
-      // Bạn có thể thêm các màu sắc đặc trưng của afkplay tại đây
       colors: {
         brand: {
-          red: "#ff4757",
-          blue: "#2ed573",
+          sky: "#87CEEB", // Màu xanh da trời trong sáng
+          blue: "#00BFFF",
           dark: "#1f1f1f",
         },
       },

@@ -1,26 +1,60 @@
-// components/GameCard.tsx
 "use client"
-import React from "react"
+import React, { useState, useRef } from "react"
+import Link from "next/link"
 
-interface GameCardProps {
-  title?: string;
+interface Game {
+  id: string;
   image?: string;
-  link?: string;
-  className?: string; // Đây là nơi Builder.io sẽ truyền col-span/row-span vào
+  videoUrl?: string;
+  slug?: string;
 }
 
-export default function GameCard({ 
-  title = "New Game", 
-  image = "https://via.placeholder.com/150", 
-  className = "col-span-1 row-span-1" 
-}: GameCardProps) {
+interface GameCardProps {
+  game: Game;
+  isExpanded?: boolean;
+  onLongPress?: (id: string) => void;
+}
+
+export default function GameCard({ game, isExpanded, onLongPress }: GameCardProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const videoSrc = game.videoUrl || "https://static.pokicdn.com/cdn-cgi/image/quality=85,width=200,height=200,fit=cover,g=0.5x0.5,f=auto/spr/previews/200x200/subway-surfers.mp4";
+
+  const handleTouchStart = () => {
+    if (isExpanded) return;
+    timerRef.current = setTimeout(() => onLongPress?.(game.id), 600);
+  };
+
+  const handleTouchEnd = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+  };
+
   return (
-    <div className={`${className} aspect-square bg-white rounded-2xl overflow-hidden cursor-pointer shadow-sm hover:ring-4 hover:ring-[#ff4757] transition-all relative group h-full w-full`}>
-      <img src={image} className="w-full h-full object-cover group-hover:scale-110 transition-all" alt={title} />
-      {/* Overlay tên game khi hover */}
-      <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-        <span className="text-white font-bold text-xs px-2 text-center">{title}</span>
-      </div>
+    <div 
+      className={`relative w-full h-full rounded-xl lg:rounded-2xl overflow-hidden bg-white shadow-lg transition-all duration-300
+        lg:hover:shadow-2xl lg:hover:-translate-y-1 lg:hover:scale-[1.02]
+        ${isExpanded ? "ring-4 ring-white/50 z-50 shadow-2xl" : ""}
+      `}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      <Link href={`/game/${game.slug || game.id}`} className="block w-full h-full">
+        {/* object-cover đảm bảo ảnh/video không bị méo khi kích thước ô thay đổi */}
+        <div className="w-full h-full relative">
+          {((isHovered && !isExpanded) || isExpanded) ? (
+            <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+          ) : (
+            <img 
+              src={game.image || `https://picsum.photos/400/400?random=${game.id}`} 
+              className="w-full h-full object-cover" 
+              alt="game"
+            />
+          )}
+        </div>
+      </Link>
     </div>
-  )
+  );
 }

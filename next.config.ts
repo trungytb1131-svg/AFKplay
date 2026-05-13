@@ -1,7 +1,6 @@
+import withBuilderDevTools from "@builder.io/dev-tools/next";
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  /* config options here */
-};
+const nextConfig: NextConfig = {};
 
-export default nextConfig;
+export default withBuilderDevTools()(nextConfig);

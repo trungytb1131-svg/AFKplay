@@ -1,36 +1,59 @@
 "use client"
-
 import React from "react"
-import { Search, User, Menu } from "lucide-react"
+import { Search, User } from "lucide-react"
+import Link from "next/link"
 
-export default function FixedHeader() {
+interface FixedHeaderProps {
+  isHidden?: boolean;
+}
+
+export default function FixedHeader({ isHidden = false }: FixedHeaderProps) {
+  // Ẩn Header khi đang ở chế độ xem trước (preview) trên điện thoại
+  if (isHidden) return null;
+
   return (
-    <header className="fixed top-0 left-0 right-0 h-16 bg-[#1f1f1f] border-b-2 border-[#ff4757] flex items-center justify-between px-4 z-50 shadow-lg">
-      {/* Logo bên trái */}
-      <div className="flex items-center gap-2 cursor-pointer group">
-        <div className="w-10 h-10 bg-[#ff4757] rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(255,71,87,0.5)]">
-          <span className="text-white font-bold text-xl italic">P</span>
-        </div>
-        <span className="text-white font-black text-2xl tracking-tighter hidden md:block">POKI CLONE</span>
-      </div>
+    <div className="
+      fixed z-[999] transition-all duration-300
+      /* TỌA ĐỘ: Khớp chính xác với Padding 10px và Top 16px của Container */
+      top-[16px] left-[10px]
 
-      {/* Thanh tìm kiếm và nút bấm */}
-      <div className="flex items-center gap-3">
-        <div className="relative hidden sm:block">
-          <input 
-            type="text" 
-            placeholder="Tìm game..." 
-            className="bg-[#2f2f2f] text-white border-none rounded-full py-2 px-10 focus:ring-2 focus:ring-[#ff4757] outline-none w-64"
-          />
-          <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+      /* PC: KÍCH THƯỚC 2x1 TRÊN LƯỚI 17 CỘT */
+      lg:w-[calc((100vw-180px)/17*2+10px)]
+      lg:h-[calc((100vw-180px)/17)]
+
+      /* MOBILE: KÍCH THƯỚC 1x1 CHUẨN (Khớp lưới 3 cột) */
+      w-[calc((100vw-40px)/3)]
+      h-[calc((100vw-40px)/3)]
+
+      bg-white rounded-xl lg:rounded-2xl shadow-xl overflow-hidden flex border border-slate-100
+      
+      /* HIỆU ỨNG NỔI TOÀN Ô TRÊN PC */
+      lg:hover:shadow-2xl lg:hover:-translate-y-1 lg:hover:scale-[1.01]
+    ">
+      <Link href="/" className="flex w-full h-full">
+        {/* VÙNG LOGO: CHIẾM 3/4 CHIỀU RỘNG TRÊN MOBILE */}
+        <div className="flex-[3] lg:flex-grow h-full bg-white relative overflow-hidden flex items-center justify-center p-1 lg:p-2">
+           <img 
+              src="https://i.postimg.cc/90jcyNBT/Thiet-ke-chua-co-ten-(1).png" 
+              alt="AFKplay" 
+              className="w-full h-full object-contain" 
+           />
         </div>
-        <button className="bg-[#2ecc71] hover:bg-[#27ae60] text-white p-2 rounded-full transition-colors">
-          <User className="w-6 h-6" />
-        </button>
-        <button className="text-white p-2 md:hidden">
-          <Menu className="w-6 h-6" />
-        </button>
-      </div>
-    </header>
+
+        {/* VÙNG ICON: CHIẾM 1/4 CHIỀU RỘNG TRÊN MOBILE */}
+        <div className="flex-1 lg:w-[48px] flex flex-col h-full border-l border-slate-100 bg-white">
+          
+          {/* NÚT USER: Đậm màu (bg-slate-100) khi di chuột đến */}
+          <div className="h-1/2 flex items-center justify-center transition-colors duration-200 hover:bg-slate-100 group cursor-pointer">
+            <User className="text-blue-600 w-4 h-4 lg:w-5 lg:h-5 transition-transform group-hover:scale-110" />
+          </div>
+
+          {/* NÚT SEARCH: Đậm màu (bg-slate-100) khi di chuột đến */}
+          <div className="h-1/2 flex items-center justify-center transition-colors duration-200 hover:bg-slate-100 border-t border-slate-100 group cursor-pointer">
+            <Search className="text-blue-600 w-4 h-4 lg:w-5 lg:h-5 transition-transform group-hover:scale-110" />
+          </div>
+        </div>
+      </Link>
+    </div>
   )
 }
