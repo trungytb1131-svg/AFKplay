@@ -19,6 +19,7 @@ export default function GameCard({ game, isExpanded, onLongPress }: GameCardProp
   const [isHovered, setIsHovered] = useState(false);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Video mặc định nếu game không có videoUrl riêng
   const videoSrc = game.videoUrl || "https://static.pokicdn.com/cdn-cgi/image/quality=85,width=200,height=200,fit=cover,g=0.5x0.5,f=auto/spr/previews/200x200/subway-surfers.mp4";
 
   const handleTouchStart = () => {
@@ -41,16 +42,23 @@ export default function GameCard({ game, isExpanded, onLongPress }: GameCardProp
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      <Link href={`/game/${game.slug || game.id}`} className="block w-full h-full">
-        {/* object-cover đảm bảo ảnh/video không bị méo khi kích thước ô thay đổi */}
+      {/* CHỈNH SỬA CHÍNH: Thay đổi đường dẫn Link sang /play/ để khớp với Route động */}
+      <Link href={`/play/${game.slug || game.id}`} className="block w-full h-full">
         <div className="w-full h-full relative">
           {((isHovered && !isExpanded) || isExpanded) ? (
-            <video src={videoSrc} autoPlay loop muted playsInline className="w-full h-full object-cover" />
+            <video 
+              src={videoSrc} 
+              autoPlay 
+              loop 
+              muted 
+              playsInline 
+              className="w-full h-full object-cover" 
+            />
           ) : (
             <img 
               src={game.image || `https://picsum.photos/400/400?random=${game.id}`} 
               className="w-full h-full object-cover" 
-              alt="game"
+              alt={game.slug || "game"}
             />
           )}
         </div>
