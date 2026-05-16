@@ -115,7 +115,7 @@ export default function PlayPage({
       try {
         await target?.requestFullscreen();
         try {
-          await screen.orientation.lock("landscape");
+          await (screen.orientation as any).lock("landscape");
         } catch {}
       } catch {}
     } else {
