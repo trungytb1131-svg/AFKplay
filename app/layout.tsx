@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
+import { Providers } from "@/components/providers";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -13,30 +15,19 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "AFKplay | Chơi Game Online Miễn Phí - Không Cần Tải Về",
-  description: "Khám phá thế giới game hành động, đua xe, câu đố và nhiều hơn nữa trên AFKplay. Chơi ngay tức thì trên PC và điện thoại!",
+  title: "AFKplay | Free Online Games — No Download Required",
+  description:
+    "Play action, racing, puzzle, and more free browser games on AFKplay. Instant play on desktop and mobile — no downloads.",
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html 
-      lang="vi" 
+    <html
+      lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      /* Chặn lỗi Hydration từ lớp ngoài cùng */
-      suppressHydrationWarning
     >
-      <body 
-        className="min-h-full flex flex-col bg-[#adecf5] overflow-x-hidden"
-        /* Chặn lỗi do Builder.io tự ý chèn thêm class vào body trên trình duyệt */
-        suppressHydrationWarning
-      >
-        <main className="flex-1 relative">
-          {children}
-        </main>
+      <body className="min-h-full flex flex-col bg-[#adecf5] overflow-x-hidden">
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

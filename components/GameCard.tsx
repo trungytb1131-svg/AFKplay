@@ -1,66 +1,92 @@
-"use client"
-import React, { useState, useRef } from "react"
-import Link from "next/link"
+"use client";
 
-interface Game {
-  id: string;
-  image?: string;
-  videoUrl?: string;
-  slug?: string;
-}
+import React, { useEffect, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { Heart, Play } from "lucide-react";
+import { useActivity } from "@/contexts/ActivityContext";
 
-interface GameCardProps {
-  game: Game;
-  isExpanded?: boolean;
-  onLongPress?: (id: string) => void;
-}
-
-export default function GameCard({ game, isExpanded, onLongPress }: GameCardProps) {
+export default function GameCard({
+  game,
+  forceHeart,
+  onHeartClick,
+}: {
+  game: {
+    slug: string;
+    title?: string;
+    image?: string;
+    id?: string;
+    thumb?: string;
+  };
+  forceHeart?: boolean;
+  onHeartClick?: (slug: string) => void;
+}) {
   const [isHovered, setIsHovered] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const [mounted, setMounted] = useState(false);
+  const { isHearted, toggleFavorite, trackPlay } = useActivity();
 
-  // Video mặc định nếu game không có videoUrl riêng
-  const videoSrc = game.videoUrl || "https://static.pokicdn.com/cdn-cgi/image/quality=85,width=200,height=200,fit=cover,g=0.5x0.5,f=auto/spr/previews/200x200/subway-surfers.mp4";
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-  const handleTouchStart = () => {
-    if (isExpanded) return;
-    timerRef.current = setTimeout(() => onLongPress?.(game.id), 600);
-  };
+  const favorited = mounted ? forceHeart || isHearted(game.slug) : false;
 
-  const handleTouchEnd = () => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-  };
+  const thumbnailSrc =
+    game.thumb || game.image || `/images/games/${game.slug}.jpg`;
 
   return (
-    <div 
-      className={`relative w-full h-full rounded-xl lg:rounded-2xl overflow-hidden bg-white shadow-lg transition-all duration-300
-        lg:hover:shadow-2xl lg:hover:-translate-y-1 lg:hover:scale-[1.02]
-        ${isExpanded ? "ring-4 ring-white/50 z-50 shadow-2xl" : ""}
-      `}
+    <div
+      className="relative w-full h-full group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onTouchStart={handleTouchStart}
-      onTouchEnd={handleTouchEnd}
     >
-      {/* ĐƯỜNG DẪN CHUẨN: Luôn trỏ về /play/ để khớp với app/play/[slug] */}
-      <Link href={`/play/${game.slug || game.id}`} className="block w-full h-full">
-        <div className="w-full h-full relative">
-          {((isHovered && !isExpanded) || isExpanded) ? (
-            <video 
-              src={videoSrc} 
-              autoPlay 
-              loop 
-              muted 
-              playsInline 
-              className="w-full h-full object-cover" 
-            />
-          ) : (
-            <img 
-              src={game.image || `https://picsum.photos/400/400?random=${game.id}`} 
-              className="w-full h-full object-cover" 
-              alt={game.slug || "game preview"}
-            />
-          )}
+      {/* Nút tim */}
+      <button
+        type="button"
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onHeartClick ? onHeartClick(game.slug) : toggleFavorite(game.slug);
+        }}
+        className={`absolute top-2 right-2 z-30 p-2 rounded-full backdrop-blur-md transition-all ${
+          favorited
+            ? "bg-red-500 text-white opacity-100"
+            : "bg-black/20 text-white opacity-0 group-hover:opacity-100"
+        }`}
+        aria-label={favorited ? "Remove from favorites" : "Add to favorites"}
+      >
+        <Heart
+          size={16}
+          fill={favorited ? "currentColor" : "none"}
+          strokeWidth={2.5}
+        />
+      </button>
+
+      <Link
+        href={`/play/${game.slug}`}
+        onClick={() => trackPlay(game.slug)}
+        className="relative block w-full h-full overflow-hidden rounded-[24px] bg-slate-200 shadow-sm group/link"
+      >
+        {/* Ảnh nền full — zoom nhẹ khi hover */}
+        <Image
+          src={thumbnailSrc}
+          alt={game.title || game.slug}
+          fill
+          className="object-cover transition-transform duration-500 ease-out group-hover/link:scale-110"
+          sizes="(max-width: 1024px) 33vw, 6vw"
+          unoptimized={!!game.thumb}
+        />
+
+        {/* Overlay tối + Play + Title — hiện khi hover */}
+        <div
+          className={`absolute inset-0 bg-black/50 flex flex-col items-center justify-center p-2 transition-opacity duration-300 ${
+            isHovered ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          <Play size={32} className="text-white opacity-80 mb-2" fill="white" />
+          <span className="text-white text-[10px] font-black uppercase text-center italic leading-tight">
+            {game.title || game.slug}
+          </span>
         </div>
       </Link>
     </div>

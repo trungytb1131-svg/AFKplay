@@ -1,46 +1,60 @@
 "use client";
-import { useEffect, useState } from "react";
-import { BuilderComponent, builder, useIsPreviewing } from "@builder.io/react";
-import "../builder-registry";
 
-builder.init("036b47464eae4b0db4017daca87b8339");
+import React from "react";
+import GameGridContainer from "@/components/GameGridContainer";
+import CategoryCard from "@/components/CategoryCard";
+import AboutSection from "@/components/AboutSection";
+import Footer from "@/components/Footer";
+import UserActivityBar from "@/components/UserActivityBar";
+import FixedPortalSidebar from "@/components/FixedPortalSidebar";
+import HeaderOverlay from "@/components/HeaderOverlay";
+import { CATEGORIES_28 } from "@/data/categories";
 
-const MODEL = "figma-imports";
-
-export default function Home() {
-  const isPreviewing = useIsPreviewing();
-  const [content, setContent] = useState<any>(null);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    builder
-      .get(MODEL, {
-        includeUnpublished: true,
-        cachebust: true,
-        userAttributes: {
-          urlPath: window.location.pathname,
-          host: window.location.hostname,
-        },
-      })
-      .promise()
-      .then((data) => setContent(data ?? null))
-      .finally(() => setIsLoading(false));
-  }, []);
-
-  if (isLoading) return (
-    <div className="min-h-screen bg-[#adecf5] flex items-center justify-center">
-      <p className="text-gray-500">Đang tải...</p>
-    </div>
-  );
-
+export default function HomePage() {
   return (
-    <main className="min-h-screen bg-[#adecf5]">
-      <BuilderComponent model={MODEL} content={content ?? undefined} />
-      {!content && !isPreviewing && (
-        <div className="p-10 text-center">
-          <p className="text-gray-500">Chưa có nội dung.</p>
+    <main className="min-h-screen bg-[#adecf5] p-[10px] lg:p-[16px] w-full overflow-x-hidden flex flex-col gap-[10px]">
+      <HeaderOverlay />
+
+      <div className="z-30 w-full">
+        <UserActivityBar />
+      </div>
+
+      <div className="w-full relative z-20">
+        <GameGridContainer />
+      </div>
+
+      {/* ===== DANH MỤC GAME: full-width, PC 7 cột, Mobile 1 cột ===== */}
+      <div className="w-full mt-6">
+        <div className="grid grid-cols-1 lg:grid-cols-7 gap-[10px] w-full">
+          {CATEGORIES_28.map((cat, index) => {
+            // PC: 4 hàng × 7 cột. Hàng 1 (0-6): vuông. Hàng 2-4 (7-27): chữ nhật ngang.
+            // Mobile: tất cả 28 ô là chữ nhật ngang 3x1 xếp dọc.
+            const isTopRow = index < 7;
+            return (
+              <div
+                key={cat.slug}
+                className={
+                  isTopRow
+                    ? "aspect-[3/1] lg:aspect-square"
+                    : "aspect-[3/1] lg:aspect-[2/1]"
+                }
+              >
+                <CategoryCard category={cat} isSquare={isTopRow} />
+              </div>
+            );
+          })}
         </div>
-      )}
+      </div>
+
+      {/* ===== ABOUT: full-width ===== */}
+      <div className="w-full mt-4">
+        <AboutSection />
+      </div>
+
+      {/* ===== FOOTER: full-width ===== */}
+      <div className="w-full">
+        <Footer />
+      </div>
     </main>
   );
 }
