@@ -49,7 +49,7 @@ export default function UserActivityBar() {
     () =>
       (favorites || [])
         .map((slug) => games.find((g) => g.slug === slug))
-        .filter(Boolean),
+        .filter((g): g is NonNullable<typeof g> => !!g),
     [favorites, games],
   );
 
