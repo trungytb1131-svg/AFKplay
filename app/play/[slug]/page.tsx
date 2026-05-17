@@ -442,7 +442,7 @@ export default function PlayPage({
       </div>
 
       <div className="hidden lg:block w-full">
-        <AboutGame />
+        <AboutGame game={currentGame ?? null} />
       </div>
 
       <div className="hidden lg:block w-full">
