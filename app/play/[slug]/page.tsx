@@ -173,7 +173,7 @@ export default function PlayPage({
             {!isTheaterMode && (
               <aside className="col-span-2 flex flex-col gap-[10px] shrink-0">
                 <PlaySidebarSpacer />
-                <div className="flex-1 min-h-[100px] w-full bg-white/30 flex items-center justify-center rounded-2xl">
+                <div className="flex-1 min-h-[100px] w-full bg-white/30 flex items-center justify-center rounded-none">
                   <MonetagAd />
                 </div>
               </aside>
@@ -194,14 +194,25 @@ export default function PlayPage({
                     : "border-[6px] rounded-[2.5rem] aspect-video"
                 }`}
               >
-                <iframe
-                  id="game-iframe"
-                  src={gameUrl}
-                  className="w-full h-full border-none"
-                  allowFullScreen
-                  sandbox="allow-scripts allow-popups allow-forms"
-                  allow="autoplay; fullscreen"
-                />
+                {!gameUrl ? (
+                  <div className="w-full h-full flex items-center justify-center bg-slate-900">
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span className="text-white/60 text-xs font-medium">
+                        Loading game...
+                      </span>
+                    </div>
+                  </div>
+                ) : (
+                  <iframe
+                    id="game-iframe"
+                    src={gameUrl}
+                    className="w-full h-full border-none"
+                    allowFullScreen
+                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                    allow="autoplay; fullscreen"
+                  />
+                )}
 
                 {/* THANH ĐIỀU KHIỂN KHI FULL SCREEN */}
                 {isFullScreen && isPlaying && (
@@ -388,14 +399,25 @@ export default function PlayPage({
             isFullScreen ? "h-screen fixed inset-0 z-[300]" : "aspect-video"
           }`}
         >
-          <iframe
-            id="game-iframe-mobile"
-            src={gameUrl}
-            className="w-full h-full border-none"
-            allowFullScreen
-            sandbox="allow-scripts allow-popups allow-forms"
-            allow="autoplay; fullscreen"
-          />
+          {!gameUrl ? (
+            <div className="w-full h-full flex items-center justify-center bg-slate-900">
+              <div className="flex flex-col items-center gap-3">
+                <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span className="text-white/60 text-xs font-medium">
+                  Loading game...
+                </span>
+              </div>
+            </div>
+          ) : (
+            <iframe
+              id="game-iframe-mobile"
+              src={gameUrl}
+              className="w-full h-full border-none"
+              allowFullScreen
+              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+              allow="autoplay; fullscreen"
+            />
+          )}
 
           {/* Nút thu nhỏ trong suốt khi fullscreen */}
           {isFullScreen && (
