@@ -24,11 +24,34 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // 28 danh mục
   const categories = [
-    "action", "racing", "puzzle", "shooting", "adventure", "sports",
-    "cooking", "zombie", "2-player", "dress-up", "driving", "skill",
-    "horror", "board", "simulation", "strategy", "funny", "multiplayer",
-    "girls", "car", "io", "logic", "escape", "idle", "classic",
-    "clicker", "physics", "world-war",
+    "action",
+    "racing",
+    "puzzle",
+    "shooting",
+    "adventure",
+    "sports",
+    "cooking",
+    "zombie",
+    "2-player",
+    "dress-up",
+    "driving",
+    "skill",
+    "horror",
+    "board",
+    "simulation",
+    "strategy",
+    "funny",
+    "multiplayer",
+    "girls",
+    "car",
+    "io",
+    "logic",
+    "escape",
+    "idle",
+    "classic",
+    "clicker",
+    "physics",
+    "world-war",
   ];
 
   const categoryUrls: MetadataRoute.Sitemap = categories.map((slug) => ({
@@ -37,9 +60,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.9,
   }));
 
+  const legalPages: MetadataRoute.Sitemap = [
+    {
+      url: `${BASE}/about`,
+      changeFrequency: "monthly" as const,
+      priority: 0.3,
+    },
+    {
+      url: `${BASE}/contact`,
+      changeFrequency: "monthly" as const,
+      priority: 0.5,
+    },
+    {
+      url: `${BASE}/terms`,
+      changeFrequency: "monthly" as const,
+      priority: 0.3,
+    },
+    {
+      url: `${BASE}/privacy`,
+      changeFrequency: "monthly" as const,
+      priority: 0.3,
+    },
+  ];
+
   return [
     { url: BASE, changeFrequency: "daily", priority: 1 },
     ...categoryUrls,
     ...gameUrls,
+    ...legalPages,
   ];
 }
