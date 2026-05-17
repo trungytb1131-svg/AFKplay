@@ -35,7 +35,7 @@ import AboutGame from "@/components/AboutGame";
 import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
 import PlaySidebarSpacer from "@/components/PlaySidebarSpacer";
-import MonetagAd from "@/components/MonetagAd";
+import { AdSlot } from "@/components/AdsterraBanner";
 import { useGames } from "@/hooks/useGames";
 import { CATEGORIES_28 } from "@/data/categories";
 
@@ -174,7 +174,7 @@ export default function PlayPage({
               <aside className="col-span-2 flex flex-col gap-[10px] shrink-0">
                 <PlaySidebarSpacer />
                 <div className="flex-1 min-h-[100px] w-full bg-white/30 flex items-center justify-center rounded-none">
-                  <MonetagAd />
+                  <AdSlot id="ad-slot-1" />
                 </div>
               </aside>
             )}
@@ -307,8 +307,8 @@ export default function PlayPage({
                   </button>
                 </div>
               </div>
-              <div className="w-full aspect-[10/1] bg-white/50 border border-white/20 flex items-center justify-center">
-                <MonetagAd />
+              <div className="w-full aspect-[10/1] bg-white/50 border border-white/20">
+                <AdSlot id="ad-slot-2" />
               </div>
             </section>
           </div>
@@ -333,8 +333,8 @@ export default function PlayPage({
                   <GameCard game={game} />
                 </div>
               ))}
-              <div className="col-span-3 row-span-3 col-start-3 row-start-1 bg-white/40 border border-white/10 flex items-center justify-center shadow-sm">
-                <MonetagAd />
+              <div className="col-span-3 row-span-3 col-start-3 row-start-1 bg-white/40 border border-white/10 shadow-sm">
+                <AdSlot id="ad-slot-3" />
               </div>
               {games.slice(2, 23).map((game) => (
                 <div key={game.id} className="aspect-square">
@@ -342,8 +342,8 @@ export default function PlayPage({
                 </div>
               ))}
             </aside>
-            <div className="w-full aspect-[4/1] bg-white/40 border border-white/10 flex items-center justify-center shadow-sm">
-              <MonetagAd />
+            <div className="w-full aspect-[4/1] bg-white/40 border border-white/10 shadow-sm">
+              <AdSlot id="ad-slot-4" />
             </div>
           </div>
         )}
@@ -448,10 +448,9 @@ export default function PlayPage({
           <UserActivityBar />
         </div>
 
-        {/* QUẢNG CÁO 3x0.5 */}
         <div className="mt-[10px]">
-          <div className="w-full bg-white/40 border border-white/20 flex items-center justify-center aspect-[6/1] rounded-none">
-            <MonetagAd />
+          <div className="w-full bg-white/40 border border-white/20 aspect-[6/1] rounded-none">
+            <AdSlot id="ad-slot-5" />
           </div>
         </div>
 
