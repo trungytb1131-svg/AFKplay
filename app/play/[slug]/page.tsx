@@ -174,7 +174,7 @@ export default function PlayPage({
               <aside className="col-span-2 flex flex-col gap-[10px] shrink-0">
                 <PlaySidebarSpacer />
                 <div className="flex-1 min-h-[100px] w-full bg-white/30 flex items-center justify-center rounded-none">
-                  <AdSlot id="ad-slot-1" />
+                  <AdSlot index={1} />
                 </div>
               </aside>
             )}
@@ -308,7 +308,7 @@ export default function PlayPage({
                 </div>
               </div>
               <div className="w-full aspect-[10/1] bg-white/50 border border-white/20">
-                <AdSlot id="ad-slot-2" />
+                <AdSlot index={2} />
               </div>
             </section>
           </div>
@@ -334,7 +334,7 @@ export default function PlayPage({
                 </div>
               ))}
               <div className="col-span-3 row-span-3 col-start-3 row-start-1 bg-white/40 border border-white/10 shadow-sm">
-                <AdSlot id="ad-slot-3" />
+                <AdSlot index={3} />
               </div>
               {games.slice(2, 23).map((game) => (
                 <div key={game.id} className="aspect-square">
@@ -343,7 +343,7 @@ export default function PlayPage({
               ))}
             </aside>
             <div className="w-full aspect-[4/1] bg-white/40 border border-white/10 shadow-sm">
-              <AdSlot id="ad-slot-4" />
+              <AdSlot index={4} />
             </div>
           </div>
         )}
@@ -450,7 +450,7 @@ export default function PlayPage({
 
         <div className="mt-[10px]">
           <div className="w-full bg-white/40 border border-white/20 aspect-[6/1] rounded-none">
-            <AdSlot id="ad-slot-5" />
+            <AdSlot index={5} />
           </div>
         </div>
 
