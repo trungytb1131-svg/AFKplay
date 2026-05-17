@@ -35,6 +35,7 @@ import AboutGame from "@/components/AboutGame";
 import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
 import PlaySidebarSpacer from "@/components/PlaySidebarSpacer";
+import MonetagAd from "@/components/MonetagAd";
 import { useGames } from "@/hooks/useGames";
 import { CATEGORIES_28 } from "@/data/categories";
 
@@ -172,8 +173,8 @@ export default function PlayPage({
             {!isTheaterMode && (
               <aside className="col-span-2 flex flex-col gap-[10px] shrink-0">
                 <PlaySidebarSpacer />
-                <div className="flex-1 min-h-[100px] w-full bg-white/30 flex items-center justify-center text-slate-400 font-bold italic text-[10px] uppercase rounded-2xl">
-                  ADS
+                <div className="flex-1 min-h-[100px] w-full bg-white/30 flex items-center justify-center rounded-2xl">
+                  <MonetagAd />
                 </div>
               </aside>
             )}
@@ -295,8 +296,8 @@ export default function PlayPage({
                   </button>
                 </div>
               </div>
-              <div className="w-full aspect-[10/1] bg-white/50 border border-white/20 flex items-center justify-center text-slate-400 font-bold italic uppercase text-[10px]">
-                ADS 10x1
+              <div className="w-full aspect-[10/1] bg-white/50 border border-white/20 flex items-center justify-center">
+                <MonetagAd />
               </div>
             </section>
           </div>
@@ -321,8 +322,8 @@ export default function PlayPage({
                   <GameCard game={game} />
                 </div>
               ))}
-              <div className="col-span-3 row-span-3 col-start-3 row-start-1 bg-white/40 border border-white/10 flex items-center justify-center text-xs font-bold text-slate-400 uppercase italic shadow-sm">
-                ADS 3x3
+              <div className="col-span-3 row-span-3 col-start-3 row-start-1 bg-white/40 border border-white/10 flex items-center justify-center shadow-sm">
+                <MonetagAd />
               </div>
               {games.slice(2, 23).map((game) => (
                 <div key={game.id} className="aspect-square">
@@ -330,8 +331,8 @@ export default function PlayPage({
                 </div>
               ))}
             </aside>
-            <div className="w-full aspect-[4/1] bg-white/40 border border-white/10 flex items-center justify-center text-[10px] font-bold text-slate-400 uppercase italic shadow-sm">
-              ADS 5x1.25
+            <div className="w-full aspect-[4/1] bg-white/40 border border-white/10 flex items-center justify-center shadow-sm">
+              <MonetagAd />
             </div>
           </div>
         )}
@@ -427,8 +428,8 @@ export default function PlayPage({
 
         {/* QUẢNG CÁO 3x0.5 */}
         <div className="mt-[10px]">
-          <div className="w-full bg-white/40 border border-white/20 flex items-center justify-center text-slate-400 font-bold italic uppercase text-[10px] aspect-[6/1] rounded-none">
-            ADS
+          <div className="w-full bg-white/40 border border-white/20 flex items-center justify-center aspect-[6/1] rounded-none">
+            <MonetagAd />
           </div>
         </div>
 
