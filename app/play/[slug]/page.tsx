@@ -36,6 +36,7 @@ import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
 import PlaySidebarSpacer from "@/components/PlaySidebarSpacer";
 import { AdSlot } from "@/components/AdsterraBanner";
+import GameJsonLd from "@/components/GameJsonLd";
 import { useGames } from "@/hooks/useGames";
 import { CATEGORIES_28 } from "@/data/categories";
 
@@ -217,6 +218,7 @@ export default function PlayPage({
         !showControls && isFullScreen ? "cursor-none" : ""
       }`}
     >
+      <GameJsonLd game={currentGame ?? null} />
       {/* ========== DESKTOP: giữ nguyên layout cũ ========== */}
       <div className="hidden lg:contents">
         <FixedPortalSidebar hidden={isFullScreen} />

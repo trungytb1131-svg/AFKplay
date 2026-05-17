@@ -17,10 +17,51 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://afkplay.vercel.app";
+
 export const metadata: Metadata = {
-  title: "AFKplay | Free Online Games — No Download Required",
+  metadataBase: new URL(SITE_URL),
+  title: {
+    default: "AFKplay | Free Online Games — No Download Required",
+    template: "%s | AFKplay",
+  },
   description:
-    "Play action, racing, puzzle, and more free browser games on AFKplay. Instant play on desktop and mobile — no downloads.",
+    "Play 1000+ free online games on AFKplay — action, racing, puzzle, shooting, clicker & more. No downloads, no login. Instant play on desktop & mobile.",
+  keywords: [
+    "free online games",
+    "browser games",
+    "HTML5 games",
+    "no download games",
+    "action games",
+    "puzzle games",
+    "racing games",
+    "clicker games",
+    "play games online",
+    "free gaming",
+    "AFKplay",
+  ],
+  authors: [{ name: "AFKplay" }],
+  creator: "AFKplay",
+  publisher: "AFKplay",
+  robots: { index: true, follow: true },
+  openGraph: {
+    type: "website",
+    siteName: "AFKplay",
+    title: "AFKplay | Free Online Games — No Download Required",
+    description:
+      "Play 1000+ free online games on AFKplay. No downloads, no login. Instant play.",
+    url: SITE_URL,
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AFKplay | Free Online Games",
+    description:
+      "Play 1000+ free online games. No downloads, no login. Instant play.",
+  },
+  alternates: {
+    canonical: SITE_URL,
+  },
 };
 
 export default function RootLayout({
