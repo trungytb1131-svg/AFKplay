@@ -50,6 +50,9 @@ export default function PlayPage({
   const [isTheaterMode, setIsTheaterMode] = useState(false);
   const [showControls, setShowControls] = useState(true);
   const [volume, setVolume] = useState(50);
+  const [isMuted, setIsMuted] = useState(false);
+  const [showShare, setShowShare] = useState(false);
+  const [copied, setCopied] = useState(false);
   const { favorites, toggleFavorite, trackPlay, isHearted } = useActivity();
   const { trackPlayTime } = useProfile();
   const [mounted, setMounted] = useState(false);
@@ -73,6 +76,59 @@ export default function PlayPage({
   }, [slug, trackPlay]);
 
   const favorited = mounted && isHearted(slug);
+
+  const lastVolume = useRef(50);
+
+  const applyVolume = useCallback((vol: number, muted: boolean) => {
+    const ids = ["game-iframe", "game-iframe-mobile"];
+    ids.forEach((id) => {
+      const iframe = document.getElementById(id) as HTMLIFrameElement | null;
+      if (!iframe?.contentWindow) return;
+      try {
+        const doc = iframe.contentDocument || iframe.contentWindow.document;
+        doc.querySelectorAll<HTMLMediaElement>("audio, video").forEach((el) => {
+          el.volume = muted ? 0 : vol / 100;
+          el.muted = muted;
+        });
+      } catch {
+        /* cross-origin */
+      }
+    });
+  }, []);
+
+  const handleVolumeChange = (v: number) => {
+    setVolume(v);
+    lastVolume.current = v;
+    if (v === 0) {
+      setIsMuted(true);
+      applyVolume(0, true);
+    } else {
+      setIsMuted(false);
+      applyVolume(v, false);
+    }
+  };
+
+  const toggleMute = () => {
+    if (isMuted) {
+      const restore = lastVolume.current > 0 ? lastVolume.current : 50;
+      setVolume(restore);
+      setIsMuted(false);
+      applyVolume(restore, false);
+    } else {
+      lastVolume.current = volume;
+      setIsMuted(true);
+      applyVolume(volume, true);
+    }
+  };
+
+  const shareUrl = typeof window !== "undefined" ? window.location.href : "";
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch {}
+  };
 
   // Theo dõi thời gian chơi game → thưởng sao (mỗi 10s báo cáo)
   useEffect(() => {
@@ -173,7 +229,7 @@ export default function PlayPage({
             {!isTheaterMode && (
               <aside className="col-span-2 flex flex-col gap-[10px] shrink-0">
                 <PlaySidebarSpacer />
-                <div className="flex-1 min-h-[100px] w-full bg-white/30 flex items-center justify-center rounded-none">
+                <div className="w-[160px] h-[600px] bg-white/30 flex items-center justify-center rounded-none shrink-0">
                   <AdSlot index={1} />
                 </div>
               </aside>
@@ -285,20 +341,29 @@ export default function PlayPage({
                     <MonitorPlay size={20} />
                   </button>
                   <button
-                    onClick={() => {
-                      if (navigator.share)
-                        navigator.share({
-                          title: slug,
-                          url: window.location.href,
-                        });
-                    }}
-                    className="p-2.5 bg-slate-50 text-slate-400 rounded-xl"
+                    onClick={() => setShowShare(true)}
+                    className="p-2.5 bg-slate-50 text-slate-400 rounded-xl hover:bg-blue-50 hover:text-blue-500 transition-colors"
                   >
                     <Share2 size={20} />
                   </button>
                   <div className="h-8 w-[1px] bg-slate-100 mx-2" />
-                  <Volume2 size={20} className="text-slate-400" />
-                  <input type="range" className="w-24 accent-[#ff4757]" />
+                  <button
+                    onClick={toggleMute}
+                    className="p-1 text-slate-400 hover:text-slate-600"
+                  >
+                    <Volume2
+                      size={20}
+                      className={isMuted ? "opacity-40" : ""}
+                    />
+                  </button>
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={volume}
+                    onChange={(e) => handleVolumeChange(Number(e.target.value))}
+                    className="w-24 accent-[#ff4757]"
+                  />
                   <button
                     onClick={toggleFullScreen}
                     className="bg-slate-800 text-white p-2.5 rounded-xl shadow-lg hover:bg-[#ff4757] transition-colors"
@@ -307,7 +372,7 @@ export default function PlayPage({
                   </button>
                 </div>
               </div>
-              <div className="w-full aspect-[10/1] bg-white/50 border border-white/20">
+              <div className="w-full max-w-[728px] h-[90px] mx-auto bg-white/50 border border-white/20">
                 <AdSlot index={2} />
               </div>
             </section>
@@ -333,8 +398,10 @@ export default function PlayPage({
                   <GameCard game={game} />
                 </div>
               ))}
-              <div className="col-span-3 row-span-3 col-start-3 row-start-1 bg-white/40 border border-white/10 shadow-sm">
-                <AdSlot index={3} />
+              <div className="col-span-3 row-span-2 col-start-3 row-start-1 bg-white/40 border border-white/10 shadow-sm flex items-center justify-center">
+                <div className="w-[300px] h-[250px]">
+                  <AdSlot index={3} />
+                </div>
               </div>
               {games.slice(2, 23).map((game) => (
                 <div key={game.id} className="aspect-square">
@@ -342,7 +409,7 @@ export default function PlayPage({
                 </div>
               ))}
             </aside>
-            <div className="w-full aspect-[4/1] bg-white/40 border border-white/10 shadow-sm">
+            <div className="w-full max-w-[468px] h-[60px] mx-auto bg-white/40 border border-white/10 shadow-sm">
               <AdSlot index={4} />
             </div>
           </div>
@@ -449,8 +516,16 @@ export default function PlayPage({
         </div>
 
         <div className="mt-[10px]">
-          <div className="w-full bg-white/40 border border-white/20 aspect-[6/1] rounded-none">
-            <AdSlot index={5} />
+          <div className="flex gap-[10px] w-full items-center">
+            <div className="w-[calc((100vw-40px)/3)] shrink-0 aspect-square">
+              {games[0] && <GameCard game={games[0]} />}
+            </div>
+            <div className="flex-1 h-[50px] bg-white/40 border border-white/20 rounded-none flex items-center justify-center">
+              <AdSlot index={5} />
+            </div>
+            <div className="w-[calc((100vw-40px)/3)] shrink-0 aspect-square">
+              {games[1] && <GameCard game={games[1]} />}
+            </div>
           </div>
         </div>
 
@@ -494,6 +569,58 @@ export default function PlayPage({
           <Footer />
         </div>
       </div>
+
+      {/* ── SHARE MODAL ── */}
+      {showShare && (
+        <div
+          className="fixed inset-0 z-[400] flex items-center justify-center bg-black/50 backdrop-blur-sm"
+          onClick={() => setShowShare(false)}
+        >
+          <div
+            className="bg-white rounded-3xl p-6 w-[90vw] max-w-[400px] shadow-2xl flex flex-col gap-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-black uppercase text-slate-800">
+                Share Game
+              </h3>
+              <button
+                onClick={() => setShowShare(false)}
+                className="p-1 text-slate-400 hover:text-slate-600"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <div className="aspect-video relative rounded-xl overflow-hidden bg-slate-200">
+              <Image
+                src={currentGame?.thumb || `/images/games/${slug}.jpg`}
+                alt={currentGame?.title || slug}
+                fill
+                className="object-cover"
+                unoptimized={!!currentGame?.thumb}
+              />
+            </div>
+            <div className="flex items-center gap-2 bg-slate-100 rounded-xl p-2">
+              <input
+                type="text"
+                value={shareUrl}
+                readOnly
+                className="flex-1 bg-transparent text-xs text-slate-700 outline-none truncate"
+              />
+              <button
+                onClick={handleCopy}
+                className={`px-4 py-2 rounded-lg text-xs font-bold uppercase transition-all ${
+                  copied
+                    ? "bg-green-500 text-white"
+                    : "bg-slate-800 text-white hover:bg-[#ff4757]"
+                }`}
+              >
+                {copied ? "Copied!" : "Copy"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
