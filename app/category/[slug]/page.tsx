@@ -31,6 +31,14 @@ export default function CategoryPage({
     [games, slug],
   );
 
+  const categoryThumbs = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const g of games) {
+      if (g.thumb && !map[g.category_id]) map[g.category_id] = g.thumb;
+    }
+    return map;
+  }, [games]);
+
   const otherCategories = useMemo(() => {
     const others = CATEGORIES_28.filter((c) => c.slug !== slug);
     return [...others].sort(() => Math.random() - 0.5).slice(0, 10);
@@ -79,11 +87,19 @@ export default function CategoryPage({
         <div className="grid grid-cols-17 gap-[10px] w-full">
           <div className="col-span-2 invisible" aria-hidden />
           <div className="col-span-5 aspect-[5/1]">
-            <CategoryCard category={category!} isSquare={false} />
+            <CategoryCard
+              category={category!}
+              isSquare={false}
+              thumb={categoryThumbs[slug]}
+            />
           </div>
           {otherCategories.slice(0, 5).map((cat) => (
             <div key={cat.slug} className="col-span-2 aspect-[2/1]">
-              <CategoryCard category={cat} isSquare={false} />
+              <CategoryCard
+                category={cat}
+                isSquare={false}
+                thumb={categoryThumbs[cat.slug]}
+              />
             </div>
           ))}
         </div>
@@ -144,7 +160,11 @@ export default function CategoryPage({
 
         {/* Danh mục hiện tại 3x1 */}
         <div className="aspect-[3/1]">
-          <CategoryCard category={category!} isSquare={false} />
+          <CategoryCard
+            category={category!}
+            isSquare={false}
+            thumb={categoryThumbs[slug]}
+          />
         </div>
 
         {/* Lưới game xen kẽ danh mục */}
@@ -161,7 +181,11 @@ export default function CategoryPage({
             return (
               <React.Fragment key={`block-${i}`}>
                 <div className="col-span-2 row-span-2">
-                  <CategoryCard category={item.cat} isSquare />
+                  <CategoryCard
+                    category={item.cat}
+                    isSquare
+                    thumb={categoryThumbs[item.cat.slug]}
+                  />
                 </div>
                 <div className="col-span-1 aspect-square">
                   <GameCard game={item.game} />

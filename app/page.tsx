@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import GameGridContainer from "@/components/GameGridContainer";
 import CategoryCard from "@/components/CategoryCard";
 import AboutSection from "@/components/AboutSection";
@@ -9,8 +9,18 @@ import UserActivityBar from "@/components/UserActivityBar";
 import FixedPortalSidebar from "@/components/FixedPortalSidebar";
 import HeaderOverlay from "@/components/HeaderOverlay";
 import { CATEGORIES_28 } from "@/data/categories";
+import { useGames } from "@/hooks/useGames";
 
 export default function HomePage() {
+  const { games } = useGames();
+  const categoryThumbs = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const g of games) {
+      if (g.thumb && !map[g.category_id]) map[g.category_id] = g.thumb;
+    }
+    return map;
+  }, [games]);
+
   return (
     <main className="min-h-screen bg-[#adecf5] p-[10px] lg:p-[16px] w-full overflow-x-hidden flex flex-col gap-[10px]">
       <HeaderOverlay />
@@ -39,7 +49,11 @@ export default function HomePage() {
                     : "aspect-[3/1] lg:aspect-[2/1]"
                 }
               >
-                <CategoryCard category={cat} isSquare={isTopRow} />
+                <CategoryCard
+                  category={cat}
+                  isSquare={isTopRow}
+                  thumb={categoryThumbs[cat.slug]}
+                />
               </div>
             );
           })}

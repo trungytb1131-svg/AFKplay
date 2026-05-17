@@ -191,6 +191,14 @@ export default function PlayPage({
   };
 
   // Game cùng danh mục, trừ game hiện tại, lấy 15 game
+  const categoryThumbs = useMemo(() => {
+    const map: Record<string, string> = {};
+    for (const g of games) {
+      if (g.thumb && !map[g.category_id]) map[g.category_id] = g.thumb;
+    }
+    return map;
+  }, [games]);
+
   const relatedGames = useMemo(
     () =>
       games
@@ -421,7 +429,11 @@ export default function PlayPage({
         <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-7 gap-[10px] w-full">
           {CATEGORIES_28.map((cat) => (
             <div key={cat.slug} className="aspect-[2/1]">
-              <CategoryCard category={cat} isSquare={false} />
+              <CategoryCard
+                category={cat}
+                isSquare={false}
+                thumb={categoryThumbs[cat.slug]}
+              />
             </div>
           ))}
         </div>
@@ -553,7 +565,11 @@ export default function PlayPage({
           <div className="grid grid-cols-7 gap-[6px] w-full">
             {CATEGORIES_28.map((cat) => (
               <div key={cat.slug} className="aspect-[2/1]">
-                <CategoryCard category={cat} isSquare={false} />
+                <CategoryCard
+                  category={cat}
+                  isSquare={false}
+                  thumb={categoryThumbs[cat.slug]}
+                />
               </div>
             ))}
           </div>
