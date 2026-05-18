@@ -336,7 +336,7 @@ export default function PlayPage({
                     />
                   </button>
                   <h1 className="text-xl font-black italic uppercase text-slate-800 tracking-tighter">
-                    {slug.replace(/-/g, " ")}
+                    {currentGame?.title || slug.replace(/-/g, " ")}
                   </h1>
                 </div>
                 <div className="flex items-center gap-4">
@@ -461,7 +461,7 @@ export default function PlayPage({
           </Link>
 
           <h1 className="text-sm font-black uppercase italic tracking-tighter text-slate-800 truncate mx-2 flex-1 text-center">
-            {slug.replace(/-/g, " ")}
+            {currentGame?.title || slug.replace(/-/g, " ")}
           </h1>
 
           <button
