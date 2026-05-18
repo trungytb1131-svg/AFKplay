@@ -73,6 +73,12 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        <link rel="preconnect" href="https://html5.gamemonetize.co" />
+        <link rel="preconnect" href="https://img.gamemonetize.com" />
+        <link rel="dns-prefetch" href="https://html5.gamemonetize.co" />
+        <link rel="dns-prefetch" href="https://img.gamemonetize.com" />
+      </head>
       <body className="min-h-full flex flex-col bg-[#adecf5] overflow-x-hidden">
         <MonetagAd />
         <AdsterraBanner />

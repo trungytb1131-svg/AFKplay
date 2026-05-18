@@ -22,7 +22,7 @@ export default function CategoryCard({
   return (
     <Link
       href={`/category/${category.slug}`}
-      className={`group relative w-full h-full flex transition-all duration-300 overflow-hidden bg-white rounded-2xl
+      className={`group relative w-full h-full flex transition-all duration-300 overflow-hidden bg-white rounded-2xl hover:scale-[1.03] active:scale-95
         flex-row justify-start items-center px-4
         ${
           isSquare

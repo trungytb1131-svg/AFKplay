@@ -65,7 +65,7 @@ export default function GameCard({
       <Link
         href={`/play/${game.slug}`}
         onClick={() => trackPlay(game.slug)}
-        className="relative block w-full h-full overflow-hidden rounded-[24px] bg-slate-200 shadow-sm group/link"
+        className="relative block w-full h-full overflow-hidden rounded-[24px] bg-slate-200 shadow-sm hover:scale-[1.03] active:scale-95 transition-transform group/link"
       >
         {/* Ảnh nền full — zoom nhẹ khi hover */}
         <Image

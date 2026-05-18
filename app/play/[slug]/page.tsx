@@ -54,7 +54,6 @@ export default function PlayPage({
   const [isMuted, setIsMuted] = useState(false);
   const [showShare, setShowShare] = useState(false);
   const [copied, setCopied] = useState(false);
-  const [iframeLoading, setIframeLoading] = useState(true);
   const { favorites, toggleFavorite, trackPlay, isHearted } = useActivity();
   const { trackPlayTime } = useProfile();
   const [mounted, setMounted] = useState(false);
@@ -68,11 +67,6 @@ export default function PlayPage({
     [games, slug],
   );
   const gameUrl = currentGame?.url || "";
-
-  // Reset loading khi chuyển game
-  useEffect(() => {
-    setIframeLoading(true);
-  }, [slug]);
 
   useEffect(() => {
     setMounted(true);
@@ -276,27 +270,14 @@ export default function PlayPage({
                     </div>
                   </div>
                 ) : (
-                  <div className="w-full h-full relative">
-                    <iframe
-                      id="game-iframe"
-                      src={gameUrl}
-                      className="w-full h-full border-none"
-                      allowFullScreen
-                      sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                      allow="autoplay; fullscreen"
-                      onLoad={() => setIframeLoading(false)}
-                    />
-                    {iframeLoading && (
-                      <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
-                        <div className="flex flex-col items-center gap-3">
-                          <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                          <span className="text-white/60 text-xs font-medium">
-                            Loading game...
-                          </span>
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                  <iframe
+                    id="game-iframe"
+                    src={gameUrl}
+                    className="w-full h-full border-none"
+                    allowFullScreen
+                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                    allow="autoplay; fullscreen"
+                  />
                 )}
 
                 {/* THANH ĐIỀU KHIỂN KHI FULL SCREEN */}
@@ -509,27 +490,14 @@ export default function PlayPage({
               </div>
             </div>
           ) : (
-            <div className="w-full h-full relative">
-              <iframe
-                id="game-iframe-mobile"
-                src={gameUrl}
-                className="w-full h-full border-none"
-                allowFullScreen
-                sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
-                allow="autoplay; fullscreen"
-                onLoad={() => setIframeLoading(false)}
-              />
-              {iframeLoading && (
-                <div className="absolute inset-0 flex items-center justify-center bg-slate-900">
-                  <div className="flex flex-col items-center gap-3">
-                    <div className="w-8 h-8 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    <span className="text-white/60 text-xs font-medium">
-                      Loading game...
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
+            <iframe
+              id="game-iframe-mobile"
+              src={gameUrl}
+              className="w-full h-full border-none"
+              allowFullScreen
+              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+              allow="autoplay; fullscreen"
+            />
           )}
 
           {/* Nút thu nhỏ trong suốt khi fullscreen */}
