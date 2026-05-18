@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
+import Script from "next/script";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import AdsterraBanner from "@/components/AdsterraBanner";
@@ -80,6 +81,18 @@ export default function RootLayout({
         <link rel="dns-prefetch" href="https://img.gamemonetize.com" />
       </head>
       <body className="min-h-full flex flex-col bg-[#adecf5] overflow-x-hidden">
+        <Script
+          src="https://www.googletagmanager.com/gtag/js?id=G-38V3W5N9NH"
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-38V3W5N9NH');
+          `}
+        </Script>
         <MonetagAd />
         <AdsterraBanner />
         <Providers>{children}</Providers>
