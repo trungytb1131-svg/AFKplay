@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import AdsterraBanner from "@/components/AdsterraBanner";
+import MonetagAd from "@/components/MonetagAd";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -73,6 +74,7 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-[#adecf5] overflow-x-hidden">
+        <MonetagAd />
         <AdsterraBanner />
         <Providers>{children}</Providers>
       </body>
