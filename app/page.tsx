@@ -2,6 +2,7 @@
 
 import React, { useMemo } from "react";
 import GameGridContainer from "@/components/GameGridContainer";
+import GameCard from "@/components/GameCard";
 import CategoryCard from "@/components/CategoryCard";
 import AboutSection from "@/components/AboutSection";
 import Footer from "@/components/Footer";
@@ -59,6 +60,25 @@ export default function HomePage() {
           })}
         </div>
       </div>
+
+      {/* ===== MORE GAMES: các game không featured ===== */}
+      {games.length > 0 && (
+        <div className="w-full mt-6">
+          <h2 className="text-lg lg:text-2xl font-black uppercase italic text-slate-800 mb-3 px-1">
+            🎮 More Games
+          </h2>
+          <div className="grid grid-cols-3 lg:grid-cols-8 gap-[10px] w-full">
+            {games
+              .filter((g) => !g.featured)
+              .slice(0, 40)
+              .map((game) => (
+                <div key={game.id} className="aspect-square">
+                  <GameCard game={game} />
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
 
       {/* ===== ABOUT: full-width ===== */}
       <div className="w-full mt-4">

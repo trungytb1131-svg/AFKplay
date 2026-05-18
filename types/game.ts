@@ -15,6 +15,7 @@ export interface Game {
   width: number;
   height: number;
   source: string;
+  featured: boolean;
   created_at?: string;
   updated_at?: string;
 

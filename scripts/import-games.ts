@@ -90,6 +90,12 @@ const supabase = createClient(supabaseUrl, serviceRoleKey || anonKey);
 // 2. ĐỊNH NGHĨA KIỂU DỮ LIỆU
 // ──────────────────────────────────────────────
 
+const FEATURED_CATEGORIES = ["idle", "clicker", "incremental"];
+
+function isAutoFeatured(categoryId: string): boolean {
+  return FEATURED_CATEGORIES.includes(categoryId.toLowerCase());
+}
+
 interface GameMonetizeItem {
   id: string;
   title: string;
@@ -341,6 +347,7 @@ function mergeAndDeduplicate(
         width: parseInt(item.width, 10) || 800,
         height: parseInt(item.height, 10) || 600,
         source: "gamemonetize",
+        featured: isAutoFeatured(categoryId),
       });
     }
   }
@@ -435,6 +442,15 @@ async function main() {
   )) {
     console.log(`   • ${cat}: ${count} game`);
   }
+
+  // In thống kê featured
+  const featuredCount = games.filter((g) => g.featured).length;
+  console.log(
+    `\n⭐ Tự động featured: ${featuredCount} game (Idle/Clicker/Incremental)`,
+  );
+  console.log(
+    `   Còn lại: ${games.length - featuredCount} game (featured: false)`,
+  );
 
   if (games.length === 0) {
     console.log("\n⚠️ Không có game nào để import.");

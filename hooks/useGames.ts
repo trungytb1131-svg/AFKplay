@@ -114,23 +114,44 @@ export function useGames() {
         }
       });
 
-    return () => { cancelled = true; };
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   return { games, loading, error };
 }
 
 /**
+ * Chỉ lấy game featured (cho trang chủ), tối đa 100.
+ */
+export function useFeaturedGames() {
+  const { games, loading, error } = useGames();
+
+  const featured = useMemo(
+    () => games.filter((g) => g.featured).slice(0, 100),
+    [games],
+  );
+
+  return { games: featured, loading, error };
+}
+
+/**
  * Trả về games đã gán grid sizes, với sidebar slugs tuỳ chọn.
  * Dùng cho GameGridContainer.
  */
-export function useGridGames(sidebarSlugs: string[] = []) {
-  const { games, loading, error } = useGames();
+export function useGridGames(sidebarSlugs: string[] = [], featuredOnly = true) {
+  const {
+    games: allGames,
+    loading,
+    error,
+  } = featuredOnly ? useFeaturedGames() : useGames();
+
   const sidebarSet = useMemo(() => new Set(sidebarSlugs), [sidebarSlugs]);
 
   const sizedGames = useMemo(
-    () => assignGridSizes(games, sidebarSet),
-    [games, sidebarSet],
+    () => assignGridSizes(allGames, sidebarSet),
+    [allGames, sidebarSet],
   );
 
   return { games: sizedGames, loading, error };

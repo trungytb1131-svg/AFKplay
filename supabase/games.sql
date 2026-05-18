@@ -16,6 +16,7 @@ create table if not exists public.games (
   width       integer not null default 800,
   height      integer not null default 600,
   source      text not null default 'gamemonetize',
+  featured    boolean not null default false,
   created_at  timestamptz not null default now(),
   updated_at  timestamptz not null default now()
 );

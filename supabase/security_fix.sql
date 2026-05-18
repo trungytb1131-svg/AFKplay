@@ -30,6 +30,12 @@ CREATE POLICY "Users can update own profile"
   USING (id = auth.uid())
   WITH CHECK (id = auth.uid());
 
--- 5. Xác nhận hoàn tất
+-- 6. Thêm cột featured (nếu chưa có)
+ALTER TABLE public.games ADD COLUMN IF NOT EXISTS featured boolean NOT NULL DEFAULT false;
+
+-- 7. Set 100 game đầu thành featured (chạy sau khi import game)
+-- UPDATE public.games SET featured = true WHERE id IN (SELECT id FROM public.games ORDER BY created_at DESC LIMIT 100);
+
+-- 8. Xác nhận hoàn tất
 --    - games: chỉ SELECT cho anon, không có INSERT/UPDATE/DELETE
 --    - profiles: SELECT cho authenticated, UPDATE chỉ profile của mình
