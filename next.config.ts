@@ -46,6 +46,10 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "*.gamemonetize.com",
       },
+      {
+        protocol: "https",
+        hostname: "tyfasiuuztnilqocumov.supabase.co",
+      },
     ],
   },
 };
