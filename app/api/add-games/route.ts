@@ -12,11 +12,17 @@ function extractHash(url: string) {
   return url.replace("https://html5.gamemonetize.co/", "").replace("/", "");
 }
 
-export async function GET() {
-  return POST();
+export async function GET(req: Request) {
+  return POST(req);
 }
 
-export async function POST() {
+export async function POST(req?: Request) {
+  const secret = new URL(req?.url || "http://x").searchParams.get("key");
+  const valid = process.env.ADMIN_SECRET_KEY || "afkplay-admin-2026";
+  if (secret !== valid) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
   const admin = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL || "",
     process.env.SUPABASE_SERVICE_ROLE_KEY || "",

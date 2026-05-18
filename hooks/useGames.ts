@@ -56,27 +56,32 @@ async function fetchGamesFromSupabase(): Promise<Game[]> {
 // ──────────────────────────────────────────────
 
 function assignGridSizes(games: Game[], sidebarSlugs: Set<string>): Game[] {
-  // Lọc ra các game không nằm trong sidebar
   const mainGames = games.filter((g) => !sidebarSlugs.has(g.slug));
+
+  // Ưu tiên featured game vào ô to: 5 ô 3×3, 10 ô 2×2
+  const featured = mainGames.filter((g) => g.featured);
+  const rest = mainGames.filter((g) => !g.featured);
+
+  const sized = new Map<string, { dSize: string; mSize: string }>();
+
+  featured.forEach((g, i) => {
+    if (i < 5) sized.set(g.id, { dSize: "3x3", mSize: "1x1" });
+    else if (i < 15) sized.set(g.id, { dSize: "2x2", mSize: "1x1" });
+    else sized.set(g.id, { dSize: "1x1", mSize: "1x1" });
+  });
+
+  rest.forEach((g, i) => {
+    const dSize = i % 5 === 0 ? "2x2" : "1x1";
+    const mSize = i % 8 === 0 ? "2x2" : "1x1";
+    sized.set(g.id, { dSize, mSize });
+  });
 
   return games.map((game) => {
     if (sidebarSlugs.has(game.slug)) {
       return { ...game, dSize: "1x1", mSize: "1x1" };
     }
-    const idx = mainGames.indexOf(game);
-    let dSize = "1x1";
-    let mSize = "1x1";
-
-    if (idx === 0) {
-      dSize = "3x3";
-      mSize = "1x1";
-    } else {
-      if (idx % 15 === 0 && idx < 90) dSize = "3x3";
-      else if (idx % 4 === 0 && idx < 60) dSize = "2x2";
-    }
-    if (idx > 0 && idx % 8 === 0) mSize = "2x2";
-
-    return { ...game, dSize, mSize };
+    const s = sized.get(game.id) || { dSize: "1x1", mSize: "1x1" };
+    return { ...game, dSize: s.dSize, mSize: s.mSize };
   });
 }
 
