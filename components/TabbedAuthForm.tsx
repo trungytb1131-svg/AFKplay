@@ -250,7 +250,7 @@ export default function TabbedAuthForm({
             <input
               type="text"
               required
-              maxLength={6}
+              maxLength={10}
               value={forgotOtp}
               onChange={(e) => {
                 setForgotOtp(e.target.value);
@@ -266,7 +266,7 @@ export default function TabbedAuthForm({
             )}
             <button
               type="submit"
-              disabled={forgotOtp.length < 6 || loading}
+              disabled={forgotOtp.length < 4 || loading}
               className="w-full py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-slate-200 text-white font-black uppercase rounded-xl text-sm flex items-center justify-center gap-2"
             >
               {loading ? (
