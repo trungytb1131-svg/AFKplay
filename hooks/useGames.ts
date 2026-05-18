@@ -8,15 +8,19 @@ import type { Game } from "@/types/game";
 // Cache toàn cục: tránh fetch lại khi component re-mount
 // ──────────────────────────────────────────────
 let globalCache: Game[] | null = null;
+let cacheTime = 0;
 let fetchPromise: Promise<Game[] | null> | null = null;
 
-async function fetchGamesFromSupabase(): Promise<Game[]> {
-  if (globalCache) return globalCache;
-
-  // Tránh nhiều request đồng thời
+async function fetchGamesFromSupabase(force = false): Promise<Game[]> {
+  const stale = Date.now() - cacheTime > 60000; // 1 phút TTL
+  if (!force && !stale && globalCache) return globalCache;
+  if (force || stale) {
+    globalCache = null;
+    fetchPromise = null;
+  }
   if (fetchPromise) {
-    const result = await fetchPromise;
-    return result ?? [];
+    const r = await fetchPromise;
+    return r ?? [];
   }
 
   fetchPromise = (async () => {
@@ -48,6 +52,7 @@ async function fetchGamesFromSupabase(): Promise<Game[]> {
 
   const result = await fetchPromise;
   globalCache = result;
+  cacheTime = Date.now();
   return result ?? [];
 }
 
@@ -167,5 +172,6 @@ export function useGridGames(sidebarSlugs: string[] = [], featuredOnly = true) {
  */
 export function invalidateGameCache() {
   globalCache = null;
+  cacheTime = 0;
   fetchPromise = null;
 }
