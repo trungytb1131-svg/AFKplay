@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { createClient } from "@supabase/supabase-js";
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://afkplay.vercel.app";
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://afkplay.vercel.app";
 
 export async function generateMetadata({
   params,
@@ -21,22 +22,25 @@ export async function generateMetadata({
     .single();
 
   const title = game?.title || slug.replace(/-/g, " ");
-  const desc = game?.description?.slice(0, 160) || `Play ${title} online for free on AFKplay. No downloads required.`;
+  const desc =
+    game?.description?.slice(0, 160) ||
+    `Play ${title} online for free on AFKplay. No downloads required.`;
   const image = game?.thumb || `${SITE_URL}/images/games/${slug}.jpg`;
 
   return {
-    title: `${title} — Play Online Free`,
+    title: `Play ${title} Online Free - AFK Play`,
     description: desc,
     openGraph: {
-      title: `${title} — Free Online Game`,
+      title: `Play ${title} Online Free - AFK Play`,
       description: desc,
       url: `${SITE_URL}/play/${slug}`,
       type: "website",
-      images: [{ url: image, width: 512, height: 384 }],
+      siteName: "AFK Play",
+      images: [{ url: image, width: 512, height: 384, alt: title }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${title} — Free Online Game`,
+      title: `Play ${title} Online Free - AFK Play`,
       description: desc,
       images: [image],
     },
@@ -44,6 +48,10 @@ export async function generateMetadata({
   };
 }
 
-export default function PlayLayout({ children }: { children: React.ReactNode }) {
+export default function PlayLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return children;
 }
