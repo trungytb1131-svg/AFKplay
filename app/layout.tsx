@@ -25,6 +25,10 @@ const SITE_URL =
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  icons: {
+    icon: "https://i.postimg.cc/90jcyNBT/Thiet-ke-chua-co-ten-(1).png",
+    apple: "https://i.postimg.cc/90jcyNBT/Thiet-ke-chua-co-ten-(1).png",
+  },
   title: {
     default: "AFKplay | Free Online Games — No Download Required",
     template: "%s | AFKplay",
