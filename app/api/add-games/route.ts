@@ -16,8 +16,8 @@ export async function GET(req: Request) {
   return POST(req);
 }
 
-export async function POST(req?: Request) {
-  const secret = new URL(req?.url || "http://x").searchParams.get("key");
+export async function POST(req: Request) {
+  const secret = new URL(req.url).searchParams.get("key");
   const valid = process.env.ADMIN_SECRET_KEY || "afkplay-admin-2026";
   if (secret !== valid) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
