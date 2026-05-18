@@ -61,11 +61,13 @@ DROP POLICY IF EXISTS "Admin full access rooms" ON public.support_rooms;
 CREATE POLICY "Admin full access rooms"
   ON public.support_rooms FOR ALL
   TO authenticated
-  USING (auth.uid() = 'bcee7d8e-38df-4c0f-aedd-978e6efcd3ed');
+  USING (auth.uid() = 'bcee7d8e-38df-4c0f-aedd-978e6efcd3ed')
+  WITH CHECK (auth.uid() = 'bcee7d8e-38df-4c0f-aedd-978e6efcd3ed');
 
 -- Policy: admin toàn quyền trên support_messages
 DROP POLICY IF EXISTS "Admin full access messages" ON public.support_messages;
 CREATE POLICY "Admin full access messages"
   ON public.support_messages FOR ALL
   TO authenticated
-  USING (auth.uid() = 'bcee7d8e-38df-4c0f-aedd-978e6efcd3ed');
+  USING (auth.uid() = 'bcee7d8e-38df-4c0f-aedd-978e6efcd3ed')
+  WITH CHECK (auth.uid() = 'bcee7d8e-38df-4c0f-aedd-978e6efcd3ed');
