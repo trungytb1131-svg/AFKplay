@@ -7,6 +7,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import AdsterraBanner from "@/components/AdsterraBanner";
 import MonetagAd from "@/components/MonetagAd";
+import SupportChat from "@/components/support/SupportChat";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -95,6 +96,7 @@ export default function RootLayout({
         </Script>
         <MonetagAd />
         <AdsterraBanner />
+        <SupportChat />
         <Providers>{children}</Providers>
       </body>
     </html>
