@@ -122,6 +122,7 @@ interface GameRecord {
   width: number;
   height: number;
   source: string;
+  featured: boolean;
 }
 
 // ──────────────────────────────────────────────
