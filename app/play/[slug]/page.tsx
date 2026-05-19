@@ -275,7 +275,12 @@ export default function PlayPage({
                     src={gameUrl}
                     className="w-full h-full border-none"
                     allowFullScreen
-                    sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+                    {...(currentGame?.source === "self-hosted"
+                      ? {}
+                      : {
+                          sandbox:
+                            "allow-scripts allow-same-origin allow-popups allow-forms allow-modals",
+                        })}
                     allow="autoplay; fullscreen"
                   />
                 )}
@@ -495,7 +500,12 @@ export default function PlayPage({
               src={gameUrl}
               className="w-full h-full border-none"
               allowFullScreen
-              sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+              {...(currentGame?.source === "self-hosted"
+                ? {}
+                : {
+                    sandbox:
+                      "allow-scripts allow-same-origin allow-popups allow-forms allow-modals",
+                  })}
               allow="autoplay; fullscreen"
             />
           )}
