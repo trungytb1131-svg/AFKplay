@@ -158,23 +158,43 @@
       onload="applicationLoad(this)"
     ></script>
     <script>
-      // Auto-save: ép sync IndexedDB mỗi 5s để chống mất data khi F5
-      setTimeout(function () {
-        setInterval(function () {
+      (function () {
+        console.log(
+          "--- [AFKPLAY] Vòng lặp Auto-Save đã được kích hoạt thành công! ---",
+        );
+
+        function forceGameSave() {
           try {
-            var fs =
-              typeof FS !== "undefined" && FS.syncfs
-                ? FS
-                : typeof Module !== "undefined" && Module.FS && Module.FS.syncfs
-                  ? Module.FS
-                  : null;
-            if (fs)
-              fs.syncfs(false, function (err) {
-                if (err) console.log("Auto-save err:", err);
+            var fsObject = null;
+            if (typeof FS !== "undefined" && FS.syncfs) {
+              fsObject = FS;
+            } else if (
+              typeof Module !== "undefined" &&
+              Module.FS &&
+              Module.FS.syncfs
+            ) {
+              fsObject = Module.FS;
+            }
+
+            if (fsObject) {
+              fsObject.syncfs(false, function (err) {
+                if (err) console.error("[AFKPLAY] Lỗi ghi file save:", err);
+                else
+                  console.log(
+                    "[AFKPLAY] Đã lưu tiến trình thành công vĩnh viễn!",
+                  );
               });
-          } catch (e) {}
-        }, 5000);
-      }, 3000);
+            } else {
+              console.warn("[AFKPLAY] Đang chờ bộ nhớ FS của game sẵn sàng...");
+            }
+          } catch (e) {
+            console.error("[AFKPLAY] Lỗi hệ thống auto-save:", e);
+          }
+        }
+
+        // Chạy vòng lặp kiểm tra và lưu mỗi 5 giây
+        setInterval(forceGameSave, 5000);
+      })();
     </script>
     <footer></footer>
   </body>
