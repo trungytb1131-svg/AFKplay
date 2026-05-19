@@ -157,45 +157,6 @@
       src="love.js"
       onload="applicationLoad(this)"
     ></script>
-    <script>
-      (function () {
-        console.log(
-          "--- [AFKPLAY] Vòng lặp Auto-Save đã được kích hoạt thành công! ---",
-        );
-
-        function forceGameSave() {
-          try {
-            var fsObject = null;
-            if (typeof FS !== "undefined" && FS.syncfs) {
-              fsObject = FS;
-            } else if (
-              typeof Module !== "undefined" &&
-              Module.FS &&
-              Module.FS.syncfs
-            ) {
-              fsObject = Module.FS;
-            }
-
-            if (fsObject) {
-              fsObject.syncfs(false, function (err) {
-                if (err) console.error("[AFKPLAY] Lỗi ghi file save:", err);
-                else
-                  console.log(
-                    "[AFKPLAY] Đã lưu tiến trình thành công vĩnh viễn!",
-                  );
-              });
-            } else {
-              console.warn("[AFKPLAY] Đang chờ bộ nhớ FS của game sẵn sàng...");
-            }
-          } catch (e) {
-            console.error("[AFKPLAY] Lỗi hệ thống auto-save:", e);
-          }
-        }
-
-        // Chạy vòng lặp kiểm tra và lưu mỗi 5 giây
-        setInterval(forceGameSave, 5000);
-      })();
-    </script>
     <footer></footer>
   </body>
 </html>
