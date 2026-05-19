@@ -27,6 +27,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   icons: {
     icon: "/favicon.png",
+    shortcut: "/favicon.png",
     apple: "/favicon.png",
   },
   title: {
@@ -84,6 +85,7 @@ export default function RootLayout({
         <link rel="preconnect" href="https://img.gamemonetize.com" />
         <link rel="dns-prefetch" href="https://html5.gamemonetize.co" />
         <link rel="dns-prefetch" href="https://img.gamemonetize.com" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
         <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5612200195980402"
