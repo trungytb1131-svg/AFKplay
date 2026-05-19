@@ -87,6 +87,11 @@ export default function RootLayout({
       </head>
       <body className="min-h-full flex flex-col bg-[#adecf5] overflow-x-hidden">
         <Script
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5612200195980402"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
+        />
+        <Script
           src="https://www.googletagmanager.com/gtag/js?id=G-38V3W5N9NH"
           strategy="afterInteractive"
         />
