@@ -7,6 +7,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import AdsterraBanner from "@/components/AdsterraBanner";
 import MonetagAd from "@/components/MonetagAd";
+import AnnouncementBanner from "@/components/AnnouncementBanner";
 import SupportChat from "@/components/support/SupportChat";
 import "./globals.css";
 
@@ -92,7 +93,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
         ></script>
       </head>
-      <body className="min-h-full flex flex-col bg-[#adecf5] overflow-x-hidden">
+      <body className="min-h-full flex flex-col bg-[#adecf5] overflow-x-hidden pb-8">
         <Script
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5612200195980402"
           strategy="afterInteractive"
@@ -114,6 +115,7 @@ export default function RootLayout({
         <AdsterraBanner />
         <SupportChat />
         <Providers>{children}</Providers>
+        <AnnouncementBanner />
       </body>
     </html>
   );
