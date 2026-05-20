@@ -37,6 +37,21 @@ export function middleware(request: NextRequest) {
     "javascript-delta",
     "javascript-starfield",
     "javascript-tower-platformer",
+    "galaxian-canvas-game",
+    "audio-dash",
+    "terraform",
+    "chronos",
+    "js13k-2018",
+    "js13k-2022",
+    "js13k-2024",
+    "10k-arcade-cabinet",
+    "JS13K2025",
+    "EggTimeRewind13k",
+    "LudumDare44",
+    "breakout-end3r",
+    "Clippy-Jump",
+    "onSpaceStart",
+    "pothonprogramming",
   ];
   if (
     gameSlugs.some((s) => pathname.startsWith("/" + s + "/")) ||
