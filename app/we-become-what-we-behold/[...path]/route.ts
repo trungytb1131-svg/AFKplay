@@ -43,7 +43,7 @@ export async function GET(
       headers: {
         "Content-Type": contentType,
         "X-Frame-Options": "SAMEORIGIN",
-        "Cache-Control": "public, max-age=86400",
+        "Cache-Control": "public, max-age=3600, must-revalidate",
       },
     });
   } catch {
