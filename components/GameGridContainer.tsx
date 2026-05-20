@@ -26,7 +26,7 @@ function getSidebarSlugs(games: Game[]): {
 }
 
 export default function GameGridContainer() {
-  const { games, loading, error } = useGridGames([], false);
+  const { games, loading, error } = useGridGames();
 
   const { sidebarSlugs, mobile2x2Slug } = getSidebarSlugs(games);
 
