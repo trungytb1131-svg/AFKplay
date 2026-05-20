@@ -15843,18 +15843,6 @@ var Love = (function () {
           }
         });
       });
-
-      // [AFKPLAY] Vòng lặp auto-save mỗi 5 giây - chạy trực tiếp trong scope của FS
-      setInterval(function () {
-        if (typeof FS !== "undefined" && FS.syncfs) {
-          FS.syncfs(false, function (err) {
-            if (!err)
-              console.log(
-                "[AFKPLAY Internal Sync] Đã ép lưu game xuống IndexedDB thành công!",
-              );
-          });
-        }
-      }, 5000);
     }
 
     return Love.ready;
