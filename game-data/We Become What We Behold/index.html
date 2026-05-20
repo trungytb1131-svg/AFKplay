@@ -3,23 +3,6 @@
     <link rel="stylesheet" href="css/game.css" />
   </head>
   <body>
-    <!-- DEBUG -->
-    <div
-      id="debug_log"
-      style="
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 99999;
-        background: rgba(0, 0, 0, 0.9);
-        color: #0f0;
-        font: 11px monospace;
-        padding: 6px;
-        max-width: 100%;
-        pointer-events: none;
-      "
-    ></div>
-
     <div id="stage"></div>
     <div id="modal_shade"></div>
     <div class="overlay" id="warning">
@@ -43,21 +26,12 @@
 
 <!-- External Libraries -->
 <script src="js/lib/pixi.min.js"></script>
-<script>
-  window._log && _log("pixi loaded");
-</script>
 <script src="js/lib/howler.js"></script>
-<script>
-  window._log && _log("howler loaded");
-</script>
 <script src="js/lib/stats.min.js"></script>
 <script>
   var createjs = window;
 </script>
 <script src="js/lib/tweenjs-0.6.2.min.js"></script>
-<script>
-  window._log && _log("tween loaded, Ticker=" + typeof Ticker);
-</script>
 <script>
   Ticker.framerate = 60;
   Ticker.paused = true;
@@ -66,15 +40,9 @@
 
 <!-- Text Strings -->
 <script src="js/textStrings.js"></script>
-<script>
-  window._log && _log("textStrings loaded");
-</script>
 
 <!-- Core Engine Code -->
 <script src="js/core/Game.js"></script>
-<script>
-  window._log && _log("Game.js loaded");
-</script>
 <script src="js/core/SceneManager.js"></script>
 <script src="js/core/Scene.js"></script>
 
@@ -114,9 +82,6 @@
 
 <!-- Scenes -->
 <script src="js/scenes/Scene_Preloader.js"></script>
-<script>
-  window._log && _log("Preloader scene loaded");
-</script>
 <script src="js/scenes/Scene_Quote.js"></script>
 <script src="js/scenes/Scene_Game.js"></script>
 <script src="js/scenes/Scene_Credits.js"></script>
@@ -130,23 +95,11 @@
 
 <!-- Game Scripts -->
 <script>
-  // Debug logger
-  window._log = function (msg) {
-    var d = document.getElementById("debug_log");
-    if (d) d.innerHTML += msg + "<br>";
-    console.log("[WBWWB]", msg);
-  };
-  _log("All scripts loaded. PIXI=" + typeof PIXI + " Game=" + typeof Game);
-
   Game.stats = false;
   window.onload = function () {
-    _log("window.onload fired");
     try {
-      _log("Calling Game.init()...");
       Game.init();
-      _log("Game.init() completed");
     } catch (e) {
-      _log("ERROR: " + e.message);
       document.getElementById("warning").style.display = "block";
     }
   };
