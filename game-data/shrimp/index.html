@@ -21,13 +21,46 @@
       }
       body {
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
       }
+      .game-area {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+        overflow: hidden;
+      }
       canvas#canvas {
-        width: 100% !important;
-        height: 100% !important;
+        max-width: 100% !important;
+        max-height: 100% !important;
         object-fit: contain;
+      }
+      .credits-bar {
+        width: 100%;
+        max-width: 960px;
+        font-family: sans-serif;
+        color: #fff;
+        background: #1a1a1a;
+        padding: 10px 15px;
+        border-radius: 8px;
+        margin: 6px auto;
+        text-align: left;
+        flex-shrink: 0;
+      }
+      .credits-bar p {
+        margin: 0;
+        font-size: 13px;
+        color: #aaa;
+        line-height: 1.4;
+      }
+      .credits-bar .title {
+        font-size: 14px;
+        font-weight: bold;
+        color: #fff;
+        margin-bottom: 3px;
       }
     </style>
 
@@ -35,17 +68,24 @@
     <link rel="stylesheet" type="text/css" href="theme/love.css" />
   </head>
   <body>
-    <center>
-      <div>
-        <canvas
-          id="loadingCanvas"
-          oncontextmenu="event.preventDefault()"
-          width="960"
-          height="540"
-        ></canvas>
-        <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
-      </div>
-    </center>
+    <div class="game-area">
+      <canvas
+        id="loadingCanvas"
+        oncontextmenu="event.preventDefault()"
+        width="960"
+        height="540"
+      ></canvas>
+      <canvas id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    </div>
+    <div class="credits-bar">
+      <p class="title">Credits & Original Game</p>
+      <p>
+        "1,000,000 Shrimp" is developed by <strong>Jon Topielski</strong>.
+        If you enjoy the game, please support the creator by visiting his <a href="https://jontopielski.com/" target="_blank" style="color: #4fd1c5; text-decoration: none;">Official Website</a>
+        or checking out the original release on <a href="https://jontopielski.itch.io/1000000-shrimp" target="_blank" style="color: #4fd1c5; text-decoration: none;">Itch.io</a>.
+      </p>
+    </div>
+  </body>
 
     <script type="text/javascript">
       function goFullScreen() {

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Test - 1,000,000 Shrimp</title>
+    <title>1,000,000 Shrimp - AFKPlay</title>
     <style>
       * {
         margin: 0;
@@ -12,23 +12,66 @@
       }
       body {
         background: #000;
-        height: 100vh;
+        min-height: 100vh;
         display: flex;
+        flex-direction: column;
         align-items: center;
         justify-content: center;
+      }
+      .game-wrapper {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
       }
     </style>
   </head>
   <body>
-    <iframe
-      src="/shrimp/index.html"
-      width="960"
-      height="540"
-      frameborder="0"
-      scrolling="no"
-      allowfullscreen="true"
-      allow="autoplay; fullscreen *"
-    >
-    </iframe>
+    <div class="game-wrapper">
+      <iframe
+        src="/shrimp/index.html"
+        width="960"
+        height="540"
+        frameborder="0"
+        scrolling="no"
+        allowfullscreen="true"
+        allow="autoplay; fullscreen *"
+      >
+      </iframe>
+      <div
+        style="
+          max-width: 960px;
+          width: 100%;
+          margin: 20px auto;
+          font-family: sans-serif;
+          color: #fff;
+          background: #1a1a1a;
+          padding: 15px 20px;
+          border-radius: 8px;
+          text-align: left;
+        "
+      >
+        <p style="margin: 0 0 5px 0; font-size: 16px; font-weight: bold">
+          Credits & Original Game
+        </p>
+        <p style="margin: 0; font-size: 14px; color: #aaa; line-height: 1.5">
+          "1,000,000 Shrimp" is developed by <strong>Jon Topielski</strong>. If
+          you enjoy the game, please support the creator by visiting his
+          <a
+            href="https://jontopielski.com/"
+            target="_blank"
+            style="color: #4fd1c5; text-decoration: none"
+            >Official Website</a
+          >
+          or checking out the original release on
+          <a
+            href="https://jontopielski.itch.io/1000000-shrimp"
+            target="_blank"
+            style="color: #4fd1c5; text-decoration: none"
+            >Itch.io</a
+          >.
+        </p>
+      </div>
+    </div>
   </body>
 </html>
