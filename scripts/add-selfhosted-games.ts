@@ -55,7 +55,8 @@ const GAMES = [
     title: "Coming Out Simulator 2014",
     description:
       "A semi-autobiographical narrative game about coming out to your parents. Navigate a tense dinner conversation where every word matters.",
-    instructions: "Choose your dialogue options carefully. Your real-life story is shaped by your choices.",
+    instructions:
+      "Choose your dialogue options carefully. Your real-life story is shaped by your choices.",
     url: "/coming-out-simulator-2014/index.html",
     category_id: "simulation",
     tags: ["narrative", "lgbtq", "choices", "story", "interactive fiction"],
@@ -71,8 +72,9 @@ const GAMES = [
     title: "We Become What We Behold",
     description:
       "A short 5-minute game about news cycles, vicious cycles, and how media shapes public opinion. Capture moments with your camera and watch society react.",
-    instructions: "Click to take photos of interesting moments. Observe how media coverage changes people's behavior.",
-    url: "/we-become-what-we-behold/index.html",
+    instructions:
+      "Click to take photos of interesting moments. Observe how media coverage changes people's behavior.",
+    url: "/we-become-what-we-behold/index.html?v=2",
     category_id: "simulation",
     tags: ["news", "media", "society", "short", "thought-provoking"],
     thumb: "/images/games/we-become-what-we-behold.png",
