@@ -113,7 +113,7 @@ const GAMES: GameEntry[] = [
       "A roguelike platformer with destructible environments — in only 13KB of JavaScript! Run, gun, and hug your way through space.",
     instructions:
       "Arrow keys to move, Z to jump, X to shoot. Blast through destructible terrain!",
-    url: "/SpaceHuggers/index.html",
+    url: "/spacehuggers/index.html",
     category_id: "action",
     tags: ["roguelike", "platformer", "js13k", "action", "destructible"],
     thumb: "/images/games/spacehuggers.png",
@@ -149,7 +149,7 @@ const GAMES: GameEntry[] = [
       "A futuristic Wipeout/F-Zero-style racing game built with WebGL. Stunning visuals for a browser game!",
     instructions:
       "Arrow keys or WASD to steer. Race through the neon city at breakneck speeds!",
-    url: "/HexGL/index.html",
+    url: "/hexgl/index.html",
     category_id: "racing",
     tags: ["racing", "webgl", "3D", "futuristic", "fast"],
     thumb: "/images/games/hexgl.png",
@@ -167,7 +167,7 @@ const GAMES: GameEntry[] = [
       "A 3D racing game in only 2 Kilobytes of JavaScript! Mind-blowing technical achievement.",
     instructions:
       "Arrow keys to drive. Navigate the colorful 3D track. Pure code-golfing magic!",
-    url: "/HueJumper2k/index.html",
+    url: "/huejumper2k/index.html",
     category_id: "racing",
     tags: ["racing", "3D", "js13k", "tiny", "code-golf"],
     thumb: "/images/games/huejumper2k.png",
@@ -185,7 +185,7 @@ const GAMES: GameEntry[] = [
       "A Boomerang/Zelda homage for JS13k! Throw your boomerang, solve puzzles, and defeat enemies in this compact adventure.",
     instructions:
       "Arrow keys to move, X to throw boomerang. Catch it on return! Solve puzzles and defeat enemies.",
-    url: "/BounceBack/index.html",
+    url: "/bounceback/index.html",
     category_id: "adventure",
     tags: ["zelda", "boomerang", "js13k", "puzzle", "action"],
     thumb: "/images/games/bounceback.png",
@@ -203,7 +203,7 @@ const GAMES: GameEntry[] = [
       "Mozilla's showcase HTML5 multiplayer RPG. Explore a fantasy world with other players in real-time!",
     instructions:
       "Click to move, click enemies to attack. Talk to NPCs. A landmark in browser gaming history.",
-    url: "/BrowserQuest/client/index.html",
+    url: "/browserquest/client/index.html",
     category_id: "adventure",
     tags: ["mmo", "rpg", "multiplayer", "mozilla", "retro"],
     thumb: "/images/games/browserquest.png",
@@ -328,7 +328,7 @@ const GAMES: GameEntry[] = [
     title: "Drive13K",
     description: "Arcade-style 3D driving game in only 13 kilobytes!",
     instructions: "Arrow keys to drive. Collect coins and avoid obstacles!",
-    url: "/Drive13K/index.html",
+    url: "/drive13k/index.html",
     category_id: "racing",
     tags: ["racing", "3D", "js13k", "arcade"],
     thumb: "/images/games/drive13k.png",
@@ -346,7 +346,7 @@ const GAMES: GameEntry[] = [
       "A cellular automata music game. Create music through Conway-like patterns!",
     instructions:
       "Click cells to toggle them. Watch and listen as patterns evolve into music!",
-    url: "/NoteCraft/index.html",
+    url: "/notecraft/index.html",
     category_id: "simulation",
     tags: ["music", "cellular-automata", "creative", "simulation"],
     thumb: "/images/games/notecraft.png",
@@ -649,7 +649,7 @@ const GAMES: GameEntry[] = [
       "An arcade physics platformer with procedural art and levels for JS13K 2025!",
     instructions:
       "Jump and explore procedurally generated levels with cute cat paws!",
-    url: "/JS13K2025/index.html",
+    url: "/js13k2025-little-paws/index.html",
     category_id: "action",
     tags: ["js13k", "platformer", "procedural", "cats", "arcade"],
     thumb: "/images/games/js13k2025-little-paws.png",
@@ -667,7 +667,7 @@ const GAMES: GameEntry[] = [
       "Egg Cracking 13k Lo-Fi Sci-Fi Shooter With Time Travel. Pure concentrated action!",
     instructions:
       "Shoot, rewind time, and crack some eggs in this sci-fi shooter!",
-    url: "/EggTimeRewind13k/index.html",
+    url: "/eggtime-rewind-13k/index.html",
     category_id: "shooting",
     tags: ["shooter", "sci-fi", "time-travel", "js13k", "lo-fi"],
     thumb: "/images/games/eggtime-rewind-13k.png",
@@ -684,7 +684,7 @@ const GAMES: GameEntry[] = [
     description: "A twin-stick shooter made for Ludum Dare 44. Currency wars!",
     instructions:
       "WASD to move, mouse to aim and shoot. Survive the currency wars!",
-    url: "/LudumDare44/index.html",
+    url: "/ludum-dare-44/index.html",
     category_id: "shooting",
     tags: ["twin-stick", "shooter", "ludum-dare", "arcade"],
     thumb: "/images/games/ludum-dare-44.png",
@@ -720,7 +720,7 @@ const GAMES: GameEntry[] = [
       "Clippy goes to the cloud! A fun platform jumper starring Microsoft's iconic paperclip.",
     instructions:
       "Jump from cloud to cloud as Clippy! It looks like you are trying to have fun!",
-    url: "/Clippy-Jump/index.html",
+    url: "/clippy-jump/index.html",
     category_id: "action",
     tags: ["platformer", "clippy", "funny", "retro"],
     thumb: "/images/games/clippy-jump.png",
@@ -737,7 +737,7 @@ const GAMES: GameEntry[] = [
     description:
       "A simple game made for the first-ever HTML5 game conference (onGameStart 2011). History!",
     instructions: "A piece of HTML5 gaming history. Simple and nostalgic!",
-    url: "/onSpaceStart/index.html",
+    url: "/onspacestart/index.html",
     category_id: "action",
     tags: ["retro", "html5", "history", "arcade"],
     thumb: "/images/games/onspacestart.png",
