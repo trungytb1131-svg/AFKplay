@@ -74,7 +74,7 @@ const GAMES = [
       "A short 5-minute game about news cycles, vicious cycles, and how media shapes public opinion. Capture moments with your camera and watch society react.",
     instructions:
       "Click to take photos of interesting moments. Observe how media coverage changes people's behavior.",
-    url: "/we-become-what-we-behold/index.html?v=4",
+    url: "/we-become-what-we-behold/index.html?v=5",
     category_id: "simulation",
     tags: ["news", "media", "society", "short", "thought-provoking"],
     thumb: "/images/games/we-become-what-we-behold.png",
