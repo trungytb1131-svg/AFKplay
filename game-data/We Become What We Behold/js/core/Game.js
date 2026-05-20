@@ -17,15 +17,8 @@ Handles the DOM, load, init, update & render loops
 
   // INIT
   Game.init = function (HACK) {
-    // Set up PIXI (auto-detect: WebGL preferred, Canvas2D fallback)
-    try {
-      Game.renderer = PIXI.autoDetectRenderer(Game.width, Game.height, {
-        transparent: false,
-        antialias: true,
-      });
-    } catch (e) {
-      Game.renderer = new PIXI.CanvasRenderer(Game.width, Game.height);
-    }
+    // Set up PIXI — force Canvas2D to avoid WebGL iframe issues
+    Game.renderer = new PIXI.CanvasRenderer(Game.width, Game.height);
     document.querySelector("#stage").appendChild(Game.renderer.view);
     Game.stage = new PIXI.Container();
     Game.stage.interactive = true;
