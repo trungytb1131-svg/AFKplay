@@ -1,0 +1,43 @@
+/* Frank Poth 2019-12-29 */
+
+.log {
+
+  display:block;
+  max-width:720px;
+  padding:8px;
+
+}
+
+.log-date {
+  
+  background-color:var(--color-light-gray);
+  display:inline-block;
+  padding:0px 4px;
+  text-align:right;
+  user-select:none;
+
+}
+
+.log-name {
+
+  display:inline;
+  font-weight:800;
+  font-size:1.25em;
+  text-align:left;
+  user-select:none;
+
+}
+
+.log-name:before, .log-name:after {
+
+  content:" ";
+
+}
+
+.log-note {
+
+  display:inline;
+  padding:4px 0px;
+  text-align:justify;
+
+}

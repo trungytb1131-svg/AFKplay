@@ -1,0 +1,27 @@
+[
+  {
+    "name":"I'm Still Alive!",
+    "note":"I know it's been a while since my last post, but I'm still out here writing code and twisting my brain in knots over interesting programming concepts. I recently posted part 17 of the Stay Down Dev Log and I intend to finish that project and post the end result to itch.io. Feel free to reach out to me in the comments on YouTube. As always, I hope you learn something while you're here! Have a good one!",
+    "date":"2021-09-06"
+  },
+  {
+    "name":"Rumble.com",
+    "note":"I recently discovered Rumble.com which I'm going to use in addition to YouTube. If anyone wants to check out my channel there, click the link at the top right of this page! Stay down is still the latest project and is receiving regular updates, so check back to see the game's progress!",
+    "date":"2020-12-30"
+  },
+  {
+    "name":"Stay Down Devlog:",
+    "note":"Lately I've been working on a small game I plan to publish on itch.io. The idea is that platforms push you up and if you don't stay down you die. Pretty genious, I know, but the real goal of the project is to share with everyone how it's made. If you follow the videos you'll learn about fixed time step loops, game states, collision detection, and much more. Hopefully by the time I'm finished you'll have enough knowledge to publish your own fully featured game on itch.io.",
+    "date":"2020-09-05"
+  },
+  {
+    "name":"Project Trajectory",
+    "note":"My latest projects focus on improving rendering performance by reducing draw calls. These improvements will greatly improve the speed of your HTML5 game.",
+    "date":"2020-06-14"
+  },
+  {
+    "name":"New Website!",
+    "note":"This is the new website. You can search for projects and easily access related videos and source code. Here in the logs section I'll post about the latest project or whatever other updates I think might be helpful.",
+    "date":"2019-12-24"
+  }
+]

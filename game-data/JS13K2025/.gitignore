@@ -1,0 +1,8 @@
+# node files
+node_modules
+
+# work files
+game/build
+game/stuff
+notes.txt
+package-lock.json

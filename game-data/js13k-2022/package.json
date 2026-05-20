@@ -1,0 +1,49 @@
+{
+  "name": "js13k-2022",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "karma start --single-run",
+    "start": "http-server -s",
+    "prepare": "husky install",
+    "eslint": "eslint \"src/**/*.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/straker/js13k-2022.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/straker/js13k-2022/issues"
+  },
+  "homepage": "https://github.com/straker/js13k-2022#readme",
+  "dependencies": {
+    "eslint": "^8.22.0",
+    "http-server": "^14.1.1",
+    "husky": "^8.0.1",
+    "prettier": "^2.7.1"
+  },
+  "lint-staged": {
+    "*.{md,json,js,ts,html}": [
+      "prettier --write"
+    ],
+    "*.{js,ts}": [
+      "eslint --fix",
+      "prettier --write"
+    ]
+  },
+  "devDependencies": {
+    "chai": "^4.3.6",
+    "karma": "^6.4.1",
+    "karma-chai": "^0.1.0",
+    "karma-chrome-launcher": "^3.1.1",
+    "karma-mocha": "^2.0.1",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-sinon": "^1.0.5",
+    "mocha": "^10.0.0",
+    "sinon": "^14.0.0",
+    "zod": "^3.19.1"
+  }
+}

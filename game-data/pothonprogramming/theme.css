@@ -1,0 +1,247 @@
+/* Frank Poth 2019-12-29 */
+
+:root {
+
+  --color-dark-yellow:#c09000;
+  --color-dark-blue:#202840;
+  --color-light-blue:#d0d8f0;
+  --color-light-gray:#e0e8f0;
+  --color-lighter-blue:#e0e8ff;
+  --color-lighter-gray:#f0f8ff;
+  --color-medium-gray:#606870;
+  --color-signature-gray:#202830;
+  --color-signature-yellow:#f0c000;
+  --color-transparent:rgba(0,0,0,0);
+  --color-white:#ffffff;
+  --header-height:64px;
+
+}
+
+* {
+  
+  box-sizing:border-box;
+  color:var(--color-signature-gray);
+  font-family:Consolas, monospace;
+  margin:0;
+  overflow:hidden;
+  padding:0;
+  text-decoration:none;
+
+}
+
+*:focus {
+
+  outline:none;
+
+}
+
+body, html {
+
+  height:100%;
+  width:100%;
+
+}
+
+body {
+
+  background-color:var(--color-white);
+  overflow:auto;
+
+}
+
+footer {
+
+  align-content:space-around;
+  align-items:space-around;
+  background-color:var(--color-signature-gray);
+  border-top:solid 1px var(--color-light-gray);
+  color:#ffffff;
+  display:grid;
+  flex-direction:column;
+  height:auto;
+  justify-content:center;
+  justify-items:center;
+  min-height:100%;
+  overflow-wrap: break-word;
+  padding:32px 0;
+  width:100%;
+  word-break:break-word;
+  word-wrap: break-word;
+
+}
+
+footer a {
+
+  color:var(--color-signature-yellow);
+
+}
+
+footer p {
+
+  color:var(--color-light-gray);
+  max-width:800px;
+  padding:4px;
+
+}
+
+header {
+
+  align-content:center;
+  align-items:center;
+  background-color:var(--color-signature-gray);
+  border-bottom:solid 1px var(--color-light-gray);
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-around;
+  justify-items:space-between;
+  min-height:var(--header-height);
+  padding:8px 4px 8px 4px;
+
+}
+
+main {
+
+  display:inline-block;
+  min-height:calc(100% - var(--header-height));
+  width:100%;
+
+}
+
+.banner {
+
+  background-color:var(--color-signature-gray);
+  color:var(--color-signature-yellow);
+  display:block;
+  font-size:1.5em;
+  padding:8px 0px 8px 8px;
+  text-align:left;
+  user-select:none;
+  width:100%;
+
+}
+
+.donate-button {
+
+  align-items:center;
+  background-color:var(--color-signature-yellow);
+  border:none;
+  border-radius:8px;
+  box-shadow:0px 4px var(--color-dark-yellow);
+  color:var(--color-signature-gray);
+  cursor:pointer;
+  display:grid;
+  justify-items:center;
+  margin:0 0 4px 0;
+  max-width:312px;
+  padding:8px 32px;
+  text-align:center;
+
+}
+
+.donate-button:focus, .donate-button:focus-visible {
+
+  outline-color:rgba(0, 0, 0, 0);
+  outline-style:none;
+  outline-width:0px;
+
+}
+
+.donate-button:hover {
+
+  background-color:var(--color-signature-yellow);
+  box-shadow:0px 0px rgba(0, 0, 0, 0.5);
+  margin:4px 0 0 0;
+  overflow:visible;
+  position:relative;
+
+}
+
+.donate-button:hover::before {
+
+  background-color:rgba(0, 0, 0, 0);
+  content:"";
+  height:100%;
+  left:0px;
+  position:absolute;
+  top:-4px;
+  width:100%;
+
+}
+
+.header-link {
+
+  color:var(--color-light-gray);
+  cursor:pointer;
+  padding:12px 8px 8px 8px;
+
+}
+
+.header-link:hover {
+
+  color:var(--color-white);
+
+}
+
+.list-container {
+
+  align-items:flex-start;
+  display:flex;
+  flex-direction:column;
+
+}
+
+.logo-image {
+
+  display:inline-block;
+  height:var(--header-height);
+  image-rendering:pixelated;
+  margin:0px 12px 0px 0px;
+  width:auto;
+
+}
+
+.main-button {
+
+  align-items:center;
+  background-color:var(--color-light-blue);
+  color:var(--color-signature-gray);
+  cursor:pointer;
+  display:inline-flex;
+  padding:8px;
+  user-select:none;
+
+}
+
+.main-button:hover {
+
+  background-color:var(--color-white);
+
+}
+
+#header-links {
+
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:left;
+  justify-self:stretch;
+
+}
+
+#header-logo {
+
+  align-content:center;
+  align-items:center;
+  display:inline-flex;
+
+}
+
+#header-logo-text {
+
+  color:var(--color-signature-yellow);
+  display:inline;
+  font-size:2.0em;
+  font-weight:800;
+  text-align:left;
+  word-wrap: wrap break-word;
+
+}
