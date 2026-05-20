@@ -17,8 +17,11 @@ Handles the DOM, load, init, update & render loops
 
   // INIT
   Game.init = function (HACK) {
+    window._log &&
+      _log("Game.init() started, renderer=" + typeof PIXI.CanvasRenderer);
     // Set up PIXI — force Canvas2D to avoid WebGL iframe issues
     Game.renderer = new PIXI.CanvasRenderer(Game.width, Game.height);
+    window._log && _log("Renderer created");
     document.querySelector("#stage").appendChild(Game.renderer.view);
     Game.stage = new PIXI.Container();
     Game.stage.interactive = true;
@@ -53,9 +56,11 @@ Handles the DOM, load, init, update & render loops
         true,
       );
     } else {
+      window._log && _log("Calling loadAssets (preloader)...");
       // Preloader
       Game.loadAssets(
         function () {
+          window._log && _log("loadAssets complete! Going to Preloader scene");
           Game.sceneManager.gotoScene("Preloader");
           setInterval(Game.update, 1000 / 60);
           Game.animate();
@@ -113,6 +118,13 @@ Handles the DOM, load, init, update & render loops
 
   Game.loadAssets = function (completeCallback, progressCallback, PRELOADER) {
     var manifest = PRELOADER ? Game.manifest2 : Game.manifest;
+    window._log &&
+      _log(
+        "loadAssets PRELOADER=" +
+          PRELOADER +
+          " keys=" +
+          Object.keys(manifest).length,
+      );
 
     // ABSOLUTE NUMBER OF ASSETS!
     var _totalAssetsLoaded = 0;
@@ -174,7 +186,11 @@ Handles the DOM, load, init, update & render loops
 
     // PIXI
     loader.on("progress", _onAssetLoad);
-    loader.once("complete", _onGroupLoaded);
+    loader.once("complete", function () {
+      window._log && _log("PIXI loader complete");
+      _onGroupLoaded();
+    });
+    window._log && _log("Calling PIXI loader.load()...");
     loader.load();
   };
 
