@@ -317,7 +317,7 @@ const GAMES: GameEntry[] = [
     width: 640,
     height: 480,
     source: "self-hosted",
-    featured: false,
+    featured: true,
     routeDir: "javascript-racer",
   },
 
@@ -335,7 +335,7 @@ const GAMES: GameEntry[] = [
     width: 960,
     height: 540,
     source: "self-hosted",
-    featured: false,
+    featured: true,
     routeDir: "Drive13K",
   },
   {
