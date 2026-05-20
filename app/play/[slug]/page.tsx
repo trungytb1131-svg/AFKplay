@@ -68,6 +68,13 @@ export default function PlayPage({
   );
   const gameUrl = currentGame?.url || "";
 
+  // Self-hosted games: auto-enable theater mode for larger play area
+  useEffect(() => {
+    if (currentGame?.source === "self-hosted") {
+      setIsTheaterMode(true);
+    }
+  }, [currentGame?.source]);
+
   useEffect(() => {
     setMounted(true);
   }, []);
