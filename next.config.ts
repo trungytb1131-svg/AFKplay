@@ -7,14 +7,6 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
-        source: "/shrimp/:path*",
-        headers: [{ key: "X-Frame-Options", value: "SAMEORIGIN" }],
-      },
-      {
-        source: "/test-shrimp.html",
-        headers: [{ key: "X-Frame-Options", value: "SAMEORIGIN" }],
-      },
-      {
         source: "/(.*)",
         headers: [
           { key: "X-Frame-Options", value: "DENY" },
@@ -29,6 +21,14 @@ const nextConfig: NextConfig = {
             value: "max-age=63072000; includeSubDomains; preload",
           },
         ],
+      },
+      {
+        source: "/shrimp/:path*",
+        headers: [{ key: "X-Frame-Options", value: "SAMEORIGIN" }],
+      },
+      {
+        source: "/test-shrimp.html",
+        headers: [{ key: "X-Frame-Options", value: "SAMEORIGIN" }],
       },
     ];
   },
