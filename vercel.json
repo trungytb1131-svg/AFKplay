@@ -1,16 +1,12 @@
 {
   "headers": [
     {
-      "source": "/shrimp/(.*)",
-      "headers": [
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
-      ]
+      "source": "/shrimp/:path*",
+      "headers": [{ "key": "X-Frame-Options", "value": "SAMEORIGIN" }]
     },
     {
       "source": "/test-shrimp.html",
-      "headers": [
-        { "key": "X-Frame-Options", "value": "SAMEORIGIN" }
-      ]
+      "headers": [{ "key": "X-Frame-Options", "value": "SAMEORIGIN" }]
     }
   ]
 }
