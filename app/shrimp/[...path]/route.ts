@@ -19,7 +19,7 @@ export async function GET(
 ) {
   const { path } = await params;
   const filePath = path?.length ? path.join("/") : "index.html";
-  const fullPath = join(process.cwd(), "public", "shrimp", filePath);
+  const fullPath = join(process.cwd(), "game-data", "shrimp", filePath);
 
   try {
     const data = await readFile(fullPath);
