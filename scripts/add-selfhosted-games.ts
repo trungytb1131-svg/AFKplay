@@ -83,6 +83,23 @@ const GAMES = [
     source: "self-hosted",
     featured: true,
   },
+  {
+    id: "the-evolution-of-trust",
+    slug: "the-evolution-of-trust",
+    title: "The Evolution of Trust",
+    description:
+      "An interactive guide to the game theory of why & how we trust each other. A brilliant exploration of cooperation, betrayal, and human nature.",
+    instructions:
+      "Click through the interactive slides. Make choices and see how trust evolves (or devolves) between characters.",
+    url: "/the-evolution-of-trust/index.html",
+    category_id: "strategy",
+    tags: ["game theory", "trust", "interactive", "educational", "simulation"],
+    thumb: "/images/games/the-evolution-of-trust.png",
+    width: 960,
+    height: 640,
+    source: "self-hosted",
+    featured: true,
+  },
 ];
 
 async function main() {

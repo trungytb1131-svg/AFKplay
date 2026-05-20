@@ -10,7 +10,8 @@ export function middleware(request: NextRequest) {
     pathname.startsWith("/adventures-with-anxiety/") ||
     pathname.startsWith("/coming-out-simulator-2014/") ||
     pathname.startsWith("/we-become-what-we-behold/") ||
-    pathname === "/test-shrimp.html"
+    pathname === "/test-shrimp.html" ||
+    pathname.startsWith("/the-evolution-of-trust/")
   ) {
     const response = NextResponse.next();
     response.headers.set("X-Frame-Options", "SAMEORIGIN");
