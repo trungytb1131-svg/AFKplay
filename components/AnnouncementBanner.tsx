@@ -13,7 +13,7 @@ export default function AnnouncementBanner() {
     >
       <div className="marquee-wrapper relative h-8 flex items-center">
         <div className="marquee-track flex items-center animate-marquee whitespace-nowrap">
-          <span className="inline-block px-4 text-sm font-medium text-black">
+          <span className="inline-block px-4 text-sm font-medium text-white">
             🎮 Welcome to AFKplay! Our vision is to build a truly high-quality,
             ad-free web gaming platform. While we currently only have a few
             ad-free titles and most games still contain ads, please bear with
@@ -25,7 +25,7 @@ export default function AnnouncementBanner() {
             <a
               href="mailto:support@afkplay.net"
               className="underline hover:opacity-80 transition-opacity"
-              style={{ color: "#000" }}
+              style={{ color: "#fff" }}
             >
               support@afkplay.net
             </a>{" "}
@@ -33,7 +33,7 @@ export default function AnnouncementBanner() {
             corner! 💬
           </span>
           {/* Duplicate for seamless loop */}
-          <span className="inline-block px-4 text-sm font-medium text-black">
+          <span className="inline-block px-4 text-sm font-medium text-white">
             🎮 Welcome to AFKplay! Our vision is to build a truly high-quality,
             ad-free web gaming platform. While we currently only have a few
             ad-free titles and most games still contain ads, please bear with
@@ -45,7 +45,7 @@ export default function AnnouncementBanner() {
             <a
               href="mailto:support@afkplay.net"
               className="underline hover:opacity-80 transition-opacity"
-              style={{ color: "#000" }}
+              style={{ color: "#fff" }}
             >
               support@afkplay.net
             </a>{" "}
