@@ -10,6 +10,14 @@ const MIME: Record<string, string> = {
   ".png": "image/png",
   ".jpg": "image/jpeg",
   ".css": "text/css",
+  ".json": "application/json",
+  ".mp3": "audio/mpeg",
+  ".ogg": "audio/ogg",
+  ".wav": "audio/wav",
+  ".opus": "audio/opus",
+  ".m4a": "audio/mp4",
+  ".ttf": "font/ttf",
+  ".xml": "application/xml",
   ".love": "application/octet-stream",
 };
 

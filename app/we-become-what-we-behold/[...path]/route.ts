@@ -14,6 +14,10 @@ const MIME: Record<string, string> = {
   ".mp3": "audio/mpeg",
   ".ogg": "audio/ogg",
   ".wav": "audio/wav",
+  ".opus": "audio/opus",
+  ".m4a": "audio/mp4",
+  ".ttf": "font/ttf",
+  ".xml": "application/xml",
 };
 
 export async function GET(
@@ -22,7 +26,12 @@ export async function GET(
 ) {
   const { path } = await params;
   const filePath = path?.length ? path.join("/") : "index.html";
-  const fullPath = join(process.cwd(), "game-data", "We Become What We Behold", filePath);
+  const fullPath = join(
+    process.cwd(),
+    "game-data",
+    "We Become What We Behold",
+    filePath,
+  );
 
   try {
     const data = await readFile(fullPath);
