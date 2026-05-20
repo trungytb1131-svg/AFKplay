@@ -253,11 +253,18 @@ export default function PlayPage({
               {/* KHUNG GAME */}
               <div
                 ref={containerRef}
-                className={`relative bg-black border-white shadow-2xl overflow-hidden transition-all duration-500
+                className={`relative overflow-hidden transition-all duration-500
+                ${
+                  currentGame?.source === "self-hosted"
+                    ? ""
+                    : "bg-black border-white shadow-2xl"
+                }
                 ${
                   isFullScreen
                     ? "border-none rounded-none w-full h-full"
-                    : "border-[6px] rounded-[2.5rem] aspect-video"
+                    : currentGame?.source === "self-hosted"
+                      ? "aspect-video"
+                      : "border-[6px] rounded-[2.5rem] aspect-video"
                 }`}
               >
                 {!gameUrl ? (
