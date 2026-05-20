@@ -54,6 +54,9 @@ async function download(url, filepath) {
   await download(BASE + "game.js", path.join(OUT, "game.js"));
   await download(BASE + "love.js", path.join(OUT, "love.js"));
   await download(BASE + "game.love", path.join(OUT, "game.love"));
+  await download(BASE + "love.wasm", path.join(OUT, "love.wasm"));
+  await download(BASE + "bg.png", path.join(OUT, "bg.png"));
+  await download(BASE + "game.data", path.join(OUT, "game.data"));
 
   // 3. Thư mục theme/
   await download(BASE + "theme/love.css", path.join(OUT, "theme", "love.css"));
