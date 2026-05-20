@@ -747,24 +747,6 @@ const GAMES: GameEntry[] = [
     featured: false,
     routeDir: "onSpaceStart",
   },
-  {
-    id: "pothonprogramming",
-    slug: "pothonprogramming",
-    title: "PothOnProgramming Games",
-    description:
-      "40+ HTML5 game tutorials and demos from the PothOnProgramming YouTube channel. Dino, Snake, Platformer & more!",
-    instructions:
-      "Browse the collection. Click a game to play. Learn game dev while having fun!",
-    url: "/pothonprogramming/index.html",
-    category_id: "action",
-    tags: ["tutorial", "collection", "canvas", "educational", "multi-game"],
-    thumb: "/images/games/pothonprogramming.png",
-    width: 960,
-    height: 640,
-    source: "self-hosted",
-    featured: false,
-    routeDir: "pothonprogramming",
-  },
 ];
 
 // ─── Create route files ───

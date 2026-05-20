@@ -51,7 +51,6 @@ export function middleware(request: NextRequest) {
     "breakout-end3r",
     "Clippy-Jump",
     "onSpaceStart",
-    "pothonprogramming",
   ];
   if (
     gameSlugs.some((s) => pathname.startsWith("/" + s + "/")) ||
