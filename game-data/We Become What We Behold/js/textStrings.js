@@ -838,6 +838,4 @@ var textStrings_TR = {
   // (quote0004.png)
   misatrributed: "(yanlış bir şekilde ona atfedilir)",
 };
-
-// Set active language
 var textStrings = textStrings_EN;
