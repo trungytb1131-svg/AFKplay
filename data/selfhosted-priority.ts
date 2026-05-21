@@ -93,6 +93,23 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   "collection-tic-tac-toe",
   "collection-dice-roll",
   "collection-typing-2",
+  // 85-100: GitHub batch 2
+  "isocity",
+  "server-survival",
+  "radius-raid",
+  "sleeping-beauty",
+  "level13",
+  "evolve",
+  "synthblast",
+  "canvas-td",
+  "drunken-viking",
+  "k8s-games",
+  "guitar-bro",
+  "match3-html5",
+  "wordpluck",
+  "q1k3",
+  "black-hole-square",
+  "stolen-sword",
 ];
 
 /**
