@@ -110,8 +110,7 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   "q1k3",
   "black-hole-square",
   "stolen-sword",
-  // 101-117: GitHub batch 3 (clone mới)
-  "thirteenth-floor",
+  // 101-116: GitHub batch 3 (clone mới)
   "blueprint-idle",
   "chrome-dino",
   "feed-the-flames",

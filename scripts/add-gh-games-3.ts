@@ -105,22 +105,6 @@ interface GameEntry {
 const GAMES: GameEntry[] = [
   // ═══ READY TO SERVE (có index.html) ═══
   {
-    id: "thirteenth-floor",
-    slug: "thirteenth-floor",
-    title: "13th Floor",
-    description:
-      "A js13k 2023 puzzle-platformer where you navigate through 13 floors of mind-bending challenges. Minimalist 3D aesthetics!",
-    instructions: "Arrow keys/WASD to move, solve puzzles across 13 floors!",
-    url: "/thirteenth-floor/index.html",
-    category_id: "puzzle",
-    tags: ["puzzle", "platformer", "js13k", "3d", "minimalist"],
-    thumb: "/images/games/thirteenth-floor.png",
-    width: 800,
-    height: 600,
-    source: "self-hosted",
-    featured: false,
-  },
-  {
     id: "blueprint-idle",
     slug: "blueprint-idle",
     title: "Blueprint Idle",
@@ -405,7 +389,6 @@ const GAMES: GameEntry[] = [
 
 // Route map: slug → { dataDir, entry }
 const ROUTE_MAP: Record<string, { dataDir: string; entry: string }> = {
-  "thirteenth-floor": { dataDir: "13th-floor", entry: "dist/index.html" }, // needs build
   "blueprint-idle": { dataDir: "blueprint-idle", entry: "index.html" },
   "chrome-dino": { dataDir: "chrome-dino", entry: "www/index.html" },
   "feed-the-flames": { dataDir: "feed-the-flames", entry: "index.html" },

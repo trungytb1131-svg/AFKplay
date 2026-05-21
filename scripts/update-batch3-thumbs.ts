@@ -21,7 +21,6 @@ function loadEnvLocal(): Record<string, string> {
 }
 
 const UPDATES = [
-  { id: "thirteenth-floor", thumb: "/images/games/thirteenth-floor.png" },
   { id: "blueprint-idle", thumb: "/images/games/blueprint-idle.png" },
   { id: "chrome-dino", thumb: "/images/games/chrome-dino.png" },
   { id: "feed-the-flames", thumb: "/images/games/feed-the-flames.png" },

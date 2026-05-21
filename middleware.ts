@@ -69,7 +69,6 @@ export function middleware(request: NextRequest) {
     "black-hole-square",
     "stolen-sword",
     // batch 3
-    "thirteenth-floor",
     "blueprint-idle",
     "chrome-dino",
     "feed-the-flames",
