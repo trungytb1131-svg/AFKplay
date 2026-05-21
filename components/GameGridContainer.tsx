@@ -25,6 +25,22 @@ function getSidebarSlugs(games: Game[]): {
   return { sidebarSlugs: lastTwo, mobile2x2Slug };
 }
 
+// 12 game batch-3 mới: được render riêng trong ô 2x2 nổi bật
+const BATCH3_NEW_SLUGS = new Set([
+  "thirteenth-floor",
+  "blueprint-idle",
+  "chrome-dino",
+  "feed-the-flames",
+  "google-the-game",
+  "island-not-found",
+  "offline-paradise",
+  "point-generation",
+  "quickclick",
+  "rs-clicker",
+  "society-fail",
+  "tower-defense",
+]);
+
 export default function GameGridContainer() {
   const { games, loading, error } = useGridGames();
 
@@ -33,6 +49,10 @@ export default function GameGridContainer() {
   // Tách sidebar games và main games
   const sidebarGames = games.filter((g) => sidebarSlugs.includes(g.slug));
   const mainGames = games.filter((g) => !sidebarSlugs.includes(g.slug));
+
+  // Tách 12 game batch-3 mới để render riêng với 2x2 nổi bật
+  const batch3Games = mainGames.filter((g) => BATCH3_NEW_SLUGS.has(g.slug));
+  const restGames = mainGames.filter((g) => !BATCH3_NEW_SLUGS.has(g.slug));
 
   const mobile2x2Game = mobile2x2Slug
     ? games.find((g) => g.slug === mobile2x2Slug)
@@ -131,8 +151,18 @@ export default function GameGridContainer() {
           </div>
         )}
 
-        {/* Main grid */}
-        {mainGames.map((game, index) => (
+        {/* 12 game batch-3 mới: 2x2 nổi bật */}
+        {batch3Games.map((game) => (
+          <div
+            key={game.id}
+            className="col-span-2 row-span-2 lg:col-span-2 lg:row-span-2 z-10"
+          >
+            <GameCard game={game} />
+          </div>
+        ))}
+
+        {/* Main grid (các game còn lại) */}
+        {restGames.map((game, index) => (
           <div
             key={game.id}
             className={getGridClasses(index, game.dSize, game.mSize)}
