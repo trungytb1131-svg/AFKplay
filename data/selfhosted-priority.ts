@@ -13,7 +13,6 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   "0hh1", // ⚠️ thư mục rỗng
   "audio-dash",
   "bounceback",
-  "breakout-end3r",
   "browserquest",
   "chronos",
   // 11-20
