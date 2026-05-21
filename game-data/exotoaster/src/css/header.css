@@ -1,0 +1,26 @@
+.header {
+  display: grid;
+  grid-gap: 1em;
+  grid-template-columns: 1fr auto;
+}
+
+.header-stats {
+  overflow: hidden;
+}
+
+.header-toast-inventory-current {
+  color: rgb(var(--theme-color-20));
+  font-family: var(--theme-font-display-name);
+  font-size: 1.5em;
+}
+
+.header-toast-inventory-lifetime {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.header-controls {
+  display: flex;
+  align-items: center;
+}

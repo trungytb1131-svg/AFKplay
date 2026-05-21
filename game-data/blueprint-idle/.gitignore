@@ -1,0 +1,30 @@
+# Editor / OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Local tool config
+.claude/
+
+# Design mockups — kept locally for reference, not published
+style-mockups.html
+decisions.html
+decisions-2.html
+wireframe.html
+roadmap.html
+naming.html
+meta-prestige.html
+redesign.html
+
+# Node (in case dev tooling is added later)
+node_modules/
+*.log
+
+# itch.io publishing package — build zip, cover, page copy, screenshots
+.itch/
+
+# Recycle bin for removed-but-not-yet-deleted files
+.trash/

@@ -1,0 +1,7 @@
+.hidden {
+  display: none;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}

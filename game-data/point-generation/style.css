@@ -1,0 +1,260 @@
+@font-face {
+    src: url("MonospaceTypewriter.ttf");
+    font-family: a;
+}
+
+#points {
+    font-size: 200%;
+    text-align: center;
+    position: relative;
+    font-family: a;
+    color: white;
+}
+
+#PPS {
+    font-family: a;
+    color: white;
+    font-size: 80%;
+    margin-top: -1.25cm;
+    text-align: center;
+}
+
+.upgrade {
+    font-family: a;
+    color: white;
+}
+
+#buy {
+    font-family: a;
+    background-color: white;
+    border: black;
+    transition: 250ms;
+}
+
+#buy:hover {
+    font-family: a;
+    background-color: lime;
+    border: limegreen;
+    border-radius: 15%;
+    transition: 250ms;
+}
+
+#buy1 {
+    font-family: a;
+    background-color: white;
+    border: black;
+    transition: 250ms;
+}
+
+#buy1:hover {
+    font-family: a;
+    background-color: lime;
+    border: limegreen;
+    border-radius: 15%;
+    transition: 250ms;
+}
+
+
+/* Set height of body and the document to 100% to enable "full page tabs" */
+
+body,
+html {
+    height: 100%;
+    margin: 0;
+    font-family: Arial;
+}
+
+
+/* Style tab links */
+
+.tablink {
+    background-color: #555;
+    color: white;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px 10px;
+    font-size: 17px;
+    width: 20%;
+    font-family: a;
+    position: relative;
+}
+
+.tablink:hover {
+    background-color: #777;
+}
+
+
+/* Style the tab content (and add height:100% for full page content) */
+
+.tabcontent {
+    color: white;
+    display: none;
+    padding: 100px 20px;
+    height: 100%;
+}
+
+#Ppoints {
+    color: darkgray;
+    font-family: a;
+    text-align: right;
+    font-size: 80%;
+}
+
+#Ppointsreset {
+    color: white;
+    font-family: a;
+    background-color: grey;
+    float: right;
+    font-size: 80%;
+}
+
+.buy {
+    font-family: a;
+    background-color: white;
+    border: black;
+    transition: 250ms;
+}
+
+.buy:hover {
+    font-family: a;
+    background-color: lime;
+    border: limegreen;
+    transition: 250ms;
+}
+
+#time {
+    font-family: a;
+}
+
+.PpointsUp {
+    color: black;
+    background: #F7F7F7;
+    font-weight: bold;
+    font-size: 10px;
+    border: 1px solid #ED85DF;
+    width: 190px;
+    height: 90px;
+    transition-duration: 0.2s;
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: a;
+}
+
+.PpointsUp:hover {
+    color: #000;
+    background: white;
+}
+
+#Ppoints2 {
+    color: darkgray;
+    font-family: a;
+    text-align: center;
+    font-size: 80%;
+}
+
+#total {
+    font-family: a;
+}
+
+#buyMax {
+    font-family: a;
+    float: center;
+}
+
+#max {
+    font-family: a;
+}
+
+#upgrade6 {
+    position: relative;
+    bottom: 8.55cm;
+    left: 5.5cm;
+}
+
+#upgrade7 {
+    position: relative;
+    bottom: 8.55cm;
+    left: 5.5cm;
+}
+
+#upgrade9 {
+    position: relative;
+    bottom: 8.55cm;
+    left: 5.5cm;
+}
+
+#buy2 {
+    font-family: a;
+    background-color: white;
+    border: black;
+    transition: 250ms;
+}
+
+#buy2:hover {
+    font-family: a;
+    background-color: lime;
+    border: limegreen;
+    border-radius: 15%;
+    transition: 250ms;
+}
+
+#gup1 {
+    text-align: center;
+    float: center;
+    position: relative;
+}
+
+#gup4 {
+    position: relative;
+    float: right;
+    bottom: 5cm;
+}
+
+#gup5 {
+    position: relative;
+    float: right;
+    bottom: 3.5cm;
+    left: 7.95cm;
+}
+
+#gup6 {
+    position: relative;
+    bottom: 1.9cm;
+}
+
+#gup7 {
+    position: relative;
+    float: right;
+    bottom: 4.41cm;
+}
+
+.gbuy {
+    font-family: a;
+    background-color: white;
+    border: black;
+    height: 75px;
+    width: 300px;
+    transition: 250ms;
+}
+
+.gbuy:hover {
+    font-family: a;
+    background-color: rgb(34, 132, 165);
+    border: rgb(34, 132, 225);
+    height: 75px;
+    width: 300px;
+    transition: 250ms;
+};
+
+.text {
+    font-family: a;
+    color: white;
+}
+
+.text2 {
+    font-family: a;
+    text-align: center;
+    color: white;
+}

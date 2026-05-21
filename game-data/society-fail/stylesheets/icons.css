@@ -1,0 +1,38 @@
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &.red,
+  &.dark-red {
+    color: var(--dark-red);
+  }
+
+  &.blue {
+    color: var(--blue);
+  }
+
+  &.green {
+    color: var(--green);
+  }
+
+  &.light-green {
+    color: var(--light-green);
+  }
+
+  &.light-yellow {
+    color: var(--light-yellow);
+  }
+
+  &.dark-yellow {
+    color: var(--dark-yellow);
+  }
+
+  &.magenta {
+    color: var(--magenta);
+  }
+
+  &.gutter-grey {
+    color: var(--gutter-grey);
+  }
+}

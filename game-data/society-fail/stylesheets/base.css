@@ -1,0 +1,22 @@
+body {
+  color: var(--text-color);
+  background-color: var(--background-color);
+  margin: 0;
+}
+
+/* Links */
+:where(a:not([class]):not(:has(img))) {
+  color: var(--link-color, var(--color-link));
+
+  @media (any-hover: hover) {
+    &:where(:not(:active):hover) {
+      --hover-filter: brightness(1.3);
+
+      filter: var(--hover-filter);
+    }
+  }
+}
+
+::selection {
+  background-color: var(--dark-red);
+}

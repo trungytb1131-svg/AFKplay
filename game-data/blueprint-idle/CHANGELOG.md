@@ -1,0 +1,380 @@
+# Changelog
+
+All notable changes to **Blueprint** are recorded here. The format follows
+[Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this project
+adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.9.9] — 2026-04-24
+
+Two issues from a player who said most achievements could be rushed in under an hour and there was no auto-buy for research to make it faster. Both addressed in this patch.
+
+### Added
+
+- **Bulk-buy for research nodes.** Research now respects the BUY MODE bar (×1 / ×10 / ×100 / ×1000 / MAX) the same way machines and supports do. Mirrors the v0.9.7 supports fix. When a bulk mode is active the arm/confirm safety prompt is skipped — the player has already deliberately set the bulk mode and a confirm step on top would be redundant. Modifier keys also work as one-shot bulk requests for desktop:
+  - Shift + click → ×10
+  - Shift + Alt + click → ×100
+  - Ctrl + Shift + click → ×1000 (requires Max Buy research)
+  Plain ×1 still uses arm/confirm to prevent misclicks. BLACKOUT challenge still blocks all four paths.
+- **Eight higher-tier achievements** added to push the meta and scale tracks an order of magnitude further. The existing achievements were almost all reachable in the first ~hour of late-game play, which made the PERFECTIONIST capstone trivial. New entries:
+  - **◆ ORE TRILLIONAIRE** — 1T Ore lifetime
+  - **◆ MASS PRODUCTION** — 1M Prototypes lifetime
+  - **◆ INDUSTRIAL PARK** — 2,500 machines at once
+  - **◆ LIFE'S WORK** — 250 lifetime prestiges
+  - **◆ PROLIFIC** — 50 Publishes
+  - **◆ PATENT EMPIRE** — 1,000 lifetime Patents
+  - **◆ ARCHIVIST** — 25 lifetime Legacy Marks
+  - **◆ THE LONG HAUL** — stay in a single run for 4 hours
+
+  Brings the total from 71 to 79. PERFECTIONIST still requires earning every other achievement, so players who'd already earned it will see the capstone un-light until they reach the new milestones — that's intentional. The capstone moves with the list.
+
+### Notes
+
+- No save migration required. `state.meta.longRunAchieved` defaults to `false` for existing saves; the first run that crosses 4 h after this update flips it on.
+- Existing achievement earnings are preserved. The new entries simply join the list as additional targets.
+- The `peakMachines` tracker (used by OVERLORD) is now also read by INDUSTRIAL PARK, so existing high-machine-count players might already qualify for the new one on next launch — that's fine.
+
+## [0.9.8] — 2026-04-23
+
+New-player experience pass. The v0.9.7 notes closed with "early-game pacing and late-game decisions are v1.0 material" — this release walks back the first half of that by shipping three pre-publish quality-of-life improvements that land safely without a full balance overhaul.
+
+### Added
+
+- **Three early-available challenges.** PACIFIST, TALL, and SLOW BURN now unlock after 2 lifetime prestiges instead of after first publish. `earlyAvailable: true` flag on each of the three; gated through a new per-challenge `challengeAvailable(id)` helper. The other 11 challenges stay publish-gated because most of them reference patent-era systems (IRONMAN suppresses heirlooms, etc.) that don't make sense pre-publish. The challenge grid now renders all 14 cards regardless of progression — the locked ones show an `UNLOCKS AFTER FIRST PUBLISH` chip in place of the start button so players can see what's coming.
+- **Locked research nodes are now visible, not hidden.** Previously any node whose prerequisites weren't ≥50% met was set to `visibility: hidden` entirely — so a first-hour player saw a nearly-empty research tree and had no idea how much structure was behind it. Those nodes now render in place at ~22% opacity (dashed outline, dimmed cost text) so the whole horizon is visible from the start. Distinguishes visually from "locked but close" nodes (which stay at 45% opacity) so the player can tell "this one's just a schematic away" from "this one's a long way off."
+- **First-run welcome schematic.** New games start with 1 Schematic in `state.meta.schematics` so the Research tab is immediately interactable. Enough to buy the first level of a leveled node (speed_1, yield_1, etc.), giving new players an actual decision in the first five minutes instead of waiting out a full first prestige. A migration line grants the same schematic retroactively to any existing save that hasn't yet prestiged / published / earned a schematic — no other existing player is touched.
+
+### Notes
+
+- No balance or content changes beyond exposing 3 existing challenges and 1 free schematic earlier. Existing players with prestiges under their belt see the same game, just with locked research nodes now rendering as ghosts instead of gaps. Post-publish players see identical challenge availability as before.
+- `startChallenge()` now also gates on the per-challenge availability, so there's no way to start a publish-gated challenge through a UI bypass even if someone manually triggered the button.
+- The bigger design questions from Ravery's comment (ascensions becoming trivial after enough play, Exhibitions feeling like "click upgrades quickly") still need a thought-out balance pass and aren't addressed here. Those are v1.0 material.
+
+## [0.9.7] — 2026-04-23
+
+Two changes from itch.io player feedback (Ravery): a quality-of-life gap with support buying, and the long-standing problem that challenges become trivial late in a playthrough.
+
+### Added
+
+- **Bulk-buy for support buildings.** Power Node and Boost Relay now honour the BUY MODE bar (×1 / ×10 / ×100 / ×1000 / MAX) the same way machine slots do. Previously the buy mode was machines-only and supports always bought one at a time, which was annoying late game when each multiplier costs Cores in the millions and you wanted to add 50 of them in one go. Refactored into `buySupportInner` / `buySupport` / `buySupportMultiple` / `buySupportMax` to mirror the machine-buy structure; PURIST challenge still blocks all four paths with the same toast.
+
+### Balance
+
+- **Challenge schematic goals now scale with lifetime patents.** Player feedback was that once you've stacked FAST_START patent levels, DRAFTING HEIRLOOM legacy, and the right blueprints, challenge goals (25 to 50 schematics) get hit in seconds because you start the run with most of the ramp-up already done. Goals now scale by `1 + sqrt(totalPatents) * 0.2`:
+  - 0 lifetime patents: 1.0× baseline (unchanged)
+  - 25 patents: 2.0×
+  - 100 patents: 3.0×
+  - 400 patents: 5.0×
+  - 900 patents: 7.0×
+
+  So the SLOW BURN challenge (25 schematics base) becomes 50 at 25 patents, 75 at 100, 175 at 900. The challenge banner, mastery cards, and start modal all now show both the base goal in the description and the scaled goal in parentheses (e.g. "Earn 25 schematics in 5 minutes (now 50)") so there's no surprise when you start.
+
+### Notes
+
+- No save migration. Goal scaling reads from `state.meta.totalPatents` which already exists. Players with 0 patents see no change. Players with high patent counts see the scaled goals immediately on next launch.
+- Already-completed challenges stay completed; they don't have to be re-won at the new scaling.
+- The scaling curve was tuned so that even at 900 patents (full mastery), challenges are still achievable in a normal-paced run — they're not meant to be impossible, just not over the moment they begin.
+- The bigger design questions raised in the same comment (early-game pacing feeling slow, late-game decisions feeling like "click upgrades quickly") are noted but deserve a thought-out v1.0 balance pass rather than a quick patch.
+
+## [0.9.6] — 2026-04-22
+
+Cursor-flicker bugfix during active challenges. Reported on itch.io by a player who noticed the cursor rapidly flashing between hand and arrow states while running challenge after challenge.
+
+### Fixed
+
+- **Challenge banner no longer rebuilds its DOM 15 times per second.** `renderChallengeBanner()` was doing a full `innerHTML = ...` replacement on every render-loop tick (~66 ms), which destroyed and recreated the embedded `ABANDON` button on every frame. If the player's cursor was hovering that button, the browser re-evaluated cursor state every 66 ms and flashed between pointer (button exists) and default (button briefly absent during the swap). The fix: build the scaffold (tag, name, constraint, timer slot, chaos slot, progress slot, abandon button) exactly once when the challenge starts, and on subsequent renders mutate only the dynamic children via `textContent` and `style.display` toggles. Same information shown at the same refresh rate, but the button's DOM identity is stable so the cursor no longer flickers.
+
+### Notes
+
+- No save migration, no balance changes, no content changes. Purely a rendering regression dating back to v0.6.0 when the challenge banner was introduced.
+- Similar `innerHTML = ...` patterns in `renderMastery()` (500 ms throttle) and `renderExhibitions()` (render-on-action only) were audited and deemed fine: mastery's 2 Hz cadence produces a far less visible flicker (most people perceive 2 Hz as "that thing is updating" rather than "something is wrong"), and exhibitions doesn't render on a timer at all.
+- The challenge banner was the acute case because it was the fastest per-frame rebuild in the game and contained the only persistently-visible interactive button during a run.
+
+## [0.9.5] — 2026-04-22
+
+Save-hardening pass aimed at non-exporters. Until this release, the only meaningful defence against save loss was the Settings → Export flow — but a significant fraction of players never touch it. iOS Safari aggressively evicts localStorage from sites the user hasn't visited in ~7 days, `beforeunload` isn't reliable on mobile (it often doesn't fire when the user swipes the app away), and a mid-save crash could leave a partially-written JSON blob that would load as `freshState()`. None of these failure modes required the player to do anything wrong.
+
+### Added
+
+- **Rolling backup slot.** Every primary save also mirrors into `blueprint.save.v1.backup` at most once per minute. `load()` now tries the primary slot first and falls back to the backup if the primary's `JSON.parse` throws — the player resumes from a state at most ~60 s older instead of being reset.
+- **`pagehide` save handler** in addition to the existing `beforeunload`. iOS Safari and Chrome-on-Android frequently fire `pagehide` without ever firing `beforeunload` (tab swiped away, OS suspends for memory); listening to both closes the worst-case 5-second autosave window down to ~0.
+- **`navigator.storage.persist()` request** at boot. Asks the browser to mark the save as persistent so it's not evicted under low-storage pressure. Huge on iOS Safari (overrides the 7-day eviction). Desktop Chrome grants it based on engagement heuristics (PWA install, bookmark) without prompting. Best-effort — if the browser declines or the API is missing, we silently fall back to the old behaviour.
+- **First-play save-location hint** — a one-shot toast explains that saves live in this browser's localStorage and pointing the player at Settings → Export. Recorded in `state.settings.hintsShown` under id `save_location_v095` so it never repeats.
+- **Backup-recovery toast.** If `load()` falls back to the backup slot because the primary was unreadable, the player gets a warning toast telling them the last ~60 s may have rolled back, rather than silently having lost time.
+
+### Fixed
+
+- **`wipe()` now clears both save slots.** Previously it only cleared the primary; the next load would "recover" the backup slot the player had just asked us to throw away. Settings → Reset Save now actually resets save.
+
+### Notes
+
+- No state migration required. The backup slot is populated organically from the next save(); existing players with only a primary save just get the safety net starting from their next autosave tick.
+- These changes are purely defensive — no game mechanic, balance, or UI changes. A save that loaded cleanly in v0.9.4 will load cleanly in v0.9.5 with zero visible difference unless the player is on iOS or has already lost a save to eviction.
+- Future tiers considered but not shipped: IndexedDB mirror (async write path would change `save()` semantics), URL-hash save snapshots (bigger UX change), service-worker save copy (doesn't help on the itch.io embed where SW doesn't register).
+
+## [0.9.4] — 2026-04-21
+
+Follow-up balance pass on the patent curve. The v0.9.2 `cbrt × 2` tighten dialed in normal-pace runs (100 K protos ≈ 92 patents, full mastery in 8–12 publishes) but it was still unbounded — a player who left the tab running for 24–48 h on a first run could stockpile trillions of prototypes and cash out 10 000 – 100 000+ patents in a single publish, collapsing mastery into one overnight run. Reported by players as still-too-easy late game.
+
+### Balance
+
+- **`patentsForPublish` now softcaps above 100 patents per publish.** The cube-root curve is preserved for normal play; above raw = 100, the surplus is compressed with a 0.65 exponent. Normal publishes are unchanged; extreme stockpile runs are clamped to a few thousand patents instead of scaling without limit.
+
+  | Prototypes | Old patents | New patents |
+  | :--- | ---: | ---: |
+  | 100 K | 92 | 92 |
+  | 1 M | 200 | 119 |
+  | 1 B | 2 000 | 235 |
+  | 1 T | 20 000 | 722 |
+  | 1 e14 | 92 831 | 1 793 |
+  | 1 e15 | 200 000 | 2 889 |
+
+  Players in the 1 K – 500 K prototype band (the normal first-publish range) see zero change. Moderate idlers (10 M – 100 M) lose roughly 40 %. Overnight-farm exploits lose 95 – 99 %. Full mastery (~904 patents) still takes the intended 8–12 publishes; a dedicated stockpile run now shaves 2–3 publishes off rather than ending the meta-layer outright.
+
+### Notes
+
+- No save migration. Existing patents and progress are preserved; only the per-publish formula changes going forward.
+- The softcap is monotonic (more prototypes always = more patents) and smooth below raw = 100. The only discontinuity is in the first derivative at the softcap boundary, which is imperceptible in practice.
+- PATRONS legacy (+10 % patents) and RECURSIVE patent (+1 per 40 research levels) still layer on top of the softcapped base — late-game progression still scales, just not to the point where one run can replace all of them.
+
+## [0.9.3] — 2026-04-19
+
+Full code audit pass. A delegated Explore agent swept the codebase for gating / migration / interaction / logic bugs across the v0.7–v0.9 additions. 33 items examined; most were defensive-code-already-sound. Two real fixes landed.
+
+### Fixed
+
+- **`importSave()` now runs the same migration pipeline as `load()`.** Previously a v0.6 save exported to base64 and imported into v0.9 landed as `Object.assign(freshState(), parsed)` — which skipped the ~80 line default-filling / shape-normalising block that `load()` ran on every reload. All the endgame fields (`legacyMarks`, `legacyUpgrades`, `exhibitions`, `firstLegacyMarkCelebrated`, `archiveCompleteCelebrated`) plus older migrations (origin repair, onboarding skip for veteran saves, per-run click-progress defaults, etc.) are now applied on both paths. Extracted into a shared `migrateState(parsed)` helper so the two paths can't drift again.
+- **DRAFTING HEIRLOOM clamped under TALL.** The Legacy upgrade adds +1 starting drill unconditionally. Combined with `fast_start` (already clamped to 2 under TALL in v0.6.3) this landed at 3 drills — exactly TALL's 3-per-type cap. Currently safe, but fragile — a future bump to either side could push past the cap mid-run. DRAFTING HEIRLOOM now also clamps against TALL's cap so the opening state can never violate it regardless of other balance changes.
+
+### Not bugs (verified)
+
+- Auto-mine does NOT count toward `totalClicks`; SILENT_EXHIBITION correctly only tracks manual clicks.
+- `evaluateExhibition()` already guards against orphaned exhibition IDs (`if (!ex) return null`).
+- Challenge + Exhibition coexistence is intentional (two orthogonal layers, both can reward).
+- FOURTH_BLUEPRINT + ECHO reward both setting `extraBlueprintRoll = true` is correct (binary flag, no additive stacking intended).
+- IRONMAN's "no heirlooms" scope is patent-specific; Legacy Marks are a distinct system and correctly NOT suppressed by IRONMAN.
+- ARCHIVIST blueprint + EFFICIENT_MIND legacy multiplicatively compound via `m.researchCostMul` — correct.
+
+## [0.9.2] — 2026-04-19
+
+Dedicated balance pass on the T6 → Prototype → Patent pipeline. Player feedback (long-standing, pre-v0.9) was that by the time prototypes were available at all, they already had enough to unlock most of the mastery library. The v0.6.1 cube-root nerf and v0.9.1 offline-cap fixes addressed adjacent issues but left the core pipeline too generous.
+
+### Balance
+
+- **T6 prototype production rates halved.** Refiner 0.01 → 0.005 proto/s, Compactor 0.05 → 0.025, Prototyper 0.2 → 0.1. Doubles the real time to accumulate prototypes without touching costs or consumption ratios. Now the first run that produces prototypes has to commit to the T6 tier rather than getting a huge stockpile from residual core drain.
+- **`patentsForPublish` curve tightened from `cbrt × 3` to `cbrt × 2`** — same cube-root shape, 33 % lower coefficient. First publishes still feel meaningful (100 K protos ≈ 92 patents, enough to buy a solid first round of tier-inheritance + a few leveled steps) but full mastery now requires **8–12 publishes instead of 3–5**, matching the 25–40 h target play arc.
+
+### Notes
+
+- Existing patents, schematics, Legacy Marks, and Archive upgrades are preserved. Balance changes only affect production from this point forward — no state migration required.
+- Combined effect: first publish earns roughly one-third of what it did pre-patch, and each subsequent run takes about twice as long to produce the same prototype count. Net pacing multiplier is ~6× slower mastery progression without adding frustration (no new gates, no new required content — just a gentler curve).
+
+## [0.9.1] — 2026-04-19
+
+Two bugs reported in itch.io comments. Both player-blocking in different ways.
+
+### Fixed
+
+- **Research tree no longer becomes unbuyable after Publish.** `doPublish()` was wiping `state.research.levels` to `{ origin: 0 }` — but `freshResearch()` gives new games `origin: 1`. After a Publish, every node in the tree said "origin required" with no hint that the player needed to re-click the centre node. Players got stuck with schematics they couldn't spend. Publish now preserves `origin: 1` (Origin has no cost and is just the "enable research" gate, so this matches the new-game baseline rather than adding anything).
+- **Background-tab simulation is now capped at the offline limit.** v0.9.0's sim-worker had no budget — leaving the tab hidden for 24 h ticked 24 h of production, while closing the tab for 24 h capped at 8 h (+ TAILWIND / WIDER NET). A player who left the game open overnight could accumulate more than a player who did everything "right." `runtime.hiddenTickAppliedMs` now tracks accumulated worker-tick time per hidden window and refuses further ticks past `OFFLINE_CAP_MS + patent / legacy bonuses`. `applyOffline` on return receives the remaining budget so the two paths can't stack past the cap. Background and closed-tab rewards are now identical.
+
+### Notes
+
+- The fix to Origin is retroactive: if you published under v0.8.x or v0.9.0 and ended up with `origin: 0`, a load-time migration was already setting it back to 1 (see the migration at `load()`), so you weren't actually stuck — but any new publishes post-v0.9.1 skip the bug entirely.
+- The background cap applies to each hidden window independently. Tab-switch for 2 h, come back, go away for 2 h — that's 4 h of background production total, both within cap.
+
+## [0.9.0] — 2026-04-19
+
+Background-tab simulation now actually runs, not just catches up on return.
+
+### Added
+
+- **`sim-worker.js`** — a tiny Web Worker that posts tick messages at 1 Hz from its own thread. Workers aren't subject to the main tab's visibility throttling, so the heartbeat keeps firing at full speed even when the game tab is hidden.
+- Main thread constructs the worker in `boot()` and routes tick messages to `tick(dtSec)` *only when the tab is hidden*. When the tab is visible, the normal rAF loop handles simulation at 60 Hz as before — worker messages are ignored to avoid double-counting.
+- Worker creation is guarded by try/catch so any context that refuses to construct Workers (certain iframe sandboxes, `file://` loads) falls back cleanly to the v0.8.2 `applyOffline`-on-return path with no broken state.
+- Service worker precache updated to include `sim-worker.js`, so PWA installs get the heartbeat script alongside the rest of the shell.
+
+### Why scoped, not a full rewrite
+
+A "move all simulation state into the worker" architecture would be a 1-2 day refactor touching every buy / prestige / publish / click path, and would likely ship new bugs before v1.0. The scoped heartbeat approach delivers what players actually care about — continuous background simulation — at the cost of 1 Hz tick granularity in background (vs 60 Hz when visible). For an incremental game with continuous production rates and coarse time-based events, 1 Hz is indistinguishable from full rate.
+
+### Interaction with v0.8.2
+
+- `applyOffline()` on `visibilitychange → visible` stays as a safety net. If the browser deep-suspends the worker (some browsers do this for tabs hidden for many hours on low-end devices), the catch-up pass recovers the missed simulation time. With the worker running normally the catch-up `dt` is near zero, so it's a no-op in practice.
+- The "welcome back" modal still fires for absences ≥ 30 s, but the reported earnings now reflect the worker's live accumulation plus any small catch-up.
+- `OFFLINE_CAP_MS` still applies at boot — if the browser kills the tab outright (e.g. reboot, forced refresh), production on return is still capped at 8 h (+ TAILWIND / WIDER NET bonuses).
+
+## [0.8.2] — 2026-04-19
+
+### Changed
+
+- **Background-tab simulation now catches up properly.** Browsers throttle `requestAnimationFrame` to ~1 Hz (or pause it entirely) when a tab is hidden, and the previous loop clamped `dt` at 66 ms — which meant a tab left in the background effectively ran at 1/15 normal speed and leaked sim time. The loop now early-exits when `document.visibilityState === 'hidden'`, freezing `state.lastTickAt` at the last visible frame. On return, the existing `applyOffline()` pass ticks the full wall-clock gap (capped at `OFFLINE_CAP_MS` + TAILWIND / WIDER NET bonuses), so production accumulates exactly as if the tab had been closed and reopened.
+- **Welcome-back modal now fires on long tab-switches**, not just on reload. Any absence ≥ 30 s triggers the familiar `◆ WELCOME BACK · away Xm Ys` report with the earned-resources breakdown. Short tab-aways stay silent.
+- Achievement-banner storm during catch-up is suppressed for 1.5 s after return (same mechanism used at boot) so a long absence doesn't fire fifteen banners at once.
+
+### Notes
+
+- True continuous background simulation requires a Web Worker, which is a v0.9+ refactor. This patch delivers the standard "catch up on return" pattern used by Cookie Clicker and most incremental games.
+- Offline cap still applies. Leaving the tab hidden for 12 h still grants the 8 h cap (or more if the player has purchased TAILWIND patents / WIDER NET legacy).
+
+## [0.8.1] — 2026-04-19
+
+Pre-v1.0 polish: fill the achievement gaps around the new content and endgame, and add the meta capstone players always ask for.
+
+### Added
+
+- **12 new achievements** (total 59 → 71).
+- **Endgame (5 + 1 capstone):**
+  - `◆ DEBUT` — Complete your first Exhibition. +10 % schematic gain.
+  - `◆ LEGACY LADDER` — Earn 5 lifetime Legacy Marks. +5 % schematic gain.
+  - `◆ LASTING LEGACY` — Earn 10 lifetime Legacy Marks. +10 % schematic gain.
+  - `◆ CURATOR` — Own 5 Archive upgrades. +10 % production.
+  - `◆ ARCHIVE COMPLETE` — Own every Archive upgrade. +25 % production.
+  - `◆ EXHIBITIONIST` — Complete every unique Exhibition. +25 % schematic gain.
+- **v0.7.0 challenge-mode completions** — one per challenge, +5 % bonus each, matching the shape of the existing `ch_*` achievements: `ch_austere`, `ch_glassware`, `ch_overclock`, `ch_echo`, `ch_famine`.
+- **`◆◆◆ PERFECTIONIST`** — earn every other achievement. Rewards **+50 % production · +50 % schematic gain · +50 % prototype production**, the largest stacking bonus in the game. The achievement count used in its goal auto-excludes itself so it isn't self-referential.
+
+### Notes
+
+- `legacy_5` / `legacy_10` count *lifetime* Legacy Marks via the exhibition completion ledger — so spending marks in the Archive doesn't un-earn the achievement.
+- `archive_half` / `archive_complete` use `LEGACY_UPGRADES` length (currently 10) so if we add more upgrades later the goals auto-rescale to 5 / 10 / etc.
+- `perfectionist` iterates the full `ACHIEVEMENTS` keys, so every future achievement automatically raises its bar by 1 — no manual bookkeeping.
+
+## [0.8.0] — 2026-04-19
+
+Phase 2 of the v0.7 / v0.8 roadmap — the endgame layer. Ship alongside v0.7.0's content + slowdown so players can feedback the whole stack at once before v1.0. Not a soft launch: this is the "now there's actually something to do past mastery" patch.
+
+### Added
+
+- **Third prestige layer — Exhibitions.** Unlocks once the player has earned **30 lifetime Patents**. A new top-bar tab, between Mastery and Achievements, surfaces the system. Exhibitions are run-spanning goals rolled from a pool of 3; the player picks one, attempts it during their next run, and on Prestige the goal is evaluated. Success grants **1 Legacy Mark**; failure clears the slot with no penalty. The player rolls a new pool whenever they want another shot.
+- **8 starting exhibitions**: SCALE SHOW (produce 10 M ore), MINIATURE WORKS (prestige with ≤ 20 machines), THE LONG HAUL (1 h+ run), EXHIBITION MATCH (5 K schematics in one prestige), THE GRAND TOUR (own every MK-V), SILENT EXHIBITION (zero clicks), EMPTY STAGE (no research), HEAVY ARTILLERY (10+ of every slot-1 base machine).
+- **The Archive — 10 Legacy Upgrades.** Permanent purchases, persist through every reset (prestige AND publish):
+  - ENDOWMENT (1 LM) · +5 % global production
+  - DRAFTING HEIRLOOM (1 LM) · +1 starting drill, stacks with FAST START
+  - OPEN ARCHIVE (2 LM) · whole research tree revealed from start
+  - PATRONS (2 LM) · +10 % patent gain
+  - EFFICIENT MIND (2 LM) · -20 % research cost
+  - AMPLIFIER (3 LM) · challenge rewards ×1.5
+  - FOURTH BLUEPRINT (3 LM) · blueprint pool rolls 4 per prestige
+  - WIDER NET (3 LM) · +6 h offline cap
+  - ANNOTATED SCHEMATIC (4 LM) · +20 % schematic gain
+  - GRAND ARCHIVE (5 LM) · -25 % tier unlock costs
+- Total Archive cost is **28 Legacy Marks** — at ~1 LM per completed exhibition run, the full Archive is 28+ dedicated prestiges of endgame work.
+- New **Legacy layer** in `researchMultipliers()` applied before the challenge layer so AMPLIFIER can scale every challenge reward in-place.
+- **Save migration** — existing saves pick up `legacyMarks`, `legacyUpgrades`, and `exhibitions` fields from the fresh-state merge without losing any other data.
+
+### Integration
+
+- **Challenges & Exhibitions evaluate independently on prestige.** You can run a challenge *and* an exhibition in the same prestige — both the challenge's permanent reward and the exhibition's Legacy Mark drop on success.
+- **ECHO challenge reward + FOURTH BLUEPRINT legacy upgrade stack** — both set `m.extraBlueprintRoll`, so owning either gives you 4 blueprint rolls per prestige.
+- **ARCHIVIST blueprint + EFFICIENT MIND legacy upgrade stack** — multiplicative through `m.researchCostMul`.
+
+### Balance
+
+- **Pacing target:** with v0.7.0's slowdown, first publish lands at ~3 h. Exhibitions unlock at 30 lifetime Patents (~10–15 h of play). The full Archive takes another 10–20 h on top. That puts "fully completed" in the **25–40 h range** the game has been missing.
+- **No base numbers touched this patch** — the global slowdown already shipped in v0.7.0. v0.8.0 adds content on top of it, not further nerfs.
+
+## [0.7.0] — 2026-04-19
+
+Phase 1 of the v0.7 / v0.8 content roadmap. Five new challenges, five new blueprints, and a global balance pass that pushes the first publish from ~1 h to ~3 h of focused play. Phase 2 (the Exhibition endgame) ships as v0.8.0 after this one settles.
+
+### Added
+
+- **5 new challenges** (total is now 14):
+  - **AUSTERE** — all machine costs doubled during the run. Reward: −5 % machine cost, permanent.
+  - **GLASSWARE** — every 60 s, you lose 50 % of your most-held resource. Reward: +10 % schematic gain.
+  - **OVERCLOCK** — production ×3, consumption ×4. Scale the upstream tiers or starve downstream. Reward: +10 % production, permanent.
+  - **ECHO** — after buying a machine, that type is locked for 5 s. Reward: the blueprint pool rolls 4 options per prestige instead of 3.
+  - **FAMINE** — all production halved. Reward: +25 % schematic gain.
+- **5 new blueprints** (total is now 15):
+  - **VANGUARD** (common) — first 3 machines of every type are free.
+  - **HARVEST** (common) — start the run with 100 ingots, 20 parts, and 5 circuits.
+  - **PARALLEL** (rare) — support effects doubled, support costs ×10.
+  - **CRITICAL** (rare) — click crit chance doubled, auto-click halved.
+  - **ARCHIVIST** (mythic) — research costs halved, all production ×0.5.
+- **`applyDuring(m)` hook on challenges** — mirrors the blueprint pattern, so time-active challenge modifiers (like AUSTERE's ×2 cost or FAMINE's ×0.5 prod) compose through `researchMultipliers()` without scattering inline checks.
+
+### Balance
+
+- **Tier unlock Schematic costs doubled** across the board (6 / 30 / 120 / 500 / 2500). Each later tier now requires several more publishes of mature production rather than being available on run 2–3.
+- **Schematic divisor 150 → 250** in `schematicsForPrestige`. About 18 % fewer schematics per run at equal production, so progression asks for more runs to unlock everything.
+- **MK-IV research cost 70 → 120** and **MK-V 200 → 400**. Reinforces the v0.6.3 intent that high-tier machines are earned, not auto-unlocked.
+- **No machine costs changed.** v0.6.3's slot 1–3 costMul bump is already biting the right way; this pass lengthens the *schematic* curve, not the per-machine curve.
+
+## [0.6.3] — 2026-04-18
+
+Vertical progression balance pass. Early feedback was that players could reach the endgame using only the base (slot 1–3) machines in each tier and never need the MK-IV / MK-V variants the research tree gates behind Power. This pass tightens the base-tier scaling wall so those upgrades become the only efficient next step, *without* making them cheaper — runs shouldn't get shorter, they should get steeper.
+
+### Balance
+
+- **Slots 1–3 costMul +0.02 across T1–T5** — base machines now hit their exponential wall noticeably sooner. The break-even point where the next base machine costs the same as a single MK-IV moves down from ~51 owned to ~43 owned, so the upgrade decision lands naturally while you're still in the tier. MK-IV and MK-V costs are intentionally unchanged — cheaper upgrades would only accelerate runs, which is the opposite of the fix this patch ships.
+- **T6 untouched** — the Refinement tier has only three slots and already uses steep costMul values (1.27 / 1.3 / 1.32).
+- **Existing saves keep all owned machines** — cost changes only affect the next purchase, so there are no broken states or lost inventory.
+
+## [0.6.2] — 2026-04-18
+
+Hotfix for two issues reported in itch.io comments.
+
+### Fixed
+
+- **Auto-prestige can no longer soft-lock the game into a reset loop.** A late-game build that produces 10+ schematics per tick was triggering a prestige every frame, leaving the player no time to interact. Both auto-prestige and auto-publish now require a minimum run time before firing (30 s for prestige, 60 s for publish). The threshold still gates on top, so short manual runs aren't affected.
+- **Research (Schematics) tab no longer disappears after a Publish.** The old visibility check gated on `prestigeCount > 0 || schematics > 0`, both of which reset on publish — so the tab hid itself right after players unlocked it. The lifetime gates `lifetimePrestiges > 0` and `publishCount > 0` keep the tab visible forever once either has happened.
+
+## [0.6.1] — 2026-04-18
+
+First post-launch patch, driven by early itch.io feedback and an internal
+polish pass across every view.
+
+### Balance
+
+- **Publish economy rebalanced** — `patentsForPublish` switched from `sqrt(proto) * 2` to `cbrt(proto) * 3`. Cube-root damping stops a single grindy publish from buying every mastery upgrade. Full mastery (~1,707 patents) now takes ~5 publishes instead of 1. A first publish at ~200K prototypes pays ~175 patents instead of ~900 — enough to unlock tier inheritance and a few leveled patents, not the whole library.
+- **TALL challenge stays winnable regardless of `fast_start` level.** `fast_start` at level 4 or 5 used to seed the run with more drills than TALL's 3-per-machine cap, making the challenge literally impossible. Starting drill grant is now clamped to 2 during TALL.
+
+### Added
+
+- **One-tap copy-to-clipboard** in the Export Save modal, with inline "COPIED ✓" / "COPY FAILED" status. Falls back to `execCommand` if the modern clipboard API denies, with a "select + copy manually" hint if both paths fail.
+- **Last-backup pill** next to Export Save in Settings, with stale / fresh colouring based on time since last export.
+- **Backup-suggested toast** after prestige or publish if playtime > 30 min and no export in the last hour. Fires at most once per session.
+- **Version footer** (`◆ BLUEPRINT · v0.6.1`) at the bottom of the Settings modal.
+- **Drafting-grid background + corner ticks + pip + rule headers** on every view (Factory, Mastery, Stats, Achievements, Sidebar), extending the research-tab schematic look to the whole app.
+- **Flow connectors** between tier rows on the factory page — vertical dashed pipes labelled with the flowing material (`↓ ORE`, `↓ INGOT`, etc.).
+- **Source block** wraps the mine card with a "◆ SOURCE / MANUAL EXTRACTION" callout, so the page opens like the head of an engineering sheet.
+- **Professional README** with banner, screenshots, PWA / accessibility / mobile coverage, and split desktop / touch control tables.
+- **itch.io release** with release zip, SVG + PNG cover, page copy, and publish checklist in the gitignored `.itch/` folder.
+
+### Fixed
+
+- **Resources never display as `-0.0` again.** Tiny floating-point slop in the consumption loop was leaving pools at `-1e-13`, which rendered as "-0.0" in the top bar. `state.resources[res]` is now floored at zero after every tick subtraction.
+- **Settings modal no longer clips on mobile Safari.** The backdrop now owns the scroll with `align-items: safe center`, so the modal top and footer both stay reachable when iOS browser chrome shrinks the visible viewport.
+- **Settings gear sits on the far right in landscape mobile.** The landscape-phone media query was pushing `.tabs` past the default order but not `.topbar-settings`, so the gear was rendering mid-topbar.
+- **Tapping the top resource pill no longer flashes a blue line.** Two compounding issues: mobile browsers kept their default focus ring drawn after a touch-tap, and `.res-bar`'s overflow-x scroll indicator flashed during the post-click reflow. Both are now suppressed (`-webkit-tap-highlight-color: transparent`, `:focus:not(:focus-visible) { outline: none }`, scrollbar display `none` on the res-bar).
+- **Hover info toast no longer fires during spam-clicks** of unaffordable machines. Per-slot `hoverSuppressed` flag cancels the pending tooltip on click and resets on `mouseleave`, so the tooltip stays useful on clean hovers.
+- **Haptic feedback actually actuates now.** Durations under 20 ms were below the Android motor's startup latency, so many events registered in code but weren't felt. `haptic(ms)` now floors scalar durations at 20 ms.
+- **Mobile sidebar stays hidden on fresh games.** `.factory-view:not(.has-sidebar) .sidebar` now has `display: none !important` inside the mobile media query so the publish / support boxes don't peek through before they unlock.
+- **Patent titles are left-aligned** — the centered `<button>` default plus the absolute-positioned level badge was pushing titles off-centre.
+
+### Changed
+
+- **Achievements page re-grouped** into bordered schematic panels with corner ticks and the same pip + dashed-rule heading pattern as the other views. Green corner-dot decoration retired in favour of full corner ticks.
+- **OG image re-centered** so the bottom stat strip no longer clips on the right edge.
+
+## [0.6.0] — 2026-04-17
+
+Initial public release.
+
+### Features
+
+- **6 production tiers** — Ore → Ingot → Part → Circuit → Core → Prototype — with **28 machines** (base + MK-IV + MK-V variants) and **2 support structures** (Power Node, Boost Relay).
+- **Radial research tree** with **60+ nodes** across six discipline branches (Speed, Logistics, Yield, Automation, Efficiency, Power) plus the Tier Unlocks rail.
+- **Twin prestige layers** — Schematics per-run resets, Patents meta-layer survives every reset.
+- **21 patents** in the Mastery library with stacking leveled upgrades.
+- **9 challenge modes** with constraint-driven runs and permanent rewards (Pacifist, Blitz, Blackout, Tall, Monoculture, Purist, Ironman, Slow Burn, Chaos).
+- **10 blueprints** — random per-run modifiers rolled after every prestige for run-to-run variance.
+- **59 achievements** with live progress bars and stacking passive bonuses.
+- **Onboarding** via progressive hints, no tutorial wall.
+- **Procedural audio** via the Web Audio API — every event has its own voice; no samples.
+- **Offline progression** capped at 8 hours (extendable to +16 h via the Tailwind patent).
+- **PWA** — installable from the browser on desktop and mobile, offline-capable via a cache-first service worker.
+- **Accessibility** — reduce motion (auto / on / off) and an IBM-derived colorblind-safe palette.
+- **Touch-first mobile layout** — pinch-zoom and drag the research tree, long-press machines for detail, BUY MODE bar for bulk purchases without modifier keys.
+- **Local save** with base64 export/import for backup or cross-device transfer.
+- **Stats page** with live production, resource, and schematics/patents charts on a 1-hour rolling window.
