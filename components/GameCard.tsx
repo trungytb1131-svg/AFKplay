@@ -31,8 +31,12 @@ export default function GameCard({
 
   const favorited = mounted ? forceHeart || isHearted(game.slug) : false;
 
-  const thumbnailSrc =
-    game.thumb || game.image || `/images/games/${game.slug}.jpg`;
+  // Cache-bust: thêm version param để ảnh mới luôn được tải
+  const thumbnailSrc = (() => {
+    const base = game.thumb || game.image || `/images/games/${game.slug}.jpg`;
+    const sep = base.includes("?") ? "&" : "?";
+    return `${base}${sep}v=2`;
+  })();
 
   return (
     <div
