@@ -6,11 +6,11 @@ import type { Game } from "@/types/game";
 
 export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   // 1-10
-  "0hh1",                    // ⚠️ thư mục rỗng
+  "adventures-with-anxiety", // ⭐ ô đầu tiên (cột 3, hàng 1)
   "10k-arcade-cabinet",
   "2048",
   "a-dark-room",
-  "adventures-with-anxiety",
+  "0hh1", // ⚠️ thư mục rỗng
   "audio-dash",
   "bounceback",
   "breakout-end3r",
@@ -21,9 +21,9 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   "coming-out-simulator-2014",
   "diablo-js",
   "drive13k",
-  "eggtime-rewind",          // EggTimeRewind — chưa có trong DB, dùng hardcoded fallback
-  "eggtime-rewind-13k",      // EggTimeRewind13k
-  "fullscreenmario",         // ⚠️ thư mục rỗng
+  "eggtime-rewind", // EggTimeRewind — chưa có trong DB, dùng hardcoded fallback
+  "eggtime-rewind-13k", // EggTimeRewind13k
+  "fullscreenmario", // ⚠️ thư mục rỗng
   "galaxian-canvas-game",
   "gamedev-canvas-workshop", // ⚠️ thư mục rỗng
   "hexgl",
@@ -52,7 +52,7 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   // 41-48
   "onspacestart",
   "particle-clicker",
-  "shrimp",                  // DB có slug "1m-shrimp" → alias bên dưới
+  "shrimp", // DB có slug "1m-shrimp" → alias bên dưới
   "spacehuggers",
   "terraform",
   "the-evolution-of-trust",
@@ -64,7 +64,7 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
  * Alias map: game-data folder name → database slug (khi khác nhau).
  */
 export const GAME_DATA_SLUG_ALIASES: Record<string, string> = {
-  "shrimp": "1m-shrimp", // DB dùng slug "1m-shrimp", game-data là "shrimp"
+  shrimp: "1m-shrimp", // DB dùng slug "1m-shrimp", game-data là "shrimp"
 };
 
 /**
@@ -93,8 +93,7 @@ export const GAME_DATA_FALLBACKS: Game[] = [
     id: "0hh1",
     slug: "0hh1",
     title: "0hh1",
-    description:
-      "A minimalist puzzle game — binary Sudoku style. Coming soon!",
+    description: "A minimalist puzzle game — binary Sudoku style. Coming soon!",
     instructions: "Fill the grid according to binary Sudoku rules.",
     url: "#",
     category_id: "puzzle",
@@ -146,7 +145,8 @@ export function isGameDataGame(slug: string): boolean {
   if (GAME_DATA_PRIORITY_SLUGS.includes(slug)) return true;
   // Kiểm tra alias ngược: DB slug → game-data slug
   for (const [gdSlug, dbSlug] of Object.entries(GAME_DATA_SLUG_ALIASES)) {
-    if (dbSlug === slug && GAME_DATA_PRIORITY_SLUGS.includes(gdSlug)) return true;
+    if (dbSlug === slug && GAME_DATA_PRIORITY_SLUGS.includes(gdSlug))
+      return true;
   }
   return false;
 }
