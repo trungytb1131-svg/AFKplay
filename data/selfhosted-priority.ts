@@ -59,8 +59,6 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   "html5-asteroids",
   "star-battle",
   "dungeon-crawler-rpg",
-  "mario-maker",
-  "lode-runner",
   "classic-pool",
   "sandboxels",
   "mykonos-island",
