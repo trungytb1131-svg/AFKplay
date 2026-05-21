@@ -18,7 +18,13 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const secret = new URL(req.url).searchParams.get("key");
-  const valid = process.env.ADMIN_SECRET_KEY || "afkplay-admin-2026";
+  const valid = process.env.ADMIN_SECRET_KEY;
+  if (!valid) {
+    return NextResponse.json(
+      { error: "ADMIN_SECRET_KEY not configured" },
+      { status: 500 },
+    );
+  }
   if (secret !== valid) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }

@@ -1,6 +1,23 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 
+// ── Rate limiter (in-memory, reset khi server restart) ──
+const rateLimitMap = new Map<string, { count: number; resetAt: number }>();
+const RATE_LIMIT_WINDOW = 60_000; // 1 phút
+const RATE_LIMIT_MAX = 3; // tối đa 3 lần/phút
+
+function checkRateLimit(ip: string): boolean {
+  const now = Date.now();
+  const entry = rateLimitMap.get(ip);
+  if (!entry || now > entry.resetAt) {
+    rateLimitMap.set(ip, { count: 1, resetAt: now + RATE_LIMIT_WINDOW });
+    return true;
+  }
+  if (entry.count >= RATE_LIMIT_MAX) return false;
+  entry.count++;
+  return true;
+}
+
 // ── Category mapping ──
 const CATEGORY_KEYWORDS: Record<string, string[]> = {
   clicker: ["clicker", "click", "tap", "idle clicker"],
@@ -9,11 +26,27 @@ const CATEGORY_KEYWORDS: Record<string, string[]> = {
   racing: ["racing", "race", "car racing", "bike racing", "motor"],
   shooting: ["shooting", "shooter", "shoot", "gun", "fps", "sniper"],
   adventure: ["adventure", "explore", "quest", "rpg"],
-  sports: ["sports", "sport", "soccer", "football", "basketball", "baseball", "tennis", "golf"],
+  sports: [
+    "sports",
+    "sport",
+    "soccer",
+    "football",
+    "basketball",
+    "baseball",
+    "tennis",
+    "golf",
+  ],
   cooking: ["cooking", "cook", "food", "kitchen", "bake", "restaurant"],
   zombie: ["zombie", "undead", "apocalypse"],
   "2-player": ["2 player", "2player", "two player", "2-players"],
-  "dress-up": ["dress up", "dress-up", "dressup", "makeup", "make up", "fashion"],
+  "dress-up": [
+    "dress up",
+    "dress-up",
+    "dressup",
+    "makeup",
+    "make up",
+    "fashion",
+  ],
   driving: ["driving", "drive", "parking", "park"],
   skill: ["skill", "reflex", "timing"],
   horror: ["horror", "scary", "creepy", "spooky"],
@@ -41,7 +74,8 @@ function mapCategory(category: string, tags: string): string {
   const tagStr = tags.toLowerCase().trim();
 
   for (const [slug, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
-    if (keywords.some((kw) => cat.includes(kw) || kw.includes(cat))) return slug;
+    if (keywords.some((kw) => cat.includes(kw) || kw.includes(cat)))
+      return slug;
   }
   for (const [slug, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
     if (keywords.some((kw) => tagStr.includes(kw))) return slug;
@@ -54,7 +88,13 @@ function isAutoFeatured(categoryId: string): boolean {
 }
 
 function slugify(text: string): string {
-  return text.toLowerCase().trim().replace(/[^\w\s-]/g, "").replace(/[\s_]+/g, "-").replace(/-+/g, "-").replace(/^-+|-+$/g, "");
+  return text
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/[\s_]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-+|-+$/g, "");
 }
 
 // ── Feed item type ──
@@ -71,14 +111,42 @@ interface GMItem {
   height: string;
 }
 
-const FEED_URL = "https://rss.gamemonetize.com/rssfeed.php?format=json&type=html5&popularity=newest&amount=1500";
+const FEED_URL =
+  "https://rss.gamemonetize.com/rssfeed.php?format=json&type=html5&popularity=newest&amount=1500";
 
-export async function POST() {
+export async function POST(req: Request) {
+  // ── Auth check ──
+  const secret = new URL(req.url).searchParams.get("key");
+  const valid = process.env.ADMIN_SECRET_KEY;
+  if (!valid) {
+    return NextResponse.json(
+      { error: "ADMIN_SECRET_KEY not configured" },
+      { status: 500 },
+    );
+  }
+  if (secret !== valid) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  // ── Rate limit: 3 lần/phút ──
+  const ip = req.headers.get("x-forwarded-for") || "unknown";
+  if (!checkRateLimit(ip)) {
+    return NextResponse.json(
+      { error: "Rate limit exceeded. Try again later." },
+      { status: 429 },
+    );
+  }
+
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   if (!supabaseUrl || !serviceKey) {
-    return NextResponse.json({ error: "Missing SUPABASE_SERVICE_ROLE_KEY or NEXT_PUBLIC_SUPABASE_URL" }, { status: 500 });
+    return NextResponse.json(
+      {
+        error: "Missing SUPABASE_SERVICE_ROLE_KEY or NEXT_PUBLIC_SUPABASE_URL",
+      },
+      { status: 500 },
+    );
   }
 
   const admin = createClient(supabaseUrl, serviceKey);
@@ -108,7 +176,10 @@ export async function POST() {
         instructions: item.instructions || "",
         url: item.url,
         category_id: categoryId,
-        tags: item.tags.split(",").map((t) => t.trim()).filter(Boolean),
+        tags: item.tags
+          .split(",")
+          .map((t) => t.trim())
+          .filter(Boolean),
         thumb: item.thumb || "",
         width: parseInt(item.width, 10) || 800,
         height: parseInt(item.height, 10) || 600,
@@ -118,17 +189,24 @@ export async function POST() {
     }
 
     const featuredCount = games.filter((g) => g.featured).length;
-    console.log(`⭐ Featured: ${featuredCount} | Rest: ${games.length - featuredCount}`);
+    console.log(
+      `⭐ Featured: ${featuredCount} | Rest: ${games.length - featuredCount}`,
+    );
 
     // 3. Upsert batch 100
     let inserted = 0;
     const BATCH = 100;
     for (let i = 0; i < games.length; i += BATCH) {
       const batch = games.slice(i, i + BATCH);
-      const { error } = await admin.from("games").upsert(batch, { onConflict: "id" });
+      const { error } = await admin
+        .from("games")
+        .upsert(batch, { onConflict: "id" });
       if (error) {
         console.error(`❌ Batch ${i / BATCH + 1} error:`, error.message);
-        return NextResponse.json({ error: error.message, inserted }, { status: 500 });
+        return NextResponse.json(
+          { error: error.message, inserted },
+          { status: 500 },
+        );
       }
       inserted += batch.length;
     }
@@ -142,6 +220,9 @@ export async function POST() {
     });
   } catch (err: any) {
     console.error("❌ fetch-games error:", err);
-    return NextResponse.json({ error: err.message || "Unknown error" }, { status: 500 });
+    return NextResponse.json(
+      { error: err.message || "Unknown error" },
+      { status: 500 },
+    );
   }
 }
