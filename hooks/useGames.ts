@@ -111,25 +111,19 @@ function prioritizeGameData(allGames: Game[]): Game[] {
 function assignGridSizes(games: Game[], sidebarSlugs: Set<string>): Game[] {
   const mainGames = games.filter((g) => !sidebarSlugs.has(g.slug));
 
-  // 48 game-data games đầu tiên được ưu tiên kích thước lớn
-  // Các game còn lại (featured + rest) theo sau
+  // 5 game đầu: 3x3 | game-data còn lại: 2x2 hết | game DB: 1x1 lấp đầy
+  const gameDataCount = GAME_DATA_PRIORITY_SLUGS.length;
   const sized = new Map<string, { dSize: string; mSize: string }>();
 
   mainGames.forEach((g, i) => {
     if (i < 5) {
       sized.set(g.id, { dSize: "3x3", mSize: "1x1" });
-    } else if (i < 15) {
+    } else if (i < gameDataCount) {
+      // Tất cả game-data từ vị trí 5 trở đi: 2x2
       sized.set(g.id, { dSize: "2x2", mSize: "1x1" });
-    } else if (i < GAME_DATA_PRIORITY_SLUGS.length) {
-      // Các game-data còn lại: xen kẽ 2x2 mỗi 5 game
-      const dSize = (i - 15) % 5 === 0 ? "2x2" : "1x1";
-      const mSize = (i - 15) % 8 === 0 ? "2x2" : "1x1";
-      sized.set(g.id, { dSize, mSize });
     } else {
-      // Game ngoài game-data: featured trước, xen kẽ kích thước
-      const dSize = i % 5 === 0 ? "2x2" : "1x1";
-      const mSize = i % 8 === 0 ? "2x2" : "1x1";
-      sized.set(g.id, { dSize, mSize });
+      // Game DB: 1x1 lấp đầy khoảng trống
+      sized.set(g.id, { dSize: "1x1", mSize: "1x1" });
     }
   });
 
