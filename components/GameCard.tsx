@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
+import React, { useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Heart, Play } from "lucide-react";
 import { useActivity } from "@/contexts/ActivityContext";
@@ -31,11 +30,13 @@ export default function GameCard({
 
   const favorited = mounted ? forceHeart || isHearted(game.slug) : false;
 
-  // Cache-bust: thêm version param để ảnh mới luôn được tải
+  // Cache-bust: timestamp cố định từ lúc mount, thay đổi mỗi lần refresh trang
+  const cacheBuster = useRef(Date.now().toString(36));
+
   const thumbnailSrc = (() => {
     const base = game.thumb || game.image || `/images/games/${game.slug}.jpg`;
     const sep = base.includes("?") ? "&" : "?";
-    return `${base}${sep}v=2`;
+    return `${base}${sep}t=${cacheBuster.current}`;
   })();
 
   return (
@@ -71,14 +72,12 @@ export default function GameCard({
         onClick={() => trackPlay(game.slug)}
         className="relative block w-full h-full overflow-hidden rounded-[24px] bg-slate-200 shadow-sm hover:scale-[1.03] active:scale-95 transition-transform group/link"
       >
-        {/* Ảnh nền full — zoom nhẹ khi hover */}
-        <Image
+        {/* Ảnh nền full — zoom nhẹ khi hover (dùng <img> thường để tránh cache) */}
+        <img
           src={thumbnailSrc}
           alt={game.title || game.slug}
-          fill
-          className="object-cover transition-transform duration-500 ease-out group-hover/link:scale-110"
-          sizes="(max-width: 1024px) 33vw, 6vw"
-          unoptimized={!!game.thumb}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover/link:scale-110"
+          loading="lazy"
         />
 
         {/* Overlay tối + Play + Title — hiện khi hover */}
