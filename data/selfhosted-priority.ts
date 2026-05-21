@@ -1,5 +1,5 @@
 /**
- * Danh sách 44 game từ thư mục game-data, theo đúng thứ tự thư mục.
+ * Danh sách 43 game từ thư mục game-data, theo đúng thứ tự thư mục.
  * Dùng để ưu tiên các game này lên các ô đầu tiên trên lưới trang chủ.
  */
 import type { Game } from "@/types/game";
@@ -21,7 +21,6 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   "drive13k",
   "eggtime-rewind-13k",
   "galaxian-canvas-game",
-  "gamedev-canvas-workshop", // ⚠️ thư mục rỗng
   "hexgl",
   "hextris",
   "huejumper2k",
@@ -65,26 +64,9 @@ export const GAME_DATA_SLUG_ALIASES: Record<string, string> = {
 
 /**
  * Hardcoded fallback Game objects cho các game có trong game-data nhưng
- * chưa có trong database. Các game này vẫn hiển thị trên lưới.
+ * chưa có trong database. Hiện tại tất cả game-data đều đã có trong DB.
  */
-export const GAME_DATA_FALLBACKS: Game[] = [
-  {
-    id: "gamedev-canvas-workshop",
-    slug: "gamedev-canvas-workshop",
-    title: "Canvas Workshop",
-    description:
-      "HTML5 Canvas game development workshop projects. Coming soon!",
-    instructions: "Various Canvas experiments and mini-games.",
-    url: "#",
-    category_id: "simulation",
-    tags: ["canvas", "workshop", "educational", "html5"],
-    thumb: "/images/games/placeholder.png",
-    width: 800,
-    height: 600,
-    source: "self-hosted",
-    featured: true,
-  },
-];
+export const GAME_DATA_FALLBACKS: Game[] = [];
 
 /**
  * Kiểm tra một slug có thuộc danh sách game-data không (tính cả alias).
