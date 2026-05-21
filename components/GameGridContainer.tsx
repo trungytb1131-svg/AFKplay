@@ -25,24 +25,9 @@ function getSidebarSlugs(games: Game[]): {
   return { sidebarSlugs: lastTwo, mobile2x2Slug };
 }
 
-// 12 game batch-3 mới: được render riêng trong ô 2x2 nổi bật
-const BATCH3_NEW_SLUGS = new Set([
-  "thirteenth-floor",
-  "blueprint-idle",
-  "chrome-dino",
-  "feed-the-flames",
-  "google-the-game",
-  "island-not-found",
-  "offline-paradise",
-  "point-generation",
-  "quickclick",
-  "rs-clicker",
-  "society-fail",
-  "tower-defense",
-]);
-
 export default function GameGridContainer() {
-  const { games, loading, error } = useGridGames();
+  // featuredOnly=false + maxGames=200 để có cả game DB 1x1 lấp đầy khoảng trống
+  const { games, loading, error } = useGridGames([], false, 200);
 
   const { sidebarSlugs, mobile2x2Slug } = getSidebarSlugs(games);
 
@@ -50,21 +35,24 @@ export default function GameGridContainer() {
   const sidebarGames = games.filter((g) => sidebarSlugs.includes(g.slug));
   const mainGames = games.filter((g) => !sidebarSlugs.includes(g.slug));
 
-  // Tách 12 game batch-3 mới để render riêng với 2x2 nổi bật
-  const batch3Games = mainGames.filter((g) => BATCH3_NEW_SLUGS.has(g.slug));
-  const restGames = mainGames.filter((g) => !BATCH3_NEW_SLUGS.has(g.slug));
-
   const mobile2x2Game = mobile2x2Slug
     ? games.find((g) => g.slug === mobile2x2Slug)
     : null;
+
+  /**
+   * Desktop: 5 game 3x3 đầu xếp 1 hàng ngang cols 3→17 (rows 1-3).
+   * 2x2 & 1x1 auto-fill bên dưới (row 4+), 1x1 lấp đầy khoảng trống.
+   */
+  const LG_3X3_COL_STARTS = [3, 6, 9, 12, 15];
 
   const getGridClasses = (index: number, dSize?: string, mSize?: string) => {
     let classes = "relative ";
     if (mSize === "2x2") classes += "col-span-2 row-span-2 ";
     else classes += "col-span-1 row-span-1 ";
 
-    if (index === 0) {
-      classes += "lg:col-span-3 lg:row-span-3 lg:col-start-3 lg:row-start-1 ";
+    if (index < 5) {
+      // 5 game 3x3 đầu: xếp ngang cols 3,6,9,12,15
+      classes += `lg:col-span-3 lg:row-span-3 lg:col-start-${LG_3X3_COL_STARTS[index]} lg:row-start-1 `;
     } else {
       if (dSize === "3x3") classes += "lg:col-span-3 lg:row-span-3 ";
       else if (dSize === "2x2") classes += "lg:col-span-2 lg:row-span-2 ";
@@ -151,18 +139,8 @@ export default function GameGridContainer() {
           </div>
         )}
 
-        {/* 12 game batch-3 mới: 2x2 nổi bật */}
-        {batch3Games.map((game) => (
-          <div
-            key={game.id}
-            className="col-span-2 row-span-2 lg:col-span-2 lg:row-span-2 z-10"
-          >
-            <GameCard game={game} />
-          </div>
-        ))}
-
-        {/* Main grid (các game còn lại) */}
-        {restGames.map((game, index) => (
+        {/* Main grid: 2x2 + 1x1 auto-fill bên dưới hàng 3x3 */}
+        {mainGames.map((game, index) => (
           <div
             key={game.id}
             className={getGridClasses(index, game.dSize, game.mSize)}
