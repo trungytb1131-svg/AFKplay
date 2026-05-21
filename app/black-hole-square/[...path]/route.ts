@@ -34,8 +34,13 @@ export async function GET(
   { params }: { params: Promise<{ path: string[] }> },
 ) {
   const { path } = await params;
-  const filePath = path?.length ? path.join("/") : "index.html";
-  const fullPath = join(process.cwd(), "game-data", "black-hole-square", filePath);
+  const filePath = path?.length ? path.join("/") : "public/index.html";
+  const fullPath = join(
+    process.cwd(),
+    "game-data",
+    "black-hole-square",
+    filePath,
+  );
 
   try {
     const data = await readFile(fullPath);
