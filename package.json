@@ -9,8 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@builder.io/react": "^9.4.0",
-    "@builder.io/sdk": "^6.3.0",
     "@supabase/supabase-js": "^2.105.4",
     "clsx": "^2.1.1",
     "framer-motion": "^12.38.0",
@@ -21,7 +19,6 @@
     "tailwind-merge": "^3.6.0"
   },
   "devDependencies": {
-    "@builder.io/dev-tools": "^1.56.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

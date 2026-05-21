@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/auth", "/vault", "/figma-imports"],
+      disallow: ["/auth", "/vault"],
     },
     sitemap: `${base}/sitemap.xml`,
   };
