@@ -3,6 +3,12 @@
 import { useEffect, useState, useMemo } from "react";
 import { supabase } from "@/lib/supabase";
 import type { Game } from "@/types/game";
+import {
+  GAME_DATA_PRIORITY_SLUGS,
+  GAME_DATA_SLUG_ALIASES,
+  GAME_DATA_FALLBACKS,
+  getGameDataPriority,
+} from "@/data/selfhosted-priority";
 
 // ──────────────────────────────────────────────
 // Cache toàn cục: tránh fetch lại khi component re-mount
@@ -60,25 +66,71 @@ async function fetchGamesFromSupabase(force = false): Promise<Game[]> {
 // Gán kích thước grid (dSize, mSize) dựa trên index
 // ──────────────────────────────────────────────
 
+/**
+ * Sắp xếp game: 48 game từ game-data lên đầu, sau đó mới đến các game khác.
+ * Inject fallback Game objects cho các game có trong game-data nhưng chưa có trong DB.
+ */
+function prioritizeGameData(allGames: Game[]): Game[] {
+  const gameDataGames: Game[] = [];
+  const otherGames: Game[] = [];
+  const seenSlugs = new Set<string>();
+
+  // Phân loại game từ DB
+  for (const g of allGames) {
+    const priority = getGameDataPriority(g.slug);
+    if (priority >= 0) {
+      gameDataGames.push(g);
+      seenSlugs.add(g.slug);
+    } else {
+      otherGames.push(g);
+    }
+  }
+
+  // Thêm fallback cho các game-data chưa có trong DB
+  for (const fb of GAME_DATA_FALLBACKS) {
+    if (!seenSlugs.has(fb.slug)) {
+      gameDataGames.push(fb);
+      seenSlugs.add(fb.slug);
+    }
+  }
+
+  // Sắp xếp game-data games theo đúng thứ tự GAME_DATA_PRIORITY_SLUGS
+  gameDataGames.sort((a, b) => {
+    const pa = getGameDataPriority(a.slug);
+    const pb = getGameDataPriority(b.slug);
+    return pa - pb;
+  });
+
+  // Featured games khác (không thuộc game-data) lên trước, rồi đến phần còn lại
+  const otherFeatured = otherGames.filter((g) => g.featured);
+  const otherRest = otherGames.filter((g) => !g.featured);
+
+  return [...gameDataGames, ...otherFeatured, ...otherRest];
+}
+
 function assignGridSizes(games: Game[], sidebarSlugs: Set<string>): Game[] {
   const mainGames = games.filter((g) => !sidebarSlugs.has(g.slug));
 
-  // Ưu tiên featured game vào ô to: 5 ô 3×3, 10 ô 2×2
-  const featured = mainGames.filter((g) => g.featured);
-  const rest = mainGames.filter((g) => !g.featured);
-
+  // 48 game-data games đầu tiên được ưu tiên kích thước lớn
+  // Các game còn lại (featured + rest) theo sau
   const sized = new Map<string, { dSize: string; mSize: string }>();
 
-  featured.forEach((g, i) => {
-    if (i < 5) sized.set(g.id, { dSize: "3x3", mSize: "1x1" });
-    else if (i < 15) sized.set(g.id, { dSize: "2x2", mSize: "1x1" });
-    else sized.set(g.id, { dSize: "1x1", mSize: "1x1" });
-  });
-
-  rest.forEach((g, i) => {
-    const dSize = i % 5 === 0 ? "2x2" : "1x1";
-    const mSize = i % 8 === 0 ? "2x2" : "1x1";
-    sized.set(g.id, { dSize, mSize });
+  mainGames.forEach((g, i) => {
+    if (i < 5) {
+      sized.set(g.id, { dSize: "3x3", mSize: "1x1" });
+    } else if (i < 15) {
+      sized.set(g.id, { dSize: "2x2", mSize: "1x1" });
+    } else if (i < 48) {
+      // Các game-data còn lại (vị trí 15-47): xen kẽ 2x2 mỗi 5 game
+      const dSize = (i - 15) % 5 === 0 ? "2x2" : "1x1";
+      const mSize = (i - 15) % 8 === 0 ? "2x2" : "1x1";
+      sized.set(g.id, { dSize, mSize });
+    } else {
+      // Game ngoài game-data: featured trước, xen kẽ kích thước
+      const dSize = i % 5 === 0 ? "2x2" : "1x1";
+      const mSize = i % 8 === 0 ? "2x2" : "1x1";
+      sized.set(g.id, { dSize, mSize });
+    }
   });
 
   return games.map((game) => {
@@ -149,19 +201,30 @@ export function useFeaturedGames() {
 /**
  * Trả về games đã gán grid sizes, với sidebar slugs tuỳ chọn.
  * Dùng cho GameGridContainer.
+ *
+ * Quan trọng: 48 game từ game-data được ưu tiên lên đầu lưới,
+ * sau đó mới đến các game featured khác từ DB.
  */
 export function useGridGames(sidebarSlugs: string[] = [], featuredOnly = true) {
-  const {
-    games: allGames,
-    loading,
-    error,
-  } = featuredOnly ? useFeaturedGames() : useGames();
+  const { games: allGames, loading, error } = useGames();
 
   const sidebarSet = useMemo(() => new Set(sidebarSlugs), [sidebarSlugs]);
 
+  const prioritizedGames = useMemo(() => {
+    // Luôn luôn ưu tiên game-data lên đầu
+    const sorted = prioritizeGameData(allGames);
+    // Nếu featuredOnly, vẫn giữ lại cả game-data (kể cả fallback) + featured khác
+    if (featuredOnly) {
+      return sorted.filter(
+        (g) => getGameDataPriority(g.slug) >= 0 || g.featured,
+      );
+    }
+    return sorted;
+  }, [allGames, featuredOnly]);
+
   const sizedGames = useMemo(
-    () => assignGridSizes(allGames, sidebarSet),
-    [allGames, sidebarSet],
+    () => assignGridSizes(prioritizedGames, sidebarSet),
+    [prioritizedGames, sidebarSet],
   );
 
   return { games: sizedGames, loading, error };
