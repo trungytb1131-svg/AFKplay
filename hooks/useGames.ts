@@ -109,8 +109,8 @@ function prioritizeGameData(allGames: Game[]): Game[] {
 }
 
 // 12 game batch-3 ready-to-serve: 2x2 trên cả desktop & mobile
+// (13th-floor removed - needs Vite + Closure Compiler + Java build)
 const BATCH3_2X2_SLUGS = new Set([
-  "thirteenth-floor",
   "blueprint-idle",
   "chrome-dino",
   "feed-the-flames",

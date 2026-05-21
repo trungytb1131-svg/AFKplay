@@ -34,7 +34,7 @@ export async function GET(
   { params }: { params: Promise<{ path: string[] }> },
 ) {
   const { path } = await params;
-  const filePath = path?.length ? path.join("/") : "index.html";
+  const filePath = path?.length ? path.join("/") : "dist/index.html";
   const fullPath = join(process.cwd(), "game-data", "13th-floor", filePath);
 
   try {
