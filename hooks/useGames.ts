@@ -120,8 +120,8 @@ function assignGridSizes(games: Game[], sidebarSlugs: Set<string>): Game[] {
       sized.set(g.id, { dSize: "3x3", mSize: "1x1" });
     } else if (i < 15) {
       sized.set(g.id, { dSize: "2x2", mSize: "1x1" });
-    } else if (i < 48) {
-      // Các game-data còn lại (vị trí 15-47): xen kẽ 2x2 mỗi 5 game
+    } else if (i < GAME_DATA_PRIORITY_SLUGS.length) {
+      // Các game-data còn lại: xen kẽ 2x2 mỗi 5 game
       const dSize = (i - 15) % 5 === 0 ? "2x2" : "1x1";
       const mSize = (i - 15) % 8 === 0 ? "2x2" : "1x1";
       sized.set(g.id, { dSize, mSize });
