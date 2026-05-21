@@ -204,8 +204,14 @@ export function useFeaturedGames() {
  *
  * Quan trọng: 48 game từ game-data được ưu tiên lên đầu lưới,
  * sau đó mới đến các game featured khác từ DB.
+ *
+ * @param maxGames - Tổng số game tối đa trả về (mặc định 102 = 100 ô chính + 2 sidebar).
  */
-export function useGridGames(sidebarSlugs: string[] = [], featuredOnly = true) {
+export function useGridGames(
+  sidebarSlugs: string[] = [],
+  featuredOnly = true,
+  maxGames = 102,
+) {
   const { games: allGames, loading, error } = useGames();
 
   const sidebarSet = useMemo(() => new Set(sidebarSlugs), [sidebarSlugs]);
@@ -214,13 +220,12 @@ export function useGridGames(sidebarSlugs: string[] = [], featuredOnly = true) {
     // Luôn luôn ưu tiên game-data lên đầu
     const sorted = prioritizeGameData(allGames);
     // Nếu featuredOnly, vẫn giữ lại cả game-data (kể cả fallback) + featured khác
-    if (featuredOnly) {
-      return sorted.filter(
-        (g) => getGameDataPriority(g.slug) >= 0 || g.featured,
-      );
-    }
-    return sorted;
-  }, [allGames, featuredOnly]);
+    const filtered = featuredOnly
+      ? sorted.filter((g) => getGameDataPriority(g.slug) >= 0 || g.featured)
+      : sorted;
+    // Giới hạn tổng số game: 100 ô chính + 2 sidebar = 102
+    return filtered.slice(0, maxGames);
+  }, [allGames, featuredOnly, maxGames]);
 
   const sizedGames = useMemo(
     () => assignGridSizes(prioritizedGames, sidebarSet),
