@@ -80,10 +80,6 @@ export function middleware(request: NextRequest) {
     "rs-clicker",
     "society-fail",
     "tower-defense",
-    "captain-callisto",
-    "connect-four",
-    "exotoaster",
-    "raycast-js",
     "slotjs",
   ];
   if (

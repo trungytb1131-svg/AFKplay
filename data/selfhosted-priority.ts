@@ -122,10 +122,6 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   "rs-clicker",
   "society-fail",
   "tower-defense",
-  "captain-callisto",
-  "connect-four",
-  "exotoaster",
-  "raycast-js",
   "slotjs",
 ];
 

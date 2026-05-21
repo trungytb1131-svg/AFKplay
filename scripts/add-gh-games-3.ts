@@ -297,77 +297,6 @@ const GAMES: GameEntry[] = [
     source: "self-hosted",
     featured: false,
   },
-  // ═══ NEED BUILD (không có index.html hoặc cần build step) ═══
-  // Các game này cần chạy npm install && npm run build trước khi serve.
-  // Route trỏ đến build output tương lai.
-  {
-    id: "captain-callisto",
-    slug: "captain-callisto",
-    title: "Captain Callisto",
-    description:
-      "A js13k 2024 space adventure game. Explore moons, fight enemies, and survive as Captain Callisto in a tiny 13KB package!",
-    instructions:
-      "WASD to move, click to interact. Explore the moons of Jupiter! ⚠️ Needs build: npm install && npm run build",
-    url: "/captain-callisto/dist/index.html",
-    category_id: "adventure",
-    tags: ["adventure", "js13k", "space", "exploration", "action"],
-    thumb: "/images/games/captain-callisto.png",
-    width: 800,
-    height: 600,
-    source: "self-hosted",
-    featured: false,
-  },
-  {
-    id: "connect-four",
-    slug: "connect-four",
-    title: "Connect Four",
-    description:
-      "The classic Connect Four board game — drop colored discs and be the first to connect 4 in a row! Play against AI or a friend.",
-    instructions:
-      "Click on a column to drop your disc. Connect 4 horizontally, vertically, or diagonally! ⚠️ Needs build: cd browser && npm install && npm run build",
-    url: "/connect-four/browser/dist/index.html",
-    category_id: "puzzle",
-    tags: ["board-game", "multiplayer", "classic", "connect-four", "strategy"],
-    thumb: "/images/games/connect-four.png",
-    width: 600,
-    height: 500,
-    source: "self-hosted",
-    featured: false,
-  },
-  {
-    id: "exotoaster",
-    slug: "exotoaster",
-    title: "Exotoaster",
-    description:
-      "A js13k 2022 entry — a puzzle game with a toaster theme. Overheat your way through challenging levels!",
-    instructions:
-      "Arrow keys to move. Solve toast-themed puzzles! ⚠️ Needs build: npm install && gulp",
-    url: "/exotoaster/dist/index.html",
-    category_id: "puzzle",
-    tags: ["puzzle", "js13k", "toaster", "funny", "challenging"],
-    thumb: "/images/games/exotoaster.png",
-    width: 800,
-    height: 600,
-    source: "self-hosted",
-    featured: false,
-  },
-  {
-    id: "raycast-js",
-    slug: "raycast-js",
-    title: "Raycast JS",
-    description:
-      "A raycasting engine demo built in JavaScript — like a mini Wolfenstein 3D in your browser! Explore a 3D world rendered with pure JS.",
-    instructions:
-      "WASD to move, mouse to look around. Explore the raycast 3D world! ⚠️ Needs build: npm install && npm start",
-    url: "/raycast-js/dist/index.html",
-    category_id: "action",
-    tags: ["3d", "raycast", "fps", "retro", "engine"],
-    thumb: "/images/games/raycast-js.png",
-    width: 800,
-    height: 600,
-    source: "self-hosted",
-    featured: false,
-  },
   {
     id: "slotjs",
     slug: "slotjs",
@@ -400,11 +329,6 @@ const ROUTE_MAP: Record<string, { dataDir: string; entry: string }> = {
   "rs-clicker": { dataDir: "rs-clicker", entry: "index.html" },
   "society-fail": { dataDir: "society-fail", entry: "index.html" },
   "tower-defense": { dataDir: "tower-defense", entry: "index.html" },
-  // NEED BUILD games
-  "captain-callisto": { dataDir: "captain-callisto", entry: "dist/index.html" },
-  "connect-four": { dataDir: "connect-four", entry: "browser/dist/index.html" },
-  exotoaster: { dataDir: "exotoaster", entry: "dist/index.html" },
-  "raycast-js": { dataDir: "raycast-js", entry: "dist/index.html" },
   slotjs: { dataDir: "slotjs", entry: "dist/index.html" },
 };
 
@@ -448,13 +372,8 @@ async function main() {
   }
 
   console.log(`\n🎉 Done! Inserted: ${inserted}, Errors: ${errors}`);
-  console.log("\n⚠️  Games needing build (npm install && npm run build):");
-  console.log("   - captain-callisto");
-  console.log("   - connect-four (cd browser && npm install && npm run build)");
-  console.log("   - exotoaster (npm install && gulp)");
-  console.log("   - raycast-js (npm install && npm start / npm run build)");
-  console.log("   - slotjs (npm install && npm run build)");
-  console.log("\n   Route đã tạo sẽ hoạt động sau khi build xong.");
+  console.log(`
+🎉 Done! Inserted: ${inserted}, Errors: ${errors}`);
 }
 
 main();
