@@ -14,7 +14,12 @@ export const GRID_SLOTS: GridSlot[] = (() => {
   const slots: GridSlot[] = [];
   const colStarts = [3, 6, 9, 12, 15];
   for (let i = 0; i < 5; i++) {
-    slots.push({ num: i + 1, size: "3x3", mSize: "1x1", colStart: colStarts[i] });
+    slots.push({
+      num: i + 1,
+      size: "3x3",
+      mSize: "1x1",
+      colStart: colStarts[i],
+    });
   }
   for (let i = 6; i <= 105; i++) {
     slots.push({ num: i, size: "2x2", mSize: "1x1" });
@@ -26,10 +31,17 @@ export const GRID_SLOTS: GridSlot[] = (() => {
 })();
 
 export const BATCH3_MOBILE_2X2 = new Set([
-  "blueprint-idle", "chrome-dino", "feed-the-flames",
-  "google-the-game", "island-not-found", "offline-paradise",
-  "point-generation", "quickclick", "rs-clicker",
-  "society-fail", "tower-defense",
+  "blueprint-idle",
+  "chrome-dino",
+  "feed-the-flames",
+  "google-the-game",
+  "island-not-found",
+  "offline-paradise",
+  "point-generation",
+  "quickclick",
+  "rs-clicker",
+  "society-fail",
+  "tower-defense",
 ]);
 
 /** ⭐ CHỦ WEB: muốn game nào đứng slot nào thì sửa ở đây */
@@ -37,11 +49,13 @@ export const PIN_MAP: Record<number, string> = {
   // 1: "adventures-with-anxiety",
   // 2: "2048",
   // 3: "chrome-dino",
+  6: "we-become-what-we-behold",
 };
 
 export function getSlotClasses(slot: GridSlot): string {
   let c = "relative ";
-  c += slot.mSize === "2x2" ? "col-span-2 row-span-2 " : "col-span-1 row-span-1 ";
+  c +=
+    slot.mSize === "2x2" ? "col-span-2 row-span-2 " : "col-span-1 row-span-1 ";
   if (slot.size === "3x3" && slot.colStart != null) {
     c += `lg:col-span-3 lg:row-span-3 lg:col-start-${slot.colStart} lg:row-start-1 `;
   } else if (slot.size === "3x3") {
