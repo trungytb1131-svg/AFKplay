@@ -1,0 +1,85 @@
+# ============================================================
+# .vercelignore — Giảm thời gian deploy bằng cách bỏ qua file
+# không cần thiết trong game-data/ khi Vercel build.
+#
+# QUAN TRỌNG: File này chỉ ảnh hưởng đến Vercel deploy.
+# Code local + git của bạn vẫn đầy đủ, không bị ảnh hưởng.
+# ============================================================
+
+# ── Node modules (mỗi game cài riêng) ──
+game-data/*/node_modules
+game-data/*/node_modules/**
+
+# ── Package manager files (không cần ở runtime) ──
+game-data/*/package.json
+game-data/*/package-lock.json
+game-data/*/yarn.lock
+
+# ── Git & CI ──
+game-data/*/.github
+game-data/*/.github/**
+game-data/*/.gitignore
+game-data/*/.gitattributes
+game-data/*/.gitmodules
+
+# ── Docs & screenshots ──
+game-data/*/README.md
+game-data/*/LICENSE
+game-data/*/LICENSE.md
+game-data/*/CHANGELOG.md
+game-data/*/TODO
+game-data/*/TODO.md
+game-data/*/docs
+game-data/*/docs/**
+game-data/*/screenshots
+game-data/*/screenshots/**
+game-data/*/scratch
+game-data/*/scratch/**
+
+# ── Build tools & configs ──
+game-data/*/webpack.config.js
+game-data/*/vite.config.*
+game-data/*/tsconfig.json
+game-data/*/gulpfile.js
+game-data/*/build.js
+game-data/*/build.sh
+game-data/*/rollup.config.*
+game-data/*/.babelrc
+game-data/*/.eslintrc*
+game-data/*/.prettierrc*
+game-data/*/.stylelintrc
+game-data/*/.editorconfig
+game-data/*/.browserslistrc
+game-data/*/biome.json
+game-data/*/nodemon.json
+game-data/*/dockerfile
+game-data/*/Dockerfile
+game-data/*/fly.toml
+game-data/*/deploy.md
+
+# ── Source code của game đã build sẵn ──
+# (slotjs, stolen-sword đã có dist/ nên không cần src/)
+game-data/slotjs/src
+game-data/slotjs/src/**
+game-data/slotjs/static
+game-data/slotjs/static/**
+game-data/stolen-sword/src
+game-data/stolen-sword/src/**
+game-data/stolen-sword/build
+game-data/stolen-sword/build/**
+
+# ── Dev config ──
+game-data/*/.vscode
+game-data/*/.vscode/**
+game-data/*/.clang-format
+game-data/*/.yarn
+game-data/*/.yarn/**
+game-data/*/.yarnrc.yml
+game-data/*/.npmignore
+game-data/*/.dockerignore
+
+# ── Misc ──
+game-data/*/.DS_Store
+game-data/*/externs.js
+game-data/*/shader_minifier.exe
+game-data/*/roadroller-config.json
