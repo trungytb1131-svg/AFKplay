@@ -1,21 +1,22 @@
 const main = {
-    onload(){
-      Clicks.onload()
-	    Autoclickers.onload()
-      Prestige.onload()
-      Animations.onload()
-	    Runtime.onload()
-	    Redirect.onload()
-	    window.setInterval(this.onetenthsecInterval.bind(this), 100);
-      window.setInterval(this.tensecInterval.bind(this), 10000);
-      document.addEventListener( 'visibilitychange' , function() {
-        if (document.hidden) {
-          Runtime.saveTime()
-        } else {
-          Runtime.getTimeDiff()
-        }
-      })
-      //To Check for other tabs opened
+  onload() {
+    Clicks.onload();
+    Autoclickers.onload();
+    Prestige.onload();
+    Animations.onload();
+    Runtime.onload();
+    Redirect.onload();
+    window.setInterval(this.onetenthsecInterval.bind(this), 100);
+    window.setInterval(this.tensecInterval.bind(this), 10000);
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden) {
+        Runtime.saveTime();
+      } else {
+        Runtime.getTimeDiff();
+      }
+    });
+    //To Check for other tabs opened (disabled for portal)
+    /*
       const bc = new BroadcastChannel("Quick-Click");
 
       bc.onmessage = (event) => {
@@ -29,29 +30,30 @@ const main = {
       };
 
     bc.postMessage(`First tab?`);
-    },
-    
-    //For clarity in code
-    update(){
-	    Clicks.setNbrOwned(Clicks.nbrOwned)
-    },
-    
-    onetenthsecInterval(){
-	    Buttonconfig.disable()
-	    Buttonconfig.enable()
-	    Autoclickers.updateButtons()
-	    Clicks.setNbrOwned(Clicks.nbrOwned + (Autoclickers.Cpots))
-	    Runtime.updateRun(Runtime.currentrun.time + 0.1, 'currentrun')
-    },
-    
-    tensecInterval(){
-      Save.getSaveData()
-    }
-}
+      */
+  },
+
+  //For clarity in code
+  update() {
+    Clicks.setNbrOwned(Clicks.nbrOwned);
+  },
+
+  onetenthsecInterval() {
+    Buttonconfig.disable();
+    Buttonconfig.enable();
+    Autoclickers.updateButtons();
+    Clicks.setNbrOwned(Clicks.nbrOwned + Autoclickers.Cpots);
+    Runtime.updateRun(Runtime.currentrun.time + 0.1, "currentrun");
+  },
+
+  tensecInterval() {
+    Save.getSaveData();
+  },
+};
 
 window.onload = main.onload.bind(main);
-window.onclick = function(event) {
-  if (event.target == document.getElementById('resetModal')) {
-    document.getElementById('resetModal').style.display = "none";
+window.onclick = function (event) {
+  if (event.target == document.getElementById("resetModal")) {
+    document.getElementById("resetModal").style.display = "none";
   }
-}
+};
