@@ -53,9 +53,8 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   "the-evolution-of-trust",
   "untrusted",
   "we-become-what-we-behold",
-  // 45-54: GitHub standalone games
+  // 44-53: GitHub standalone games
   "andromeda-invaders",
-  "pacman-html5",
   "html5-asteroids",
   "star-battle",
   "dungeon-crawler-rpg",

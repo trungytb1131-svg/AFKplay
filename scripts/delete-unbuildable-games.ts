@@ -26,6 +26,7 @@ const DELETE_IDS = [
   "connect-four",
   "exotoaster",
   "raycast-js",
+  "pacman-html5",
 ];
 
 async function main() {
@@ -40,7 +41,7 @@ async function main() {
 
   const supabase = createClient(supabaseUrl, serviceRoleKey);
 
-  console.log("🗑️  Deleting 5 unbuildable games from Supabase...\n");
+  console.log("🗑️  Deleting 6 games from Supabase...\n");
 
   for (const id of DELETE_IDS) {
     const { error } = await supabase.from("games").delete().eq("id", id);
