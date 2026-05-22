@@ -108,52 +108,6 @@ function prioritizeGameData(allGames: Game[]): Game[] {
   return [...gameDataGames, ...otherFeatured, ...otherRest];
 }
 
-// 12 game batch-3 ready-to-serve: 2x2 trên cả desktop & mobile
-// (13th-floor removed - needs Vite + Closure Compiler + Java build)
-const BATCH3_2X2_SLUGS = new Set([
-  "blueprint-idle",
-  "chrome-dino",
-  "feed-the-flames",
-  "google-the-game",
-  "island-not-found",
-  "offline-paradise",
-  "point-generation",
-  "quickclick",
-  "rs-clicker",
-  "society-fail",
-  "tower-defense",
-]);
-
-function assignGridSizes(games: Game[], sidebarSlugs: Set<string>): Game[] {
-  const mainGames = games.filter((g) => !sidebarSlugs.has(g.slug));
-
-  // 5 game đầu: 3x3 | game-data còn lại: 2x2 hết | game DB: 1x1 lấp đầy
-  const gameDataCount = GAME_DATA_PRIORITY_SLUGS.length;
-  const sized = new Map<string, { dSize: string; mSize: string }>();
-
-  mainGames.forEach((g, i) => {
-    if (i < 5) {
-      sized.set(g.id, { dSize: "3x3", mSize: "1x1" });
-    } else if (i < gameDataCount) {
-      // Tất cả game-data từ vị trí 5 trở đi: 2x2
-      // Batch 3 games: mSize cũng 2x2 để nổi bật trên mobile
-      const isBatch3 = BATCH3_2X2_SLUGS.has(g.slug);
-      sized.set(g.id, { dSize: "2x2", mSize: isBatch3 ? "2x2" : "1x1" });
-    } else {
-      // Game DB: 1x1 lấp đầy khoảng trống
-      sized.set(g.id, { dSize: "1x1", mSize: "1x1" });
-    }
-  });
-
-  return games.map((game) => {
-    if (sidebarSlugs.has(game.slug)) {
-      return { ...game, dSize: "1x1", mSize: "1x1" };
-    }
-    const s = sized.get(game.id) || { dSize: "1x1", mSize: "1x1" };
-    return { ...game, dSize: s.dSize, mSize: s.mSize };
-  });
-}
-
 // ──────────────────────────────────────────────
 // Hook chính
 // ──────────────────────────────────────────────
@@ -235,16 +189,11 @@ export function useGridGames(
     const filtered = featuredOnly
       ? sorted.filter((g) => getGameDataPriority(g.slug) >= 0 || g.featured)
       : sorted;
-    // Giới hạn tổng số game: 100 ô chính + 2 sidebar = 102
+    // Giới hạn tổng số game
     return filtered.slice(0, maxGames);
   }, [allGames, featuredOnly, maxGames]);
 
-  const sizedGames = useMemo(
-    () => assignGridSizes(prioritizedGames, sidebarSet),
-    [prioritizedGames, sidebarSet],
-  );
-
-  return { games: sizedGames, loading, error };
+  return { games: prioritizedGames, loading, error };
 }
 
 /**
