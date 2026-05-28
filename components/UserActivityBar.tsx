@@ -57,11 +57,45 @@ export default function UserActivityBar() {
 
   return (
     <>
-      {/* DESKTOP: spacer luôn hiện, bar chỉ hiện khi có game */}
+      {/* DESKTOP: spacer 2 cột + NEW GAMES ticker 3 cột + bar 12 cột */}
       <div className="hidden lg:grid grid-cols-17 gap-[10px] w-full items-start relative z-30">
         <div className="col-span-2 invisible min-h-0" aria-hidden />
+        {/* ── GAME NEWS TICKER (cột 3-5) ── */}
+        <div className="col-span-3 h-[calc((100vw-180px)/17)] bg-[#0c4a6e] backdrop-blur-sm rounded-2xl border border-[#0ea5e9] shadow-sm flex flex-col items-center justify-center gap-1 overflow-hidden group px-2">
+          {/* Badge */}
+          <span className="shrink-0 bg-[#ff3b30] text-white text-[20px] font-black uppercase px-3 py-0.5 rounded-full tracking-widest">
+            GAME NEWS
+          </span>
+          {/* Ticker */}
+          <div className="w-full overflow-hidden">
+            <div
+              className="flex gap-6 whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused]"
+              style={{ animationDuration: "5s" }}
+            >
+              <span className="text-[28px] font-semibold text-white">
+                🎮 Tower Defense
+              </span>
+              <span className="text-[28px] font-semibold text-white">
+                👾 Society Fail
+              </span>
+              <span className="text-[28px] font-semibold text-white">
+                ⭐ RS Clicker
+              </span>
+              {/* Lặp để tạo vòng liên tục */}
+              <span className="text-[28px] font-semibold text-white">
+                🎮 Tower Defense
+              </span>
+              <span className="text-[28px] font-semibold text-white">
+                👾 Society Fail
+              </span>
+              <span className="text-[28px] font-semibold text-white">
+                ⭐ RS Clicker
+              </span>
+            </div>
+          </div>
+        </div>
         {displayGames.length > 0 ? (
-          <div className="col-span-15 bg-white/25 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm flex items-center gap-2 px-3 h-[calc((100vw-180px)/17)]">
+          <div className="col-span-12 bg-white/25 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm flex items-center gap-2 px-3 h-[calc((100vw-180px)/17)]">
             <Heart size={12} className="text-red-500 fill-red-500 shrink-0" />
             <h2 className="text-[9px] font-black uppercase italic tracking-tighter text-slate-800 whitespace-nowrap shrink-0">
               RECENTLY PLAYED/FAVORITE GAME
@@ -82,7 +116,7 @@ export default function UserActivityBar() {
             </div>
           </div>
         ) : (
-          <div className="col-span-15 h-[calc((100vw-180px)/17+10px)]" />
+          <div className="col-span-12 h-[calc((100vw-180px)/17+10px)]" />
         )}
       </div>
 
