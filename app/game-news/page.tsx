@@ -35,6 +35,17 @@ function imageSrc(raw: string): string {
   return `data:image/jpeg;base64,${raw}`;
 }
 
+function formatDate(dateString: string): string {
+  if (!dateString) return "Recently";
+  const date = new Date(dateString.replace(" ", "T"));
+  if (isNaN(date.getTime())) return dateString;
+  return date.toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+}
+
 async function fetchPosts(): Promise<Post[]> {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY || "";
   const res = await fetch(
@@ -118,11 +129,7 @@ export default async function GameNewsPage() {
                 )}
                 <div className="p-5">
                   <time className="text-xs text-slate-500 font-mono">
-                    {new Date(post.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+                    {formatDate(post.date)}
                   </time>
                   <h3 className="text-lg font-bold text-white mt-2 line-clamp-2 leading-snug">
                     {post.title}
