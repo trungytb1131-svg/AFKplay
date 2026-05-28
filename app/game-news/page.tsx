@@ -21,6 +21,13 @@ interface Post {
   source_url: string;
 }
 
+/** Biến base64 thuần thành data URI để trình duyệt hiểu */
+function imageSrc(raw: string): string {
+  if (!raw) return "";
+  if (raw.startsWith("http") || raw.startsWith("data:")) return raw;
+  return `data:image/jpeg;base64,${raw}`;
+}
+
 async function fetchPosts(): Promise<Post[]> {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY || "";
   const res = await fetch(
@@ -101,7 +108,7 @@ export default async function GameNewsPage() {
               >
                 <div className="aspect-video relative overflow-hidden bg-slate-800">
                   <img
-                    src={post.image_url}
+                    src={imageSrc(post.image_url)}
                     alt={post.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
