@@ -61,7 +61,10 @@ export default function UserActivityBar() {
       <div className="hidden lg:grid grid-cols-17 gap-[10px] w-full items-start relative z-30">
         <div className="col-span-2 invisible min-h-0" aria-hidden />
         {/* ── GAME NEWS TICKER (cột 3-5) ── */}
-        <div className="col-span-3 h-[calc((100vw-180px)/17)] bg-[#0c4a6e] backdrop-blur-sm rounded-2xl border border-[#0ea5e9] shadow-sm flex flex-col items-center justify-center gap-1 overflow-hidden group px-2">
+        <Link
+          href="/game-news"
+          className="col-span-3 h-[calc((100vw-180px)/17)] bg-[#0c4a6e] backdrop-blur-sm rounded-2xl border border-[#0ea5e9] shadow-sm flex flex-col items-center justify-center gap-1 overflow-hidden group px-2 hover:border-[#ff3b30] transition-colors"
+        >
           {/* Badge */}
           <span className="shrink-0 bg-[#ff3b30] text-white text-[20px] font-black uppercase px-3 py-0.5 rounded-full tracking-widest">
             GAME NEWS
@@ -93,7 +96,7 @@ export default function UserActivityBar() {
               </span>
             </div>
           </div>
-        </div>
+        </Link>
         {displayGames.length > 0 ? (
           <div className="col-span-12 bg-white/25 backdrop-blur-md rounded-2xl border border-white/40 shadow-sm flex items-center gap-2 px-3 h-[calc((100vw-180px)/17)]">
             <Heart size={12} className="text-red-500 fill-red-500 shrink-0" />

@@ -1,4 +1,10 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import PortalLogo from "@/components/PortalLogo";
+import {
+  fixedSidebarWrapperClass,
+  fixedLogoSlotClass,
+} from "@/lib/portalLayout";
 
 export const metadata: Metadata = {
   title: "GAME NEWS — AFKplay",
@@ -21,10 +27,11 @@ interface Post {
   source_url: string;
 }
 
-/** Biến base64 thuần thành data URI để trình duyệt hiểu */
+/** Base64 → data URI, tự nhận diện PNG/JPEG */
 function imageSrc(raw: string): string {
   if (!raw) return "";
   if (raw.startsWith("http") || raw.startsWith("data:")) return raw;
+  if (raw.startsWith("iVBORw0KGgo")) return `data:image/png;base64,${raw}`;
   return `data:image/jpeg;base64,${raw}`;
 }
 
@@ -41,21 +48,6 @@ async function fetchPosts(): Promise<Post[]> {
   return res.json();
 }
 
-function SkeletonCard() {
-  return (
-    <div className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden animate-pulse">
-      <div className="aspect-video bg-slate-800" />
-      <div className="p-5 space-y-3">
-        <div className="h-3 w-24 bg-slate-700 rounded" />
-        <div className="h-5 bg-slate-700 rounded w-3/4" />
-        <div className="h-5 bg-slate-700 rounded w-1/2" />
-        <div className="h-4 bg-slate-700 rounded w-full" />
-        <div className="h-4 bg-slate-700 rounded w-2/3" />
-      </div>
-    </div>
-  );
-}
-
 export default async function GameNewsPage() {
   let posts: Post[] = [];
   let error: string | null = null;
@@ -68,6 +60,13 @@ export default async function GameNewsPage() {
 
   return (
     <main className="min-h-screen bg-[#0a0a1a] text-white py-16 px-4">
+      {/* Logo */}
+      <div className={`${fixedSidebarWrapperClass} !fixed !top-4 !left-4`}>
+        <div className={fixedLogoSlotClass}>
+          <PortalLogo />
+        </div>
+      </div>
+
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="text-center mb-12">
@@ -82,15 +81,15 @@ export default async function GameNewsPage() {
           </p>
         </div>
 
-        {/* Error state */}
+        {/* Error */}
         {error && (
           <div className="bg-red-500/10 border border-red-500/30 rounded-2xl p-12 text-center">
-            <p className="text-lg text-red-300 mb-2">⚠️ Failed to load news</p>
+            <p className="text-lg text-red-300 mb-2">Failed to load news</p>
             <p className="text-sm text-red-400/70">{error}</p>
           </div>
         )}
 
-        {/* Empty state */}
+        {/* Empty */}
         {!error && posts.length === 0 && (
           <div className="text-center py-20 text-slate-500">
             <p className="text-lg">No news articles yet.</p>
@@ -106,15 +105,17 @@ export default async function GameNewsPage() {
                 key={post.id}
                 className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-[#ff3b30]/30 transition-all group"
               >
-                <div className="aspect-video relative overflow-hidden bg-slate-800">
-                  <img
-                    src={imageSrc(post.image_url)}
-                    alt={post.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    loading="lazy"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a] via-transparent to-transparent" />
-                </div>
+                {post.image_url && (
+                  <div className="aspect-video relative overflow-hidden bg-slate-800">
+                    <img
+                      src={imageSrc(post.image_url)}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a] via-transparent to-transparent" />
+                  </div>
+                )}
                 <div className="p-5">
                   <time className="text-xs text-slate-500 font-mono">
                     {new Date(post.date).toLocaleDateString("en-US", {
@@ -129,10 +130,8 @@ export default async function GameNewsPage() {
                   <p className="text-sm text-slate-400 mt-2 line-clamp-3 leading-relaxed">
                     {post.excerpt}
                   </p>
-                  <a
-                    href={post.source_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                  <Link
+                    href={`/game-news/${post.id}`}
                     className="inline-flex items-center gap-1.5 mt-4 text-sm font-bold text-[#ff3b30] hover:text-red-400 transition-colors"
                   >
                     Read More
@@ -149,7 +148,7 @@ export default async function GameNewsPage() {
                         d="M17 8l4 4m0 0l-4 4m4-4H3"
                       />
                     </svg>
-                  </a>
+                  </Link>
                 </div>
               </article>
             ))}
