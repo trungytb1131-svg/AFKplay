@@ -23,7 +23,7 @@ interface Post {
   title: string;
   excerpt: string;
   date: string;
-  image_url: string;
+  image: string;
   source_url: string;
 }
 
@@ -116,10 +116,10 @@ export default async function GameNewsPage() {
                 key={post.id}
                 className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-[#ff3b30]/30 transition-all group"
               >
-                {post.image_url && (
+                {post.image && (
                   <div className="aspect-video relative overflow-hidden bg-slate-800">
                     <img
-                      src={imageSrc(post.image_url)}
+                      src={imageSrc(post.image)}
                       alt={post.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"

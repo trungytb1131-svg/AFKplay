@@ -12,7 +12,7 @@ interface Post {
   excerpt: string;
   content: string;
   date: string;
-  image_url: string;
+  image: string;
   source_url: string;
   tags?: string[];
 }
@@ -153,10 +153,10 @@ export default async function ArticlePage({
         </Link>
 
         {/* Featured image */}
-        {post.image_url && (
+        {post.image && (
           <div className="aspect-video relative rounded-2xl overflow-hidden mb-8 bg-slate-800">
             <img
-              src={imageSrc(post.image_url)}
+              src={imageSrc(post.image)}
               alt={post.title}
               className="w-full h-full object-cover"
             />
@@ -249,10 +249,10 @@ export default async function ArticlePage({
                 href={`/game-news/${rp.id}`}
                 className="group bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-[#ff3b30]/30 transition-all"
               >
-                {rp.image_url && (
+                {rp.image && (
                   <div className="aspect-video relative overflow-hidden bg-slate-800">
                     <img
-                      src={imageSrc(rp.image_url)}
+                      src={imageSrc(rp.image)}
                       alt={rp.title}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       loading="lazy"
