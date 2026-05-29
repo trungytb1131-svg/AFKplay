@@ -19,27 +19,11 @@ export default function UserActivityBar() {
   const { games } = useGames();
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(true);
-  const [news, setNews] = useState<{ id: number; title: string }[]>([]);
   const lastScrollY = useRef(0);
   const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    const key = process.env.NEXT_PUBLIC_API_KEY || "";
-    fetch("https://blog-vercel-api-orpin.vercel.app/api/posts", {
-      headers: key ? { Authorization: `Bearer ${key}` } : {},
-    })
-      .then((r) => (r.ok ? r.json() : []))
-      .then((data: any[]) => {
-        try {
-          sessionStorage.setItem("gameNewsCache", JSON.stringify(data));
-        } catch {}
-        setNews(data.slice(0, 3));
-      })
-      .catch(() => {});
   }, []);
 
   const handleScroll = useCallback(() => {
@@ -88,29 +72,43 @@ export default function UserActivityBar() {
           </span>
           {/* Ticker */}
           <div className="w-full overflow-hidden">
+            <style>{`
+              @keyframes ticker {
+                from { transform: translateX(0); }
+                to { transform: translateX(-50%); }
+              }
+            `}</style>
             <div
-              className="flex gap-6 whitespace-nowrap animate-marquee group-hover:[animation-play-state:paused]"
-              style={{ animationDuration: "5s" }}
+              className="flex"
+              style={{
+                animation: "ticker 6s linear infinite",
+                width: "max-content",
+              }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.animationPlayState = "paused")
+              }
+              onMouseLeave={(e) =>
+                (e.currentTarget.style.animationPlayState = "running")
+              }
             >
-              <span className="text-[28px] font-semibold text-white">
-                🎮 Tower Defense
-              </span>
-              <span className="text-[28px] font-semibold text-white">
-                👾 Society Fail
-              </span>
-              <span className="text-[28px] font-semibold text-white">
-                ⭐ RS Clicker
-              </span>
-              {/* Lặp để tạo vòng liên tục */}
-              <span className="text-[28px] font-semibold text-white">
-                🎮 Tower Defense
-              </span>
-              <span className="text-[28px] font-semibold text-white">
-                👾 Society Fail
-              </span>
-              <span className="text-[28px] font-semibold text-white">
-                ⭐ RS Clicker
-              </span>
+              {/* Block 1 */}
+              <div className="flex items-center gap-x-16 whitespace-nowrap shrink-0 px-4">
+                <span className="text-[21px] font-semibold text-white">
+                  📈 120+ Articles this month
+                </span>
+                <span className="text-[21px] font-semibold text-white">
+                  🔥 5k+ Gamers reading daily
+                </span>
+              </div>
+              {/* Block 2 — bản sao */}
+              <div className="flex items-center gap-x-16 whitespace-nowrap shrink-0 px-4">
+                <span className="text-[21px] font-semibold text-white">
+                  📈 120+ Articles this month
+                </span>
+                <span className="text-[21px] font-semibold text-white">
+                  🔥 5k+ Gamers reading daily
+                </span>
+              </div>
             </div>
           </div>
         </Link>
