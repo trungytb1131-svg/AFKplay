@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import type { Post } from "./page";
+import { slugify } from "@/lib/slugify";
 
 function imageSrc(raw: string): string {
   if (!raw) return "";
@@ -47,7 +47,10 @@ export default function GameNewsContent({
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden animate-pulse">
+          <div
+            key={i}
+            className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden animate-pulse"
+          >
             <div className="aspect-video bg-slate-800" />
             <div className="p-5 space-y-3">
               <div className="h-3 w-24 bg-slate-700 rounded" />
@@ -88,12 +91,22 @@ export default function GameNewsContent({
               {post.excerpt}
             </p>
             <Link
-              href={`/game-news/${post.id}`}
+              href={`/game-news/${post.id}/${slugify(post.title)}`}
               className="inline-flex items-center gap-1.5 mt-4 text-sm font-bold text-[#ff3b30] hover:text-red-400 transition-colors"
             >
               Read More
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
               </svg>
             </Link>
           </div>
