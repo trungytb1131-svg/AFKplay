@@ -19,11 +19,27 @@ export default function UserActivityBar() {
   const { games } = useGames();
   const [mounted, setMounted] = useState(false);
   const [visible, setVisible] = useState(true);
+  const [news, setNews] = useState<{ id: number; title: string }[]>([]);
   const lastScrollY = useRef(0);
   const scrollTimeout = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    const key = process.env.NEXT_PUBLIC_API_KEY || "";
+    fetch("https://blog-vercel-api-orpin.vercel.app/api/posts", {
+      headers: key ? { Authorization: `Bearer ${key}` } : {},
+    })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((data: any[]) => {
+        try {
+          sessionStorage.setItem("gameNewsCache", JSON.stringify(data));
+        } catch {}
+        setNews(data.slice(0, 3));
+      })
+      .catch(() => {});
   }, []);
 
   const handleScroll = useCallback(() => {
@@ -63,6 +79,7 @@ export default function UserActivityBar() {
         {/* ── GAME NEWS TICKER (cột 3-5) ── */}
         <Link
           href="/game-news"
+          prefetch
           className="col-span-3 h-[calc((100vw-180px)/17)] bg-[#0c4a6e] backdrop-blur-sm rounded-2xl border border-[#0ea5e9] shadow-sm flex flex-col items-center justify-center gap-1 overflow-hidden group px-2 hover:border-[#ff3b30] transition-colors"
         >
           {/* Badge */}

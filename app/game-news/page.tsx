@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import PortalLogo from "@/components/PortalLogo";
+import GameNewsContent from "./GameNewsContent";
 import {
   fixedSidebarWrapperClass,
   fixedLogoSlotClass,
@@ -27,6 +27,8 @@ interface Post {
   source_url: string;
 }
 
+export type { Post };
+
 /** Base64 → data URI, tự nhận diện PNG/JPEG */
 function imageSrc(raw: string): string {
   if (!raw) return "";
@@ -52,7 +54,7 @@ async function fetchPosts(): Promise<Post[]> {
     "https://blog-vercel-api-orpin.vercel.app/api/posts",
     {
       headers: apiKey ? { Authorization: `Bearer ${apiKey}` } : {},
-      next: { revalidate: 300 },
+      next: { revalidate: 60 },
     },
   );
   if (!res.ok) throw new Error(`API error: ${res.status}`);
@@ -108,59 +110,8 @@ export default async function GameNewsPage() {
           </div>
         )}
 
-        {/* Grid */}
-        {posts.length > 0 && (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post) => (
-              <article
-                key={post.id}
-                className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-[#ff3b30]/30 transition-all group"
-              >
-                {post.image && (
-                  <div className="aspect-video relative overflow-hidden bg-slate-800">
-                    <img
-                      src={imageSrc(post.image)}
-                      alt={post.title}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a] via-transparent to-transparent" />
-                  </div>
-                )}
-                <div className="p-5">
-                  <time className="text-xs text-slate-500 font-mono">
-                    {formatDate(post.date)}
-                  </time>
-                  <h3 className="text-lg font-bold text-white mt-2 line-clamp-2 leading-snug">
-                    {post.title}
-                  </h3>
-                  <p className="text-sm text-slate-400 mt-2 line-clamp-3 leading-relaxed">
-                    {post.excerpt}
-                  </p>
-                  <Link
-                    href={`/game-news/${post.id}`}
-                    className="inline-flex items-center gap-1.5 mt-4 text-sm font-bold text-[#ff3b30] hover:text-red-400 transition-colors"
-                  >
-                    Read More
-                    <svg
-                      className="w-4 h-4"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M17 8l4 4m0 0l-4 4m4-4H3"
-                      />
-                    </svg>
-                  </Link>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+        {/* Grid — dùng cache sessionStorage nếu có */}
+        <GameNewsContent initialPosts={posts} />
       </div>
     </main>
   );
