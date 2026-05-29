@@ -4,6 +4,15 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { slugify } from "@/lib/slugify";
 
+interface Post {
+  id: number;
+  title: string;
+  excerpt: string;
+  date: string;
+  image: string;
+  source_url: string;
+}
+
 function imageSrc(raw: string): string {
   if (!raw) return "";
   if (raw.startsWith("http") || raw.startsWith("data:")) return raw;
