@@ -78,6 +78,7 @@ export default function GameCard({
           alt={game.title || game.slug}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover/link:scale-110"
           loading="lazy"
+          decoding="async"
         />
 
         {/* Overlay tối + Play + Title — hiện khi hover */}
