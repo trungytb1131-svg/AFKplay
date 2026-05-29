@@ -204,3 +204,11 @@ export function invalidateGameCache() {
   cacheTime = 0;
   fetchPromise = null;
 }
+
+/** Seed cache từ server-side data để tránh loading state */
+export function seedGameCache(games: Game[]) {
+  if (games.length > 0) {
+    globalCache = games;
+    cacheTime = Date.now();
+  }
+}
