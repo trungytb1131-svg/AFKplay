@@ -20,7 +20,7 @@ function getSidebarSlugs(games: Game[]) {
 }
 
 export default function GameGridContainer() {
-  const { games, loading, error } = useGridGames([], false, 60);
+  const { games } = useGridGames([], false, 100);
   const { sidebarSlugs, mobile2x2Slug } = getSidebarSlugs(games);
   const sidebarGames = games.filter((g) => sidebarSlugs.includes(g.slug));
   const mobile2x2Game = mobile2x2Slug
@@ -28,27 +28,7 @@ export default function GameGridContainer() {
     : null;
   const rankedSlots = rankGamesIntoLots(games, new Set(sidebarSlugs));
 
-  if (loading) {
-    return (
-      <div className="relative w-full">
-        <div className="grid gap-[10px] grid-cols-3 lg:grid-cols-17 grid-flow-row-dense auto-rows-[calc((100vw-40px)/3)] lg:auto-rows-[calc((100vw-180px)/17)]">
-          <div
-            className="col-span-1 lg:col-span-2 lg:col-start-1 lg:row-start-1 invisible pointer-events-none"
-            aria-hidden
-          >
-            <div className={logoSpacerClass} />
-          </div>
-          <div className="col-span-2 col-start-1 row-start-2 lg:col-span-15 lg:col-start-3 flex items-center justify-center">
-            <p className="text-slate-500 text-sm font-medium animate-pulse">
-              Loading games...
-            </p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  if (error || games.length === 0) {
+  if (games.length === 0) {
     return (
       <div className="relative w-full">
         <div className="grid gap-[10px] grid-cols-3 lg:grid-cols-17 grid-flow-row-dense auto-rows-[calc((100vw-40px)/3)] lg:auto-rows-[calc((100vw-180px)/17)]">
@@ -60,7 +40,7 @@ export default function GameGridContainer() {
           </div>
           <div className="col-span-2 col-start-1 row-start-2 lg:col-span-15 lg:col-start-3 flex items-center justify-center">
             <p className="text-slate-500 text-sm font-medium">
-              {error ? `Error: ${error}` : "No games found."}
+              No games found.
             </p>
           </div>
         </div>
