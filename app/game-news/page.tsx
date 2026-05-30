@@ -77,10 +77,11 @@ export default async function GameNewsPage() {
         </div>
       </header>
 
-      {/* ── EDITORIAL STRIP ── */}
-      <section className="bg-white">
-        <div className="max-w-7xl mx-auto py-16 lg:py-24 px-4">
-          <div className="border-l-8 border-[#ff3b30] pl-6 lg:pl-10">
+      {/* ── EDITORIAL STRIP + BANNER ── */}
+      <section className="bg-[#0a0a1a] border-b border-white/10">
+        <div className="max-w-7xl mx-auto py-12 lg:py-16 px-4 flex flex-col lg:flex-row items-center gap-8">
+          {/* Left: Text */}
+          <div className="flex-1 border-l-8 border-[#ff3b30] pl-6 lg:pl-10">
             <p className="text-[#ff3b30] text-sm font-black uppercase tracking-[0.2em] mb-4">
               Level Up Your Feed
             </p>
@@ -89,18 +90,13 @@ export default async function GameNewsPage() {
               <br />
               AFK
             </h1>
-            <p className="text-slate-500 mt-6 max-w-md font-light text-lg leading-relaxed">
+            <p className="text-slate-400 mt-6 max-w-md font-light text-lg leading-relaxed">
               Don&apos;t miss a beat. From patch notes to industry shifts,
               we&apos;ve got the intel you need to stay ahead.
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* Ad banner — nền tối đồng bộ grid */}
-      <section className="bg-[#0a0a1a]">
-        <div className="max-w-7xl mx-auto px-4 pb-8">
-          <div className="w-full max-w-[728px] h-[90px] mx-auto rounded-xl flex items-center justify-center">
+          {/* Right: Ad */}
+          <div className="w-full lg:w-[728px] h-[90px] shrink-0 flex items-center justify-center">
             <AdSlot index={2} />
           </div>
         </div>
