@@ -30,8 +30,8 @@ export default function GameCard({
 
   const favorited = mounted ? forceHeart || isHearted(game.slug) : false;
 
-  // Cache-bust: timestamp cố định từ lúc mount, thay đổi mỗi lần refresh trang
-  const cacheBuster = useRef(Date.now().toString(36));
+  // Cache-bust: dùng slug để tạo key ổn định server/client
+  const cacheBuster = useRef(game.slug);
 
   const thumbnailSrc = (() => {
     const base = game.thumb || game.image || `/images/games/${game.slug}.jpg`;
