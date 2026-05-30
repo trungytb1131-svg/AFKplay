@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PortalLogo from "@/components/PortalLogo";
+import { AdSlot } from "@/components/AdsterraBanner";
 
 export const metadata: Metadata = {
   title: "GAME NEWS — AFKplay",
@@ -95,6 +96,13 @@ export default async function GameNewsPage() {
           </div>
         </div>
       </section>
+
+      {/* Ad banner */}
+      <div className="max-w-7xl mx-auto px-4 pb-8">
+        <div className="w-full max-w-[728px] h-[90px] mx-auto bg-white/10 rounded-xl flex items-center justify-center">
+          <AdSlot index={2} />
+        </div>
+      </div>
 
       {/* ── GRID ── */}
       <section className="bg-[#0a0a1a] py-16 px-4">

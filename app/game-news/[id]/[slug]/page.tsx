@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PortalLogo from "@/components/PortalLogo";
-import { fixedSidebarWrapperClass, fixedLogoSlotClass } from "@/lib/portalLayout";
+import { AdSlot } from "@/components/AdsterraBanner";
+import {
+  fixedSidebarWrapperClass,
+  fixedLogoSlotClass,
+} from "@/lib/portalLayout";
 
 interface Post {
   id: number;
@@ -79,21 +83,32 @@ export default async function ArticlePage({
       </div>
 
       <article className="max-w-3xl mx-auto">
-        <Link href="/game-news" className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#ff3b30] transition-colors mb-8">
+        <Link
+          href="/game-news"
+          className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#ff3b30] transition-colors mb-8"
+        >
           ← Back to GAME NEWS
         </Link>
 
         {post.image && (
           <div className="aspect-video relative rounded-2xl overflow-hidden mb-8 bg-slate-800">
-            <img src={imageSrc(post.image)} alt={post.title} className="w-full h-full object-cover" />
+            <img
+              src={imageSrc(post.image)}
+              alt={post.title}
+              className="w-full h-full object-cover"
+            />
           </div>
         )}
 
         <div className="flex flex-wrap items-center gap-2 mb-4">
-          <span className="inline-block bg-[#ff3b30] text-white text-xs font-black uppercase px-3 py-1 rounded-full">GAME NEWS</span>
+          <span className="inline-block bg-[#ff3b30] text-white text-xs font-black uppercase px-3 py-1 rounded-full">
+            GAME NEWS
+          </span>
         </div>
 
-        <h1 className="text-3xl lg:text-4xl font-black text-white leading-tight mb-4">{post.title}</h1>
+        <h1 className="text-3xl lg:text-4xl font-black text-white leading-tight mb-4">
+          {post.title}
+        </h1>
 
         <div className="flex items-center gap-4 text-sm text-slate-500 mb-8">
           <time className="font-mono">{formatDate(post.date)}</time>
@@ -101,8 +116,15 @@ export default async function ArticlePage({
 
         <div
           className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-p:text-slate-300"
-          dangerouslySetInnerHTML={{ __html: post.content || post.excerpt || "" }}
+          dangerouslySetInnerHTML={{
+            __html: post.content || post.excerpt || "",
+          }}
         />
+
+        {/* Ad */}
+        <div className="w-full max-w-[728px] h-[90px] mx-auto my-8">
+          <AdSlot index={3} />
+        </div>
       </article>
     </main>
   );
