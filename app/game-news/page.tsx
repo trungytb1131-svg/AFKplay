@@ -109,7 +109,7 @@ export default async function GameNewsPage() {
         <div className="max-w-7xl mx-auto flex gap-6">
           {/* Sidebar ad trái */}
           <div className="hidden lg:block w-[160px] shrink-0">
-            <div className="sticky top-20 w-[160px] h-[600px] bg-white/5 rounded-xl flex items-center justify-center">
+            <div className="sticky top-20 w-[160px] h-[600px] bg-white/5 rounded-xl overflow-hidden flex items-center justify-center">
               <AdSlot index={4} />
             </div>
           </div>
