@@ -6,8 +6,8 @@ const AD_KEYS = [
   "de3d6ef07e4dc6d6fa76a1ec4ff58cee",
   "095ecf12a009b99b23c856b9660ec634",
   "28299c72f3e06229efd2c2c51c4099dd",
-  "41bad0c21e02b4e3d7f0dc2fa01c6dcd",
-  "d463125d90d4981adef5657e45434d93",
+  "de3d6ef07e4dc6d6fa76a1ec4ff58cee",
+  "de3d6ef07e4dc6d6fa76a1ec4ff58cee",
 ];
 
 // Format riêng cho từng vị trí
