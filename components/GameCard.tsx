@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { memo, useEffect, useState, useRef } from "react";
 import Link from "next/link";
 import { Heart, Play } from "lucide-react";
 import { useActivity } from "@/contexts/ActivityContext";
 
-export default function GameCard({
+const GameCard = memo(function GameCard({
   game,
   forceHeart,
   onHeartClick,
@@ -95,4 +95,6 @@ export default function GameCard({
       </Link>
     </div>
   );
-}
+});
+
+export default GameCard;
