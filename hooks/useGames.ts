@@ -114,7 +114,7 @@ function prioritizeGameData(allGames: Game[]): Game[] {
 
 export function useGames() {
   const [games, setGames] = useState<Game[]>(globalCache ?? []);
-  const [loading, setLoading] = useState(!globalCache);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
