@@ -51,7 +51,7 @@ async function fetchPosts(): Promise<Post[]> {
     { headers: apiKey ? { Authorization: `Bearer ${apiKey}` } : {} },
   );
   if (!res.ok) throw new Error(`API error: ${res.status}`);
-  return res.json();
+  return (res.json() as Promise<Post[]>).then((p) => p.slice(0, 12));
 }
 
 export default async function GameNewsPage() {
@@ -110,6 +110,18 @@ export default async function GameNewsPage() {
                   key={post.id}
                   className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-[#ff3b30]/30 transition-all group"
                 >
+                  {post.image && (
+                    <div className="aspect-video relative overflow-hidden bg-slate-800">
+                      <img
+                        src={imageSrc(post.image)}
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a] via-transparent to-transparent" />
+                    </div>
+                  )}
                   <div className="p-5">
                     <time className="text-xs text-slate-500 font-mono">
                       {formatDate(post.date)}
