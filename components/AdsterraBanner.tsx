@@ -10,9 +10,27 @@ const AD_KEYS = [
   "d463125d90d4981adef5657e45434d93",
 ];
 
+// Format riêng cho từng vị trí
+const AD_FORMATS: Record<
+  number,
+  { width: number; height: number; format: string }
+> = {
+  1: { width: 160, height: 600, format: "iframe" },
+  2: { width: 728, height: 90, format: "iframe" },
+  3: { width: 300, height: 250, format: "iframe" },
+  4: { width: 160, height: 600, format: "iframe" },
+  5: { width: 160, height: 600, format: "iframe" },
+};
+
 let loading = false;
 
-function loadAd(key: string, container: HTMLElement) {
+function loadAd(
+  key: string,
+  container: HTMLElement,
+  width: number,
+  height: number,
+  format: string,
+) {
   const tryLoad = () => {
     if (loading) {
       setTimeout(tryLoad, 200);
@@ -21,9 +39,9 @@ function loadAd(key: string, container: HTMLElement) {
     loading = true;
     (window as any).atOptions = {
       key,
-      format: "iframe",
-      height: 600,
-      width: 160,
+      format,
+      height,
+      width,
       params: {},
     };
     const script = document.createElement("script");
@@ -58,11 +76,16 @@ export function AdSlot({ index }: { index: number }) {
     if (fired.current) return;
     fired.current = true;
     const key = AD_KEYS[index - 1];
+    const fmt = AD_FORMATS[index] || {
+      width: 728,
+      height: 90,
+      format: "iframe",
+    };
     if (!key) return;
     const start = () => {
       if (containerRef.current) {
         containerRef.current.innerHTML = "";
-        loadAd(key, containerRef.current);
+        loadAd(key, containerRef.current, fmt.width, fmt.height, fmt.format);
       } else {
         setTimeout(start, 100);
       }
