@@ -21,10 +21,10 @@ export const GRID_SLOTS: GridSlot[] = (() => {
       colStart: colStarts[i],
     });
   }
-  for (let i = 6; i <= 105; i++) {
+  for (let i = 6; i <= 85; i++) {
     slots.push({ num: i, size: "2x2", mSize: "1x1" });
   }
-  for (let i = 106; i <= 200; i++) {
+  for (let i = 86; i <= 100; i++) {
     slots.push({ num: i, size: "1x1", mSize: "1x1" });
   }
   return slots;
