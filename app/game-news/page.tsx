@@ -106,70 +106,87 @@ export default async function GameNewsPage() {
 
       {/* ── GRID ── */}
       <section className="bg-[#0a0a1a] py-16 px-4">
-        <div className="max-w-7xl mx-auto">
-          {posts.length === 0 ? (
-            <div className="text-center py-20 text-slate-500">
-              <p className="text-lg">No news articles yet.</p>
+        <div className="max-w-7xl mx-auto flex gap-6">
+          {/* Sidebar ad trái */}
+          <div className="hidden lg:block w-[160px] shrink-0">
+            <div className="sticky top-20 w-[160px] h-[600px] bg-white/5 rounded-xl flex items-center justify-center">
+              <AdSlot index={4} />
             </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {posts.map((post) => (
-                <article
-                  key={post.id}
-                  className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-[#ff3b30]/30 transition-all group"
-                >
-                  {post.image && (
-                    <div className="aspect-video relative overflow-hidden bg-slate-800">
-                      <img
-                        src={imageSrc(post.image)}
-                        alt={post.title}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                        loading="lazy"
-                        decoding="async"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a] via-transparent to-transparent" />
-                    </div>
-                  )}
-                  <div className="p-5">
-                    <time className="text-xs text-slate-500 font-mono">
-                      {formatDate(post.date)}
-                    </time>
-                    <h3 className="text-lg font-bold text-white mt-2 line-clamp-2 leading-snug">
-                      {post.title}
-                    </h3>
-                    <p className="text-sm text-slate-400 mt-2 line-clamp-3 leading-relaxed">
-                      {post.excerpt}
-                    </p>
-                    <a
-                      href={`/game-news/${post.id}/${post.title
-                        .toLowerCase()
-                        .replace(/[^\w\s-]/g, "")
-                        .replace(/[\s_]+/g, "-")
-                        .replace(/-+/g, "-")
-                        .replace(/^-|-$/g, "")
-                        .slice(0, 80)}`}
-                      className="inline-flex items-center gap-1.5 mt-4 text-sm font-bold text-[#ff3b30] hover:text-red-400 transition-colors"
-                    >
-                      Read More
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
+          </div>
+
+          {/* Grid chính */}
+          <div className="flex-1 min-w-0">
+            {posts.length === 0 ? (
+              <div className="text-center py-20 text-slate-500">
+                <p className="text-lg">No news articles yet.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+                {posts.map((post) => (
+                  <article
+                    key={post.id}
+                    className="bg-white/5 border border-white/10 rounded-2xl overflow-hidden hover:border-[#ff3b30]/30 transition-all group"
+                  >
+                    {post.image && (
+                      <div className="aspect-video relative overflow-hidden bg-slate-800">
+                        <img
+                          src={imageSrc(post.image)}
+                          alt={post.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                          loading="lazy"
+                          decoding="async"
                         />
-                      </svg>
-                    </a>
-                  </div>
-                </article>
-              ))}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a1a] via-transparent to-transparent" />
+                      </div>
+                    )}
+                    <div className="p-5">
+                      <time className="text-xs text-slate-500 font-mono">
+                        {formatDate(post.date)}
+                      </time>
+                      <h3 className="text-lg font-bold text-white mt-2 line-clamp-2 leading-snug">
+                        {post.title}
+                      </h3>
+                      <p className="text-sm text-slate-400 mt-2 line-clamp-3 leading-relaxed">
+                        {post.excerpt}
+                      </p>
+                      <a
+                        href={`/game-news/${post.id}/${post.title
+                          .toLowerCase()
+                          .replace(/[^\w\s-]/g, "")
+                          .replace(/[\s_]+/g, "-")
+                          .replace(/-+/g, "-")
+                          .replace(/^-|-$/g, "")
+                          .slice(0, 80)}`}
+                        className="inline-flex items-center gap-1.5 mt-4 text-sm font-bold text-[#ff3b30] hover:text-red-400 transition-colors"
+                      >
+                        Read More
+                        <svg
+                          className="w-4 h-4"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 8l4 4m0 0l-4 4m4-4H3"
+                          />
+                        </svg>
+                      </a>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Sidebar ad phải */}
+          <div className="hidden lg:block w-[160px] shrink-0">
+            <div className="sticky top-20 w-[160px] h-[600px] bg-white/5 rounded-xl flex items-center justify-center">
+              <AdSlot index={5} />
             </div>
-          )}
+          </div>
         </div>
       </section>
     </>

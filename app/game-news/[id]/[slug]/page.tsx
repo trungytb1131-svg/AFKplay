@@ -82,50 +82,66 @@ export default async function ArticlePage({
         </div>
       </div>
 
-      <article className="max-w-3xl mx-auto">
-        <Link
-          href="/game-news"
-          className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#ff3b30] transition-colors mb-8"
-        >
-          ← Back to GAME NEWS
-        </Link>
-
-        {post.image && (
-          <div className="aspect-video relative rounded-2xl overflow-hidden mb-8 bg-slate-800">
-            <img
-              src={imageSrc(post.image)}
-              alt={post.title}
-              className="w-full h-full object-cover"
-            />
+      <div className="max-w-7xl mx-auto flex gap-6">
+        {/* Sidebar ad trái */}
+        <div className="hidden lg:block w-[160px] shrink-0">
+          <div className="sticky top-20 w-[160px] h-[600px] bg-white/5 rounded-xl flex items-center justify-center">
+            <AdSlot index={4} />
           </div>
-        )}
-
-        <div className="flex flex-wrap items-center gap-2 mb-4">
-          <span className="inline-block bg-[#ff3b30] text-white text-xs font-black uppercase px-3 py-1 rounded-full">
-            GAME NEWS
-          </span>
         </div>
 
-        <h1 className="text-3xl lg:text-4xl font-black text-white leading-tight mb-4">
-          {post.title}
-        </h1>
+        <article className="flex-1 min-w-0 max-w-3xl">
+          <Link
+            href="/game-news"
+            className="inline-flex items-center gap-1.5 text-sm text-slate-400 hover:text-[#ff3b30] transition-colors mb-8"
+          >
+            ← Back to GAME NEWS
+          </Link>
 
-        <div className="flex items-center gap-4 text-sm text-slate-500 mb-8">
-          <time className="font-mono">{formatDate(post.date)}</time>
+          {post.image && (
+            <div className="aspect-video relative rounded-2xl overflow-hidden mb-8 bg-slate-800">
+              <img
+                src={imageSrc(post.image)}
+                alt={post.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
+          <div className="flex flex-wrap items-center gap-2 mb-4">
+            <span className="inline-block bg-[#ff3b30] text-white text-xs font-black uppercase px-3 py-1 rounded-full">
+              GAME NEWS
+            </span>
+          </div>
+
+          <h1 className="text-3xl lg:text-4xl font-black text-white leading-tight mb-4">
+            {post.title}
+          </h1>
+
+          <div className="flex items-center gap-4 text-sm text-slate-500 mb-8">
+            <time className="font-mono">{formatDate(post.date)}</time>
+          </div>
+
+          <div
+            className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-p:text-slate-300"
+            dangerouslySetInnerHTML={{
+              __html: post.content || post.excerpt || "",
+            }}
+          />
+
+          {/* Ad */}
+          <div className="w-full max-w-[728px] h-[90px] mx-auto my-8">
+            <AdSlot index={3} />
+          </div>
+        </article>
+
+        {/* Sidebar ad phải */}
+        <div className="hidden lg:block w-[160px] shrink-0">
+          <div className="sticky top-20 w-[160px] h-[600px] bg-white/5 rounded-xl flex items-center justify-center">
+            <AdSlot index={5} />
+          </div>
         </div>
-
-        <div
-          className="prose prose-invert prose-lg max-w-none prose-headings:text-white prose-p:text-slate-300"
-          dangerouslySetInnerHTML={{
-            __html: post.content || post.excerpt || "",
-          }}
-        />
-
-        {/* Ad */}
-        <div className="w-full max-w-[728px] h-[90px] mx-auto my-8">
-          <AdSlot index={3} />
-        </div>
-      </article>
+      </div>
     </main>
   );
 }
