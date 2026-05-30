@@ -6,6 +6,7 @@ const AD_KEYS = [
   "de3d6ef07e4dc6d6fa76a1ec4ff58cee",
   "095ecf12a009b99b23c856b9660ec634",
   "28299c72f3e06229efd2c2c51c4099dd",
+  "095ecf12a009b99b23c856b9660ec634",
   "de3d6ef07e4dc6d6fa76a1ec4ff58cee",
   "de3d6ef07e4dc6d6fa76a1ec4ff58cee",
 ];
@@ -18,7 +19,7 @@ const AD_FORMATS: Record<
   1: { width: 160, height: 600, format: "iframe" },
   2: { width: 728, height: 90, format: "iframe" },
   3: { width: 300, height: 250, format: "iframe" },
-  4: { width: 160, height: 600, format: "iframe" },
+  4: { width: 468, height: 60, format: "iframe" },
   5: { width: 160, height: 600, format: "iframe" },
 };
 
