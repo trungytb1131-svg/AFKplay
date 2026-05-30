@@ -42,7 +42,7 @@ function formatDate(dateString: string): string {
   });
 }
 
-export const revalidate = 300;
+export const dynamic = "force-dynamic";
 
 async function fetchPosts(): Promise<Post[]> {
   const apiKey = process.env.NEXT_PUBLIC_API_KEY || "";
