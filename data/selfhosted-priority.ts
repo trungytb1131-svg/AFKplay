@@ -106,8 +106,7 @@ export const GAME_DATA_PRIORITY_SLUGS: string[] = [
   "match3-html5",
   "wordpluck",
   "black-hole-square",
-  "stolen-sword",
-  // 101-116: GitHub batch 3 (clone mới)
+  // 101-115: GitHub batch 3 (clone mới)
   "blueprint-idle",
   "chrome-dino",
   "feed-the-flames",
